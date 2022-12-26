@@ -1,8 +1,32 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+
+    ViewData["Title"] = "Gestão FTTH";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<div class="container d-flex justify-content-center align-items-center">
+            <div class="row justify-content-center">
+                <div class="col mt-5">
+                    <form class="bg-light py-3 px-3 rounded" style="width: 18rem">
+                        <div class="text-center">
+                            <h5>Controle de Gestão FTTH</h5>
+                        </div>
+                         
+                        <div class="form-outline mt-4 mb-1">
+                            <label class="form-label" for="form2Example18">E-mail de Acesso</label>
+                            <input type="email" id="form2Example18" class="form-control form-control-lg" />
+                        </div>
+
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="form2Example28">Senha</label>
+                            <input type="password" id="form2Example28" class="form-control form-control-lg" />
+                        </div>
+                            <a class="btn btn-primary btn-block w-100" role="button">Login</a>
+
+                            <p class="small mb-5 mt-2 pb-lg-2">
+                                <a class="text-muted" href="#!">Recuperar Senha?</a></p>
+                            <p>Você não possui acesso? <a href="#!" class="link-info">Solicitar Acesso</a></p>
+                    </form>
+                </div>
+             </div>
+         </div>
+

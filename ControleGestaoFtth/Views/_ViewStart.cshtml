@@ -1,3 +1,13 @@
 ﻿@{
-    Layout = "_Layout";
+    var currentName = ViewContext.RouteData.Values["Controller"]?.ToString();
+
+    switch(currentName)
+    {
+        case "Home":
+            Layout = "_LayoutLogin";
+            break;
+        default: 
+            Layout = "_Layout" ;
+            break;
+    }
 }
