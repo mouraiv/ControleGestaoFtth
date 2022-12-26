@@ -12,7 +12,7 @@ namespace ControleGestaoFtth.Models
         public string? Senha { get;set; }
         [Required]
         public string? Tipo { get;set;}
-        public int? TecnicoId { get;set;}
-        public Tecnico? Tecnicos { get;set; }
+        [Required]
+        public int? Externo { get; set; }
     }
 }

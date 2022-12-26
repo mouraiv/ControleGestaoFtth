@@ -2,13 +2,15 @@
 
 namespace ControleGestaoFtth.Models
 {
-    public class Equipe
+    public class Tecnicos
     {
         [Key]
         public int Id { get; set; }
         [Required]
         public string? Nome { get; set; }
-        public int? ConstrutoraId { get; set; }
-        public Construtora? Construtoras { get; set; }
+        [Required]
+        public string? Funcao { get; set; }
+        [Required]
+        public string? Email { get; set;}
     }
 }

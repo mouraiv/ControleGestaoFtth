@@ -2,17 +2,15 @@
 
 namespace ControleGestaoFtth.Models
 {
-    public class Estacao
+    public class Estacoes
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        public string? Nome { get; set; }
+        public string? NomeEstacao { get; set; }
         [Required]
         public string? Sigla { get; set; }
         [Required]
-        public string? TipoObra { get; set; }
-        public int? CdoId { get; set; }
-        public Cdo? Cdos { get; set; }
+        public string? Responsavel { get; set; }
     }
 }

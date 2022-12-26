@@ -2,15 +2,15 @@
 
 namespace ControleGestaoFtth.Models
 {
-    public class Tecnico
+    public class States
     {
         [Key]
         public int Id { get; set; }
         [Required]
-        public string? Nome { get; set; }
+        public string? EstadodeProjeto { get; set; }
         [Required]
-        public string? Funcao { get; set; }
+        public string? EstadodeControle { get; set; }
         [Required]
-        public string? Email { get; set;}
+        public string? Descricao { get; set; }
     }
 }
