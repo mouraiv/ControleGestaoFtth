@@ -2,7 +2,7 @@
 
 namespace ControleGestaoFtth.Models
 {
-    public class EstadoCampos
+    public class EstadoCampo
     {
         [Key]
         public int Id { get; set; }

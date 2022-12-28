@@ -2,12 +2,14 @@
 
 namespace ControleGestaoFtth.Models
 {
-    public class Construtoras
+    public class Construtora
     {
         [Key]
         public int Id { get; set; }
         public string? CHAVE { get; set; }
+        public Estacoe? Estacao { get; set; }
         public int? EstacoesId { get; set; }
+        public TipoObra? TipoObra { get; set; }
         public int? TipoObraId { get; set; }
         public string? CDO { get; set; }
         public int? Cabo { get; set; }
@@ -15,7 +17,9 @@ namespace ControleGestaoFtth.Models
         public int? Capacidade { get; set; }
         public int? TotalUms { get; set; }
         public string? Endereco { get; set; }
+        public EstadoCampo? EstadoCampo { get; set; }
         public int? EstadoCamposId { get; set; }
+        public State? State { get; set; }
         public int? StatesId { get; set; }
         public DateTime? AceitacaoData { get; set; }
         public string? AceitacaoMesRef { get; set; }

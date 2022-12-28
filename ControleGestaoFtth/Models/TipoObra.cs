@@ -2,7 +2,7 @@
 
 namespace ControleGestaoFtth.Models
 {
-    public class TipoObras
+    public class TipoObra
     {
         [Key]
         public int? Id { get; set; }

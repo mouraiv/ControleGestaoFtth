@@ -2,7 +2,7 @@
 
 namespace ControleGestaoFtth.Models
 {
-    public class Estacoes
+    public class Estacoe
     {
         [Key]
         public int Id { get; set; }
