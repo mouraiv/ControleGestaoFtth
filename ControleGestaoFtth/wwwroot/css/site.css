@@ -67,9 +67,3 @@ ul li{
     background-clip: padding-box;
     border: 1px solid #ced4da;
 }
-
-.logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}

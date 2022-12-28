@@ -8,11 +8,16 @@ for details on configuring this project to bundle and minify static web assets. 
 }
 
 .title {
-    height: 50px;
     color: white;
     font-weight: bold;
-    text-align: center;
-    padding-top: 0.5rem;
+    padding: 0.5rem;
+    min-height: 41px;
+}
+
+@media (min-width: 768px) {
+    .title {
+        min-height: 41px;
+    }
 }
 
 .sub-title {
