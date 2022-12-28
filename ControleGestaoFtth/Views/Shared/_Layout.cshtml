@@ -10,11 +10,11 @@
     <link rel="stylesheet" href="~/ControleGestaoFtth.styles.css" asp-append-version="true" />
 </head>
 <body class="bk-full">
-    <div class="nav-user bg-primary"><a>Função | Usuário</a><i class="fa fa-user" aria-hidden="true"></i></div>
-    <div class="nav-bar d-flex flex-column position-absolute top-0 bottom-0 vh-100">
-        <div class="title bg-primary"><div class="border border-white title-text text-center"><a>GESTÃO FTTH</a></div></div>
-        <div class="p-3 vh-100">
-            <div class="sub-title"><a>BASE DE DADOS</a></div>
+    <div class="nav-user bg-primary"><i class="fa fa-bars" role="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"></i><a>Função | Usuário</a><i class="fa fa-user" aria-hidden="true"></i></div>
+    <div class="nav-bar">
+        <div class="title"><div class="title-text"><a>GESTÃO FTTH</a></div></div>
+            <div class="menu collapse" id="collapseExample">
+                <div class="sub-title"><a>BASE DE DADOS</a></div>
                     <ul class="navbar-nav">
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Privacy"><i class="fa fa-database" aria-hidden="true"></i>FTTH</a>
@@ -41,7 +41,7 @@
         </div>
     </div>  
     <div class="position-relative bk-full">
-        <main role="main" class="position-absolute p-4 main-container">
+        <main role="main" class="p-4 main-container">
             @RenderBody()
         </main>
     </div>

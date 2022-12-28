@@ -3,36 +3,43 @@ html {
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
+
+    .fa-bars {
+        display:none !important;
+    }
 }
 
-html {
-  position: relative;
-  min-height: 100%;
-}
-
-body {
-    margin-bottom: 60px;
-}
-
-.fa{
+.fa {
     margin-right: 0.6rem;
     font-size: 0.9rem;
 }
 
-ul{
+ul {
     padding-bottom: 1rem;
 }
-ul li{
-    padding-left: 1.2rem;
-    padding-bottom: 0.2rem;
+
+ul li {
+        padding-left: 1.2rem;
+        padding-bottom: 0.2rem;
 }
 
-.fa-user{
-    font-size:1.3rem;
-    padding-left:0.8rem;
+.nav-link {
+    color: #D7DBDD;
+    font-size: 0.8rem;
+}
+
+.fa-user {
+    font-size: 1.3rem;
+    padding-left: 0.8rem;
+}
+
+.fa-bars {
+    position:absolute;
+    font-size: 2rem;
+    left:10px;
 }
 
 .nav-user {
@@ -45,9 +52,18 @@ ul li{
     font-size: 0.8rem;
 }
 
-.nav-link {
-    color: #C0C0C0;
-    font-size: 0.8rem;
+.nav-link:hover {
+    color: #ffffff;
+}
+
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+    margin-bottom: 60px;
 }
 
 .bk-full {

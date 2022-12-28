@@ -1,42 +1,75 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
-.nav-bar {
-    width: 180px;
-    font-size: 1.0rem;
-    background-color: #696969;
-}
-
-.title {
-    color: white;
-    font-weight: bold;
-    padding: 0.5rem;
-    min-height: 41px;
-}
-
 @media (min-width: 768px) {
     .title {
+        display:block !important;
+        min-height: 41px;
+        color: white;
+        font-weight: bold;
+        padding: 0.5rem;
         min-height: 41px;
     }
+
+    .title-text{
+        text-align:center;
+        border: 1px solid white;
+    }
+
+    .menu{
+        display:block;
+        height: 100%;
+        padding: 1rem;
+    }
+    .nav-bar {
+        display: flex;
+        flex-direction: column;
+        width: 180px;
+        font-size: 1.0rem;
+        background-color: #696969;
+        top: 0;
+        bottom: 0;
+        position: absolute;
+    }
+
+    .main-container {
+        position:absolute;
+        left: 180px;
+        right: 0;
+    }
+
+    .footer-st {
+        padding: 3px;
+        font-size: 0.6rem;
+        background-color: transparent !important;
+        color: #C0C0C0 !important;
+    }
+ 
+}
+
+.menu {
+    background-color: #696969;
+    padding: 1rem;
 }
 
 .sub-title {
     color: #C0C0C0;
     font-size: 0.7rem;
-    font-weight:bold;
-    text-decoration:none;
+    font-weight: bold;
+    text-decoration: none;
     margin-bottom: 0.9rem;
     margin-top: 0.6rem;
 }
 
-.footer-st {
-    padding: 3px;
-    font-size: 0.6rem;
-    background-color: #4F4F4F;
-    color: #C0C0C0;
+.title{
+    display:none;
 }
-
-.main-container{
-    left: 180px;
-    right: 0;
+.footer-st {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    color: #ffffff;
+    white-space: nowrap;
+    line-height: 25px;
+    background-color: #0d6efd;
 }
