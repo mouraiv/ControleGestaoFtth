@@ -3,27 +3,18 @@ for details on configuring this project to bundle and minify static web assets. 
 
 @media (min-width: 768px) {
     .title {
-        display:block !important;
+        position:static !important;
         min-height: 41px;
         color: white;
         font-weight: bold;
         padding: 0.5rem;
-        min-height: 41px;
-    }
-
-    .title-text{
-        text-align:center;
-        border: 1px solid white;
     }
 
     .menu{
         display:block;
-        height: 100%;
         padding: 1rem;
     }
     .nav-bar {
-        display: flex;
-        flex-direction: column;
         width: 180px;
         font-size: 1.0rem;
         background-color: #696969;
@@ -39,12 +30,24 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .footer-st {
-        padding: 3px;
+        display:flex;
+        flex-direction:column;
+        text-align:center;
         font-size: 0.6rem;
-        background-color: transparent !important;
         color: #C0C0C0 !important;
+        background-color:transparent !important;
     }
  
+}
+
+.title{
+    position:absolute;
+    top:0.6rem;
+    left: 3.5rem;
+}
+
+.main-container {
+    padding: 1.5rem;
 }
 
 .menu {
@@ -61,9 +64,6 @@ for details on configuring this project to bundle and minify static web assets. 
     margin-top: 0.6rem;
 }
 
-.title{
-    display:none;
-}
 .footer-st {
     position: absolute;
     bottom: 0;

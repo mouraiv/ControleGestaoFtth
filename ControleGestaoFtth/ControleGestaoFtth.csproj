@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="Repository\Interface\IConstrutoraRepository.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="Data\" />
-    <Folder Include="Repository\Interface\" />
   </ItemGroup>
 
   <ItemGroup>
