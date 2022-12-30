@@ -22,5 +22,13 @@
             }
         }
     });
+
+    $.post('/Construtora', {
+        seachData: dateJs
+
+    }, function (resposta) {
+        $("#listarFtth").html(resposta);
+    })
+
 })()
     

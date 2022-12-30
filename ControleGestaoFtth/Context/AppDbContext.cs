@@ -20,7 +20,30 @@ namespace ControleGestaoFtth.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Construtora>()
+                .HasOne(p => p.Estacao)
+                .WithMany()
+                .HasForeignKey(p => p.EstacoesId);
 
+            modelBuilder.Entity<Construtora>()
+                .HasOne(p => p.TipoObra)
+                .WithMany()
+                .HasForeignKey(p => p.TipoObraId);
+
+            modelBuilder.Entity<Construtora>()
+                .HasOne(p => p.EstadoCampo)
+                .WithMany()
+                .HasForeignKey(p => p.EstadoCamposId);
+
+            modelBuilder.Entity<Construtora>()
+                .HasOne(p => p.State)
+                .WithMany()
+                .HasForeignKey(p => p.StatesId);
+
+            modelBuilder.Entity<Tecnico>()
+                .HasOne(p => p.usuario)
+                .WithMany()
+                .HasForeignKey(p => p.UsuarioId);
         }
     }
 }
