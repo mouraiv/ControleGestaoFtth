@@ -34,3 +34,22 @@
     height: 400px;
 }
 
+.container-filter{
+    display:flex;
+    flex-direction:row;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+    padding-right: 5rem;
+}
+
+.container-filter .form-group{
+    display:grid;
+    
+
+}
+
+.container-filter .custom-select {
+    margin-right: 0.5rem;
+    width: 180px;
+}
+

@@ -2,15 +2,6 @@
 @model X.PagedList.PagedList<Construtora>
 
 <table class="table">
-    <thead>
-        <tr>
-            <th scope="col">#Chave</th>
-            <th scope="col">Construtora</th>
-            <th scope="col">Estação</th>
-            <th scope="col">Obra</th>
-            <th scope="col">CDO</th>
-        </tr>
-    </thead>
     <tbody>
         @if (Model != null && Model.Any())
         {

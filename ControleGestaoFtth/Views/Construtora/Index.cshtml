@@ -4,6 +4,49 @@
     ViewData["Title"] = "Construtora";
 }
 
+<div>
+
+    <button type="button" class="btn btn-info">Modelo Base</button>
+    <button type="button" class="btn btn-warning">Importar Base</button>
+
+</div>
+
+<div class="container-filter">
+
+    <div class="form-group">
+    <label>Estação</label>
+        <select class="custom-select">
+            <option selected></option>
+            <option>Small select</option>
+        </select>
+    </div>
+
+    <div class="form-group">
+    <label>CDO</label>
+    <select class="custom-select">
+        <option selected></option>
+        <option>Small select</option>
+    </select>
+    </div>
+
+    <div class="form-group">
+    <label>Cabo</label>
+    <select class="custom-select">
+        <option selected></option>
+        <option>Small select</option>
+    </select>
+    </div>
+
+    <div class="form-group">
+    <label>Celula</label>
+    <select class="custom-select">
+        <option selected></option>
+        <option>Small select</option>
+    </select>
+    </div>
+
+</div>
+
 <div id="listaFtth">@await Html.PartialAsync("_Listar", Model)</div>
 
 <div class="d-flex justify-content-center">
@@ -11,6 +54,6 @@
         Model, pagina =>
         Url.Action("Index", new { pagina }),
         new X.PagedList.Web.Common.PagedListRenderOptions(){
-        LiElementClasses = new List<string>{"btn btn-outline-dark btn-sm"}
+        LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm"}
         })
  </div>
