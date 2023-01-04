@@ -7,8 +7,10 @@ namespace ControleGestaoFtth.Repository.Interface
         Construtora Cadastrar(Construtora construtora);
         Construtora Atualizar(Construtora construtora);
         bool Deletar(int id);
+        //Listar Base FTTH
         IEnumerable<Construtora> Listar(int? pagina);
         Construtora CarregarId(int id);
-        IEnumerable<Construtora> Listar();
+        //Listar Base FTTH
+        Task<IEnumerable<Construtora>> Listar();
     }
 }

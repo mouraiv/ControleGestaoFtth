@@ -3,7 +3,6 @@ using System;
 using ControleGestaoFtth.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -17,36 +16,32 @@ namespace ControleGestaoFtth.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "6.0.11")
+                .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ControleGestaoFtth.Models.Construtoras", b =>
+            modelBuilder.Entity("ControleGestaoFtth.Models.Construtora", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<DateTime?>("AceitacaoData")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("AceitacaoMesRef")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
-                    b.Property<int?>("BobinaLancamento")
+                    b.Property<int?>("BobinadeLancamento")
                         .HasColumnType("int");
 
-                    b.Property<int?>("BobinaRecepcao")
+                    b.Property<int?>("BobinadeRecepcao")
                         .HasColumnType("int");
 
                     b.Property<string>("CDO")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("CHAVE")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("Cabo")
                         .HasColumnType("int");
@@ -58,19 +53,19 @@ namespace ControleGestaoFtth.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("DatadeConstrucao")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DatadeRecebimento")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<DateTime?>("DatadoTeste")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("Endereco")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("EquipedeConstrucao")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("EstacoesId")
                         .HasColumnType("int");
@@ -78,29 +73,29 @@ namespace ControleGestaoFtth.Migrations
                     b.Property<int?>("EstadoCamposId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("FibraDGO")
-                        .HasColumnType("int");
+                    b.Property<string>("FibraDGO")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Meta")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
-                    b.Property<string>("Observacao")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<string>("Observacoes")
+                        .HasColumnType("longtext");
 
                     b.Property<string>("PosicaoICX_DGO")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("QuantidadeDeTeste")
                         .HasColumnType("int");
 
-                    b.Property<int?>("SplitterCEOS")
-                        .HasColumnType("int");
+                    b.Property<string>("SplitterCEOS")
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("StatesId")
                         .HasColumnType("int");
 
                     b.Property<string>("Tecnico")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("TipoObraId")
                         .HasColumnType("int");
@@ -108,8 +103,8 @@ namespace ControleGestaoFtth.Migrations
                     b.Property<int?>("TotalUms")
                         .HasColumnType("int");
 
-                    b.Property<int?>("Viabilidade")
-                        .HasColumnType("int");
+                    b.Property<short?>("Viabilidade")
+                        .HasColumnType("smallint");
 
                     b.HasKey("Id");
 
@@ -124,42 +119,38 @@ namespace ControleGestaoFtth.Migrations
                     b.ToTable("construtoras");
                 });
 
-            modelBuilder.Entity("ControleGestaoFtth.Models.Estacoes", b =>
+            modelBuilder.Entity("ControleGestaoFtth.Models.Estacoe", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("NomeEstacao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Responsavel")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Sigla")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.ToTable("estacoes");
                 });
 
-            modelBuilder.Entity("ControleGestaoFtth.Models.EstadoCampos", b =>
+            modelBuilder.Entity("ControleGestaoFtth.Models.EstadoCampo", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
@@ -172,66 +163,60 @@ namespace ControleGestaoFtth.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
-
                     b.Property<int?>("Codigo")
                         .HasColumnType("int");
 
                     b.Property<string>("Descricao")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Tipo")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.ToTable("netwins");
                 });
 
-            modelBuilder.Entity("ControleGestaoFtth.Models.States", b =>
+            modelBuilder.Entity("ControleGestaoFtth.Models.State", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Descricao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("EstadodeControle")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("EstadodeProjeto")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.ToTable("states");
                 });
 
-            modelBuilder.Entity("ControleGestaoFtth.Models.Tecnicos", b =>
+            modelBuilder.Entity("ControleGestaoFtth.Models.Tecnico", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Funcao")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<int?>("UsuarioId")
                         .HasColumnType("int");
@@ -243,29 +228,25 @@ namespace ControleGestaoFtth.Migrations
                     b.ToTable("tecnicos");
                 });
 
-            modelBuilder.Entity("ControleGestaoFtth.Models.TipoObras", b =>
+            modelBuilder.Entity("ControleGestaoFtth.Models.TipoObra", b =>
                 {
                     b.Property<int?>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
-
                     b.Property<string>("Nome")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.ToTable("tipoObras");
                 });
 
-            modelBuilder.Entity("ControleGestaoFtth.Models.Usuarios", b =>
+            modelBuilder.Entity("ControleGestaoFtth.Models.Usuario", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int?>("Externo")
                         .IsRequired()
@@ -273,36 +254,36 @@ namespace ControleGestaoFtth.Migrations
 
                     b.Property<string>("Login")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Senha")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Tipo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
                     b.ToTable("usuarios");
                 });
 
-            modelBuilder.Entity("ControleGestaoFtth.Models.Construtoras", b =>
+            modelBuilder.Entity("ControleGestaoFtth.Models.Construtora", b =>
                 {
-                    b.HasOne("ControleGestaoFtth.Models.Estacoes", "Estacao")
+                    b.HasOne("ControleGestaoFtth.Models.Estacoe", "Estacao")
                         .WithMany()
                         .HasForeignKey("EstacoesId");
 
-                    b.HasOne("ControleGestaoFtth.Models.EstadoCampos", "EstadoCampo")
+                    b.HasOne("ControleGestaoFtth.Models.EstadoCampo", "EstadoCampo")
                         .WithMany()
                         .HasForeignKey("EstadoCamposId");
 
-                    b.HasOne("ControleGestaoFtth.Models.States", "State")
+                    b.HasOne("ControleGestaoFtth.Models.State", "State")
                         .WithMany()
                         .HasForeignKey("StatesId");
 
-                    b.HasOne("ControleGestaoFtth.Models.TipoObras", "TipoObra")
+                    b.HasOne("ControleGestaoFtth.Models.TipoObra", "TipoObra")
                         .WithMany()
                         .HasForeignKey("TipoObraId");
 
@@ -315,9 +296,9 @@ namespace ControleGestaoFtth.Migrations
                     b.Navigation("TipoObra");
                 });
 
-            modelBuilder.Entity("ControleGestaoFtth.Models.Tecnicos", b =>
+            modelBuilder.Entity("ControleGestaoFtth.Models.Tecnico", b =>
                 {
-                    b.HasOne("ControleGestaoFtth.Models.Usuarios", "usuario")
+                    b.HasOne("ControleGestaoFtth.Models.Usuario", "usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId");
 

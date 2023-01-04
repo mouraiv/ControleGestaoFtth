@@ -28,7 +28,7 @@ namespace ControleGestaoFtth.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Construtora> Listar()
+        public Task<IEnumerable<Construtora>> Listar()
         {
             throw new NotImplementedException();
         }
