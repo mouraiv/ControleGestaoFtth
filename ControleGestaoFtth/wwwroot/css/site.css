@@ -53,3 +53,17 @@
     width: 180px;
 }
 
+#paged .btn{
+    height: 30px;
+    margin: 0.1rem;
+}
+
+#paged .btn a {
+    text-decoration: none;
+    color: #000000;
+}
+
+#paged .btn:hover a{
+    color: #ffffff;
+}
+

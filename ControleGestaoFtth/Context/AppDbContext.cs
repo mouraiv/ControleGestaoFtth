@@ -9,14 +9,14 @@ namespace ControleGestaoFtth.Context
         { 
         }
 
-        public DbSet<Construtora> construtoras { get; set; }
-        public DbSet<Estacoe> estacoes { get; set; }
-        public DbSet<EstadoCampo> EstadoCampos { get; set; }
-        public DbSet<Netwin> netwins { get; set; }
-        public DbSet<State> states { get; set; }
-        public DbSet<Tecnico> tecnicos { get; set;}
-        public DbSet<TipoObra> tipoObras { get; set; }
-        public DbSet<Usuario> usuarios { get; set; }
+        public DbSet<Construtora> Construtoras => Set<Construtora>();
+        public DbSet<Estacoe> Estacoes => Set<Estacoe>();
+        public DbSet<EstadoCampo> EstadoCampos => Set<EstadoCampo>();
+        public DbSet<Netwin> Netwins => Set<Netwin>();
+        public DbSet<State> States => Set<State>();
+        public DbSet<Tecnico> Tecnicos => Set<Tecnico>();
+        public DbSet<TipoObra> TipoObras => Set<TipoObra>();
+        public DbSet<Usuario> Usuarios => Set<Usuario>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

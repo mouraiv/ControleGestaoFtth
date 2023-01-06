@@ -28,7 +28,7 @@ namespace ControleGestaoFtth.Repository
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<Construtora>> Listar()
+        public IEnumerable<Construtora> Listar()
         {
             throw new NotImplementedException();
         }
@@ -43,12 +43,13 @@ namespace ControleGestaoFtth.Repository
             int paginaTamanho = 10;
             int paginaNumero = (pagina ?? 1);
 
-            return _context.construtoras
+            return _context.Construtoras
                 .Include(p => p.Estacao)
                 .Include(p => p.TipoObra)
                 .Include(p => p.EstadoCampo)
                 .Include(p => p.State)
-                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
+                .ToList()
+                .ToPagedList(paginaNumero, paginaTamanho);
         }
     }
 }

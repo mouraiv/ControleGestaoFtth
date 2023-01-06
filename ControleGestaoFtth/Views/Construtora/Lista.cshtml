@@ -18,3 +18,15 @@
         }
     </tbody>
 </table>
+
+<div id="paged" class="paged d-flex justify-content-center">
+        @Html.PagedListPager(
+            Model, pagina => Url.Action(null , new {pagina}),
+            new X.PagedList.Web.Common.PagedListRenderOptions(){
+            LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm"}
+          })
+     </div>
+
+
+
+

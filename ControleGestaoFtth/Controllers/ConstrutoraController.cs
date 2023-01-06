@@ -1,6 +1,7 @@
 ﻿using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -13,11 +14,19 @@ namespace ControleGestaoFtth.Controllers
             _construtoraRepository = construtoraRepository;
 
         }
-        public IActionResult Index(int? pagina)
+        public IActionResult Index()
         {
-            IEnumerable<Construtora> construtoras = _construtoraRepository.Listar(pagina);
-
-            return View(construtoras);
+            return View();
         }
+        public IActionResult Lista(int? pagina)
+        {
+
+            IEnumerable<Construtora> listar = _construtoraRepository.Listar(pagina);
+
+            return PartialView(listar);
+        }
+
+
+
     }
 }
