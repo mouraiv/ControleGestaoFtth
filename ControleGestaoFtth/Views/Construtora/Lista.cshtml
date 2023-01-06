@@ -8,24 +8,55 @@
             foreach (var construtora in Model)
             {
                 <tr>
-                    <th scope="row">@construtora.CHAVE</th>
-                    <td>@construtora.Estacao?.Responsavel</td>
-                    <td>@construtora.Estacao?.NomeEstacao</td>
-                    <td>@construtora.TipoObra?.Nome</td>
-                    <td>@construtora.CDO</td>
+                    <td>
+                        <table class="tableFtth">
+                        <tr>
+                             <td id="rowTitle" colspan="2" width="25%" align="center">
+                                <a>@construtora.Estacao?.NomeEstacao</a>
+                            </td>
+                            <td rowspan="2" width="20%" align="center" valign="baseline">
+                                <p>Data Recebimento <br />
+                                @construtora.DatadeRecebimento </p>
+                            </td>
+                             <td width="25%">
+                                    Data Teste:<a>@construtora.DatadoTeste</a>
+                                </td>
+                              <td width="30%">
+                                    Técnico:<a>@construtora.Tecnico</a>
+                            </td>
+                        </tr>
+                            <tr>
+                            <td>
+                                    CDO:<a>@construtora.CDO</a>
+                            </td>
+                              <td>
+                                    UMs:<a>@construtora.TotalUms</a>
+                            </td>
+                            <td>
+                                    Data Construções:<a>@construtora.DatadeConstrucao</a>
+                            </td>
+                              <td>
+                                    Equipe:<a>@construtora.EquipedeConstrucao</a>
+                            </td>
+                        </tr>
+                        </table>
+                     </td>
                 </tr>
             }
         }
     </tbody>
 </table>
 
-<div id="paged" class="paged d-flex justify-content-center">
+   @if (Model != null && Model.Any())
+    {
+    <div id="paged" class="paged d-flex justify-content-center">
         @Html.PagedListPager(
             Model, pagina => Url.Action(null , new {pagina}),
             new X.PagedList.Web.Common.PagedListRenderOptions(){
             LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm"}
           })
      </div>
+     }
 
 
 

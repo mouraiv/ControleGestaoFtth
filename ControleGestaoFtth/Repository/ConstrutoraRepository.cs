@@ -15,7 +15,16 @@ namespace ControleGestaoFtth.Repository
         }
         public Construtora Atualizar(Construtora construtora)
         {
-            throw new NotImplementedException();
+            Construtora db = CarregarId(construtora.Id);
+
+            if (db == null) throw new Exception("Houve um erro na atualização");
+
+            db.Id = construtora.Id;
+   
+            _context.Construtoras.Update(db);
+            _context.SaveChanges();
+
+            return db;
         }
 
         public Construtora Cadastrar(Construtora construtora)
@@ -38,18 +47,33 @@ namespace ControleGestaoFtth.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Construtora> Listar(int? pagina)
+        public IEnumerable<Construtora> Listar(int? pagina, string estacao)
         {
             int paginaTamanho = 10;
             int paginaNumero = (pagina ?? 1);
 
-            return _context.Construtoras
-                .Include(p => p.Estacao)
-                .Include(p => p.TipoObra)
-                .Include(p => p.EstadoCampo)
-                .Include(p => p.State)
-                .ToList()
-                .ToPagedList(paginaNumero, paginaTamanho);
+            var result = _context.Construtoras
+                .AsNoTracking()
+                .Where(p => p.Estacao.NomeEstacao == estacao)
+                .Select(value => new Construtora
+                {
+                    Estacao = value.Estacao,
+                    CDO = value.CDO,
+                    Cabo = value.Cabo,
+                    TotalUms = value.TotalUms,
+                    DatadeRecebimento = value.DatadeRecebimento,
+                    DatadoTeste = value.DatadoTeste,
+                    DatadeConstrucao = value.DatadeConstrucao
+
+                }).ToList().ToPagedList(paginaNumero, paginaTamanho);
+            
+            return result;
+
+        }
+
+        public IEnumerable<Estacoe> ListarEstacao()
+        {
+            return _context.Estacoes;
         }
     }
 }
