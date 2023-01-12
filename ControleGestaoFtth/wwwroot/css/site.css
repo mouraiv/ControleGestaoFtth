@@ -34,28 +34,35 @@
         height: 400px;
     }
 
-    .container-filter{
-        display:flex;
-        flex-direction:row;
-        margin-top: 1rem;
+    .container-filter {
+        display: flex;
+        flex-wrap: wrap;
+        margin-top: 2rem;
         margin-bottom: 1rem;
-        padding-right: 5rem;
     }
 
-    .container-filter .form-group{
-        display:grid;
-    
-
+    #panelFilter {
+        display: flex;
+        flex-wrap: wrap;
     }
 
     .container-filter .custom-select {
-        margin-right: 0.5rem;
+        display: grid;
+        margin-right: 1rem;
         width: 180px;
+        font-size: 0.9rem;
+        font-weight: 600;
     }
 
-    #paged .btn{
-        height: 30px;
-        margin: 0.1rem;
+   label{
+        font-weight: 600;
+        font-size: 0.9rem;
+        padding-bottom:0.2rem;
+   }
+
+    #paged .btn {
+         height: 30px;
+         margin: 0.1rem;
     }
 
     #paged .btn a {
@@ -79,11 +86,13 @@
 
     #ftthLista tbody table td {
         padding: 0.2rem;
+        background-color: #ffffff;
         border: 1px solid dimgrey;
     }
 
-    #ftthLista table td{
-        padding:0rem;
+    #ftthLista table td {
+        padding: 0.5rem;
+        background-color: #ECF0F1;
         padding-bottom: 0.2rem;
     }
 

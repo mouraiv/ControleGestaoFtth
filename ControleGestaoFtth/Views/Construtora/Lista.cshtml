@@ -1,62 +1,89 @@
 ﻿@using X.PagedList.Mvc.Core
 @model X.PagedList.PagedList<Construtora>
 
-<table class="table">
-    <tbody>
-        @if (Model != null && Model.Any())
-        {
-            foreach (var construtora in Model)
-            {
-                <tr>
-                    <td>
-                        <table class="tableFtth">
-                        <tr>
-                             <td id="rowTitle" colspan="2" width="25%" align="center">
-                                <a>@construtora.Estacao?.NomeEstacao</a>
-                            </td>
-                            <td rowspan="2" width="20%" align="center" valign="baseline">
-                                <p>Data Recebimento <br />
-                                @construtora.DatadeRecebimento </p>
-                            </td>
-                             <td width="25%">
-                                    Data Teste:<a>@construtora.DatadoTeste</a>
-                                </td>
-                              <td width="30%">
-                                    Técnico:<a>@construtora.Tecnico</a>
-                            </td>
-                        </tr>
-                            <tr>
-                            <td>
-                                    CDO:<a>@construtora.CDO</a>
-                            </td>
-                              <td>
-                                    UMs:<a>@construtora.TotalUms</a>
-                            </td>
-                            <td>
-                                    Data Construções:<a>@construtora.DatadeConstrucao</a>
-                            </td>
-                              <td>
-                                    Equipe:<a>@construtora.EquipedeConstrucao</a>
-                            </td>
-                        </tr>
-                        </table>
-                     </td>
-                </tr>
-            }
-        }
-    </tbody>
-</table>
 
-   @if (Model != null && Model.Any())
-    {
-    <div id="paged" class="paged d-flex justify-content-center">
-        @Html.PagedListPager(
-            Model, pagina => Url.Action(null , new {pagina}),
-            new X.PagedList.Web.Common.PagedListRenderOptions(){
-            LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm"}
-          })
-     </div>
-     }
+<div id="boxUpdate">
+        <div class="form-group">
+        <label>CDO</label>
+            @Html.DropDownList("selectCdoFilter", new SelectList(ViewBag.selectCdoFilter,"CDO","CDO"), "--Selecionar--",new { @id="dropCdo", @class="custom-select"})
+        </div>
+
+        <div class="form-group">
+        <label>Cabo</label>
+            @Html.DropDownList("selectCaboFilter", new SelectList(ViewBag.selectCaboFilter,"Cabo","Cabo"), "--Selecionar--",new { @id="dropCabo", @class="custom-select"})
+        </div>
+
+        <div class="form-group">
+        <label>Celula</label>
+            @Html.DropDownList("selectCelulaFilter", new SelectList(ViewBag.selectCelulaFilter,"Celula","Celula"), "--Selecionar--",new { @id="dropCelula", @class="custom-select"})
+        </div>
+</div>
+
+<div id="tableUpdate">
+    <table class="table">
+
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var construtora in Model)
+                {
+                    <tr>
+                        <td>
+                            <table class="tableFtth">
+                            <tr>
+                                 <td id="rowTitle" colspan="1" width="20%" align="center">
+                                    <a>@construtora.Estacao?.NomeEstacao</a>
+                                </td>
+                                    <td colspan="2">
+                                        Cabo:<a>@construtora.Cabo</a>
+                                    </td>
+                                <td rowspan="2" width="20%" align="center" valign="baseline">
+                                    <p>Data Recebimento <br />
+                                    @construtora.DatadeRecebimento </p>
+                                </td>
+                                 <td width="25%">
+                                        Data Teste:<a>@construtora.DatadoTeste</a>
+                                    </td>
+                                  <td width="30%">
+                                        Técnico:<a>@construtora.Tecnico</a>
+                                </td>
+                            </tr>
+                                <tr>
+                                <td>
+                                        CDO:<a>@construtora.CDO</a>
+                                </td>
+                                 <td>
+                                        Celula:<a>@construtora.Celula</a>
+                                </td>
+                                  <td>
+                                        UMs:<a>@construtora.TotalUms</a>
+                                </td>
+                                <td>
+                                        Data Construções:<a>@construtora.DatadeConstrucao</a>
+                                </td>
+                                  <td>
+                                        Equipe:<a>@construtora.EquipedeConstrucao</a>
+                                </td>
+                            </tr>
+                            </table>
+                         </td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+       @if (Model != null && Model.Any())
+        {
+        <div id="paged" class="paged d-flex justify-content-center">
+            @Html.PagedListPager(
+                Model, pagina => Url.Action(null , new {pagina}),
+                new X.PagedList.Web.Common.PagedListRenderOptions(){
+                LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm"}
+              })
+         </div>
+         }
+</div>
 
 
 

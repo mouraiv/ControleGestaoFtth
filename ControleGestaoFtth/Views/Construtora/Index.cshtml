@@ -1,7 +1,9 @@
 ﻿@using X.PagedList.Mvc.Core
 @model X.PagedList.PagedList<Construtora>
 @{
+
     ViewData["Title"] = "Construtora";
+
 }
 
 <div>
@@ -14,34 +16,8 @@
 <div class="container-filter">
 
     <div class="form-group">
-    <label>Estação</label>
-        <select value="@ViewBag.EstacaoId" class="custom-select">
-            <option selected></option>
-        </select>
-    </div>
-
-    <div class="form-group">
-    <label>CDO</label>
-    <select class="custom-select">
-        <option selected></option>
-        <option>Small select</option>
-    </select>
-    </div>
-
-    <div class="form-group">
-    <label>Cabo</label>
-    <select class="custom-select">
-        <option selected></option>
-        <option>Small select</option>
-    </select>
-    </div>
-
-    <div class="form-group">
-    <label>Celula</label>
-    <select class="custom-select">
-        <option selected></option>
-        <option>Small select</option>
-    </select>
+        <label>Estação</label>
+        @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"NomeEstacao","NomeEstacao"), "--Selecionar--",new { @id="dropEstacao", @class="custom-select"})
     </div>
 
 </div>

@@ -7,9 +7,11 @@ namespace ControleGestaoFtth.Repository.Interface
         Construtora Cadastrar(Construtora construtora);
         Construtora Atualizar(Construtora construtora);
         bool Deletar(int id);
-        IEnumerable<Construtora> Listar(int? pagina, string estacao);
         Construtora CarregarId(int id);
-        IEnumerable<Construtora> Listar();
-        IEnumerable<Estacoe> ListarEstacao();
+        IEnumerable<Construtora> Listar(int? pagina, string estacao, string cdo);
+        IEnumerable<Estacoe> Estacoes();
+        IEnumerable<Construtora> FilterCdo(string estacao);
+        IEnumerable<Construtora> FilterCabo(string estacao);
+        IEnumerable<Construtora> FilterCelula(string estacao);
     }
 }

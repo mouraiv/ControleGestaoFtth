@@ -37,24 +37,37 @@ namespace ControleGestaoFtth.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Construtora> Listar()
-        {
-            throw new NotImplementedException();
-        }
-
         public bool Deletar(int id)
         {
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Construtora> Listar(int? pagina, string estacao)
+        public IEnumerable<Construtora> Listar(int? pagina, string estacao, string cdo)
         {
             int paginaTamanho = 10;
             int paginaNumero = (pagina ?? 1);
-
-            var result = _context.Construtoras
+            
+            if(estacao != null)
+            {
+                return _context.Construtoras
                 .AsNoTracking()
-                .Where(p => p.Estacao.NomeEstacao == estacao)
+                .Where(p => p.Estacao.NomeEstacao == estacao || p.CDO == cdo)
+                .Select(value => new Construtora
+                {
+                    Estacao = value.Estacao,
+                    CDO = value.CDO,
+                    Cabo = value.Cabo,
+                    Celula = value.Celula,
+                    TotalUms = value.TotalUms,
+                    DatadeRecebimento = value.DatadeRecebimento,
+                    DatadoTeste = value.DatadoTeste,
+                    DatadeConstrucao = value.DatadeConstrucao
+
+                }).ToList().ToPagedList(paginaNumero, paginaTamanho);
+            }
+
+            return _context.Construtoras
+                .AsNoTracking()
                 .Select(value => new Construtora
                 {
                     Estacao = value.Estacao,
@@ -66,14 +79,68 @@ namespace ControleGestaoFtth.Repository
                     DatadeConstrucao = value.DatadeConstrucao
 
                 }).ToList().ToPagedList(paginaNumero, paginaTamanho);
-            
-            return result;
 
         }
 
-        public IEnumerable<Estacoe> ListarEstacao()
+        public IEnumerable<Estacoe> Estacoes()
         {
-            return _context.Estacoes;
+            return _context.Estacoes
+                .AsNoTracking()
+                .Select(value => new Estacoe
+            {
+                Id = value.Id,
+                NomeEstacao = value.NomeEstacao,
+                //Modelo de tratamento DBnull Rows
+                //Responsavel = DBNull.Value.Equals(value.Responsavel) ? string.Empty : value.Responsavel
+
+            }).OrderBy(p => p.NomeEstacao)
+            .ToList();
+        }
+
+        public IEnumerable<Construtora> FilterCdo(string estacao)
+        {
+            return _context.Construtoras
+                .AsNoTracking()
+                .Where(p => p.Estacao.NomeEstacao == estacao)
+                .AsEnumerable()
+                .Select(value => new Construtora
+                {
+                    CDO = value.CDO,
+
+                }).DistinctBy(p => p.CDO)
+                .OrderBy(p => p.CDO)
+                .ToList();
+        }
+
+        public IEnumerable<Construtora> FilterCabo(string estacao)
+        {
+            return _context.Construtoras
+               .AsNoTracking()
+               .Where(p => p.Estacao.NomeEstacao == estacao)
+               .AsEnumerable()
+               .Select(value => new Construtora
+               {
+                   Cabo = value.Cabo == null ? 0 : value.Cabo,
+
+               }).DistinctBy(p => p.Cabo)
+               .OrderBy(p => p.Cabo)
+               .ToList();
+
+        }
+
+        public IEnumerable<Construtora> FilterCelula(string estacao)
+        {
+            return _context.Construtoras
+                .AsNoTracking()
+                .Where(p => p.Estacao.NomeEstacao == estacao)
+                .AsEnumerable()
+                .Select(value => new Construtora
+                {
+                    Celula = value.Celula
+
+                }).DistinctBy(p => p.Celula)
+                .OrderBy(p => p.Celula)
+                .ToList();
         }
     }
 }

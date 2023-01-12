@@ -1,8 +1,6 @@
 ﻿using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Diagnostics;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -16,19 +14,27 @@ namespace ControleGestaoFtth.Controllers
         }
         public IActionResult Index()
         {
+            ViewData["selectEstacao"] = _construtoraRepository.Estacoes();
+
             return View();
         }
-        public IActionResult Lista(int? pagina, string estacao)
+        [HttpGet]
+        public IActionResult Lista(int? pagina, string estacao, string cdo)
         {
-            ViewData["EstacaoId"] =
-               new SelectList(_construtoraRepository.ListarEstacao(), "Id", "NomeEstacao");
+            ViewData["selectCdoFilter"] = _construtoraRepository.FilterCdo(estacao);
+            ViewData["selectCaboFilter"] = _construtoraRepository.FilterCabo(estacao);
+            ViewData["selectCelulaFilter"] = _construtoraRepository.FilterCelula(estacao);
 
-            IEnumerable<Construtora> listar = _construtoraRepository.Listar(pagina, estacao);
-
+            IEnumerable<Construtora> listar = _construtoraRepository.Listar(pagina, estacao, cdo);
+            
             return PartialView(listar);
         }
 
-
+        [HttpGet]
+        public IActionResult FilterBox(string estacao)
+        {
+            return View();
+        }
 
     }
 }
