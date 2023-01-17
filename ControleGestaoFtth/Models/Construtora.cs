@@ -8,11 +8,11 @@ namespace ControleGestaoFtth.Models
         [Key]
         public int Id { get; set; }
         public string? CHAVE { get; set; }
-        public Estacoe? Estacao { get; set; }
+        public Estacoe Estacao { get; set; } = null!;
         public int? EstacoesId { get; set; }
         public TipoObra? TipoObra { get; set; }
         public int? TipoObraId { get; set; }
-        public string? CDO { get; set; }
+        public string CDO { get; set; } = null!;
         public int? Cabo { get; set; }
         public int? Celula { get; set; }
         public int? Capacidade { get; set; }

@@ -9,7 +9,7 @@ namespace ControleGestaoFtth.Models
         [Required]
         public string? Sigla { get; set; }
         [Required]
-        public string? NomeEstacao { get; set; }
+        public string NomeEstacao { get; set; } = null!;
         [Required]
         public string? Responsavel { get; set; }
     }

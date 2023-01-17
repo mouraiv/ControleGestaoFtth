@@ -1,25 +1,31 @@
 ﻿@using X.PagedList.Mvc.Core
 @model X.PagedList.PagedList<Construtora>
 
+<div id="panelUpdate">
 
-<div id="boxUpdate">
-        <div class="form-group">
+    <div class="form-group">
         <label>CDO</label>
-            @Html.DropDownList("selectCdoFilter", new SelectList(ViewBag.selectCdoFilter,"CDO","CDO"), "--Selecionar--",new { @id="dropCdo", @class="custom-select"})
-        </div>
+        @Html.DropDownList("selectCdoFilter", new SelectList(ViewBag.selectCdoFilter,"CDO","CDO"), "--Selecionar--",new { @id="dropCdo", @class="custom-select"})
+    </div>
 
-        <div class="form-group">
+</div>
+
+<div id="updateCaboCelula">
+
+    <div class="form-group" id="plCabo">
         <label>Cabo</label>
-            @Html.DropDownList("selectCaboFilter", new SelectList(ViewBag.selectCaboFilter,"Cabo","Cabo"), "--Selecionar--",new { @id="dropCabo", @class="custom-select"})
-        </div>
+        @Html.DropDownList("selectCaboFilter", new SelectList(ViewBag.selectCaboFilter,"Cabo","Cabo"), "--Selecionar--",new { @id="dropCabo", @class="custom-select"})
+    </div>
 
-        <div class="form-group">
+    <div class="form-group" id="plCelula">
         <label>Celula</label>
-            @Html.DropDownList("selectCelulaFilter", new SelectList(ViewBag.selectCelulaFilter,"Celula","Celula"), "--Selecionar--",new { @id="dropCelula", @class="custom-select"})
-        </div>
+        @Html.DropDownList("selectCelulaFilter", new SelectList(ViewBag.selectCelulaFilter,"Celula","Celula"), "--Selecionar--",new { @id="dropCelula", @class="custom-select"})
+    </div>
+
 </div>
 
 <div id="tableUpdate">
+
     <table class="table">
 
         <tbody>
@@ -34,8 +40,8 @@
                                  <td id="rowTitle" colspan="1" width="20%" align="center">
                                     <a>@construtora.Estacao?.NomeEstacao</a>
                                 </td>
-                                    <td colspan="2">
-                                        Cabo:<a>@construtora.Cabo</a>
+                                    <td colspan="2" width="10%">
+                                        Cabo:<a id="trCabo">@construtora.Cabo</a>
                                     </td>
                                 <td rowspan="2" width="20%" align="center" valign="baseline">
                                     <p>Data Recebimento <br />
@@ -44,7 +50,7 @@
                                  <td width="25%">
                                         Data Teste:<a>@construtora.DatadoTeste</a>
                                     </td>
-                                  <td width="30%">
+                                  <td width="25%">
                                         Técnico:<a>@construtora.Tecnico</a>
                                 </td>
                             </tr>
@@ -53,7 +59,7 @@
                                         CDO:<a>@construtora.CDO</a>
                                 </td>
                                  <td>
-                                        Celula:<a>@construtora.Celula</a>
+                                        Celula:<a id="trCelula">@construtora.Celula</a>
                                 </td>
                                   <td>
                                         UMs:<a>@construtora.TotalUms</a>
@@ -75,16 +81,16 @@
 
        @if (Model != null && Model.Any())
         {
-        <div id="paged" class="paged d-flex justify-content-center">
+        <div id="paged" class="d-flex justify-content-center">
             @Html.PagedListPager(
                 Model, pagina => Url.Action(null , new {pagina}),
                 new X.PagedList.Web.Common.PagedListRenderOptions(){
-                LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm"}
+                LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm btnPaged"}
               })
          </div>
          }
-</div>
 
+</div>
 
 
 

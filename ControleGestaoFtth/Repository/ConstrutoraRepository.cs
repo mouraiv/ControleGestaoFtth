@@ -13,6 +13,7 @@ namespace ControleGestaoFtth.Repository
         {
             _context = context;
         }
+
         public Construtora Atualizar(Construtora construtora)
         {
             Construtora db = CarregarId(construtora.Id);
@@ -20,7 +21,7 @@ namespace ControleGestaoFtth.Repository
             if (db == null) throw new Exception("Houve um erro na atualização");
 
             db.Id = construtora.Id;
-   
+
             _context.Construtoras.Update(db);
             _context.SaveChanges();
 
@@ -42,16 +43,14 @@ namespace ControleGestaoFtth.Repository
             throw new NotImplementedException();
         }
 
-        public IEnumerable<Construtora> Listar(int? pagina, string estacao, string cdo)
+        public IEnumerable<Construtora> Listar(int? pagina, string estacao, string cdo, int? cabo, int? celula)
         {
             int paginaTamanho = 10;
             int paginaNumero = (pagina ?? 1);
-            
-            if(estacao != null)
-            {
-                return _context.Construtoras
+
+            IQueryable<Construtora> resultado = _context.Construtoras
                 .AsNoTracking()
-                .Where(p => p.Estacao.NomeEstacao == estacao || p.CDO == cdo)
+                .Include(p => p.Estacao)
                 .Select(value => new Construtora
                 {
                     Estacao = value.Estacao,
@@ -63,25 +62,43 @@ namespace ControleGestaoFtth.Repository
                     DatadoTeste = value.DatadoTeste,
                     DatadeConstrucao = value.DatadeConstrucao
 
-                }).ToList().ToPagedList(paginaNumero, paginaTamanho);
+                });
+
+            if (estacao != null && cdo == null && cabo == null && celula == null)
+            {
+                return resultado
+                    .Where(p => p.Estacao.NomeEstacao.Equals(estacao))
+                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
-
-            return _context.Construtoras
-                .AsNoTracking()
-                .Select(value => new Construtora
-                {
-                    Estacao = value.Estacao,
-                    CDO = value.CDO,
-                    Cabo = value.Cabo,
-                    TotalUms = value.TotalUms,
-                    DatadeRecebimento = value.DatadeRecebimento,
-                    DatadoTeste = value.DatadoTeste,
-                    DatadeConstrucao = value.DatadeConstrucao
-
-                }).ToList().ToPagedList(paginaNumero, paginaTamanho);
-
+            else if (cdo != null)
+            {
+                return resultado
+                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.CDO.Equals(cdo))
+                   .ToList().ToPagedList(paginaNumero, paginaTamanho);
+            }
+            else if (cabo != null && celula == null)
+            {
+                return resultado
+                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Cabo == cabo)
+                   .ToList().ToPagedList(paginaNumero, paginaTamanho);
+            }
+            else if (celula != null && cabo == null)
+            {
+                return resultado
+                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Celula == celula)
+                   .ToList().ToPagedList(paginaNumero, paginaTamanho);
+            }
+            else if (cabo != null && celula != null)
+            {
+                return resultado
+                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Cabo == cabo && p.Celula == celula)
+                   .ToList().ToPagedList(paginaNumero, paginaTamanho);
+            } 
+           
+            return resultado
+                .ToList().ToPagedList(paginaNumero, paginaTamanho); 
+                
         }
-
         public IEnumerable<Estacoe> Estacoes()
         {
             return _context.Estacoes
@@ -90,8 +107,6 @@ namespace ControleGestaoFtth.Repository
             {
                 Id = value.Id,
                 NomeEstacao = value.NomeEstacao,
-                //Modelo de tratamento DBnull Rows
-                //Responsavel = DBNull.Value.Equals(value.Responsavel) ? string.Empty : value.Responsavel
 
             }).OrderBy(p => p.NomeEstacao)
             .ToList();

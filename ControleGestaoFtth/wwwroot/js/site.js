@@ -23,14 +23,32 @@
                 }
             }
         });
+    })()
+
+    function contrutora() {
+
+        var estacao = "";
+        var cdo = "";
+        var cabo = "";
+        var celula = "";
 
         const ftth = (url) => $.get(url,
             {}, function (resposta) {
-                $('.container-filter').children().slice(1, 4).remove();
-                $('.container-filter').append($(resposta).filter('#boxUpdate').html());
                 $('#ftthLista').html($(resposta).filter('#tableUpdate').html());
                 return false;
-        });
+            });
+
+        const panel = (url) => $.get(url,
+            {}, function (resposta) {
+                $('#filterMenu').html($(resposta).filter('#panelUpdate').html());
+                return false;
+            });
+
+        const panelCaboCelula = (url) => $.get(url,
+            {}, function (resposta) {
+                $('#filterMenuCaboCelula').html($(resposta).filter('#updateCaboCelula').html());
+                return false;
+            });
 
         const spinnerFtth = () => {
             $('#ftthLista').html(`
@@ -44,32 +62,50 @@
 
         ftth('Construtora/lista');
 
-        estacao = "";
-        cdo = "";
-
         $('#dropEstacao').on('change', function () {
             spinnerFtth();
-            estacao = 'estacao=' + this.value + '&';
-            ftth('Construtora/lista?' + estacao);
+            estacao = $('#dropEstacao').val();
+            panel('Construtora/lista?estacao=' + estacao);
+            panelCaboCelula('Construtora/lista?estacao=' + estacao);
+            ftth('Construtora/lista?estacao=' + estacao);
             return false;
         });
 
-        $('.container-filter, #dropCdo').on('change', function () {
+        $('.container-filter').on('change', function () {
+            $(this).children().each(function () {
+
+                cdo = $('#dropCdo').val();
+                cabo = $('#dropCabo').val();
+                celula = $('#dropCelula').val();
+
+                if ($(this).find("#dropCdo").val() != "") {
+                    spinnerFtth();
+                    cdo = $('#dropCdo').val();
+                    $("#plCabo").remove();
+                    $("#plCelula").remove();
+                    ftth('Construtora/Lista?estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
+
+                } else if ($(this).find("#dropCdo").val() == "") {
+                    panelCaboCelula('Construtora/lista?estacao=' + estacao);
+
+                } else if ($(this).find("#dropCabo").val() != "" || $(this).find("#dropCelula").val() != "") {
+                    cabo = $('#dropCabo').val();
+                    celula = $('#dropCelula').val();
+                    spinnerFtth();
+                    ftth('Construtora/Lista?estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
+                } 
+            });
+            return false;
+        });
+
+        $('#ftthLista, #paged').on('click', '.btnPaged', function () {
             spinnerFtth();
-            cdo = 'cdo=' + this.value + '&';
-            ftth('Construtora/Lista?' + estacao + '' + cdo);
+            let urlFtth = $(this).find('a').attr('href');
+            ftth(urlFtth + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
             return false;
         });
 
-        $('#ftthLista, #paged').on('click', 'a', function () {
-            spinnerFtth();
-
-            let baseUrl = $(this).attr('href') + '&';
-
-            ftth(baseUrl + '' + estacao + '' + cdo)
-            return false;
-        });
-    })()
+    }(contrutora());
 });
 
     

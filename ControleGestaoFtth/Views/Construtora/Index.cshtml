@@ -15,9 +15,15 @@
 
 <div class="container-filter">
 
-    <div class="form-group">
-        <label>Estação</label>
-        @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"NomeEstacao","NomeEstacao"), "--Selecionar--",new { @id="dropEstacao", @class="custom-select"})
+     <div class="form-group" id="estacao">
+         <label>Estação</label>
+         @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"NomeEstacao","NomeEstacao"), "--Selecionar--",new { @id="dropEstacao", @class="custom-select"})
+     </div>
+
+    <div id="filterMenu">
+    </div>
+
+    <div id="filterMenuCaboCelula">
     </div>
 
 </div>
@@ -29,6 +35,7 @@
         </div>
     </div>
 </div>
+
 
 
 

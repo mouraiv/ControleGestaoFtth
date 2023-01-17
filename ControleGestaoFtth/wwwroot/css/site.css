@@ -1,3 +1,26 @@
+@media only screen and (max-width: 768px) {
+
+    #cdo {
+        position: absolute;
+        left: 0;
+        bottom: 0;
+    }
+
+    #celula {
+        position: absolute;
+        bottom: 0;
+    }
+
+    #cabo {
+        position: absolute;
+    }
+
+    .container-filter {
+        position:relative;
+        height: 115px;
+    }
+}
+
     .nav-link {
         color: #CDCDCD;
     }
@@ -36,14 +59,12 @@
 
     .container-filter {
         display: flex;
-        flex-wrap: wrap;
         margin-top: 2rem;
-        margin-bottom: 1rem;
+        margin-bottom: 2rem;
     }
 
-    #panelFilter {
+    #filterMenu {
         display: flex;
-        flex-wrap: wrap;
     }
 
     .container-filter .custom-select {
