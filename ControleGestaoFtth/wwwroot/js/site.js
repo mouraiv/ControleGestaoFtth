@@ -25,25 +25,30 @@
         });
     })()
 
+    //FUNÇÃO REPONSÁVEL PELAS ACÕES DA VIEW CONSTRUTORA
     function contrutora() {
 
+        //VARIAVEIS GLOBAIS LOCAL
         var estacao = "";
         var cdo = "";
         var cabo = "";
         var celula = "";
 
+        //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW TABELA FTTH BASE
         const ftth = (url) => $.get(url,
             {}, function (resposta) {
                 $('#ftthLista').html($(resposta).filter('#tableUpdate').html());
                 return false;
             });
 
+        //DISPLAY ATUALIZAÇÃO DIV ELEMENT PANEL MENU FILTRO
         const panel = (url) => $.get(url,
             {}, function (resposta) {
                 $('#filterMenu').html($(resposta).filter('#panelUpdate').html());
                 return false;
         });
 
+        //SPINNER LOADER
         const spinnerFtth = () => {
             $('#ftthLista').html(`
             <div class= "d-flex justify-content-center">
@@ -54,8 +59,10 @@
         `   )
         }
 
+        // ATUALIZAR DISPLAY PARTIAL VIEW 
         ftth('Construtora/lista');
 
+        //FILTRO DROPDOWNLIST DA TABELA FTTH BASE
         $('#dropEstacao').on('change', function () {
             spinnerFtth();
             estacao = $('#dropEstacao').val();
@@ -67,7 +74,12 @@
         $('.container-filter').on('change', '#dropCdo', function () {
             spinnerFtth();
             cdo = $('#dropCdo').val();
+
+            /* DESABILITAR DROPDOWNLIST "CABO" "CELULA" E RESETAR VARIAVEIS 
+            GLOBAIS DOS MESMOS, CASO UM VALOR SEJA SET EM CDO */
             if (cdo != "") {
+                cabo = "";
+                celula = "";
                 $('#dropCabo option[value = ""]').prop('selected', 'selected');
                 $('#dropCelula option[value = ""]').prop('selected', 'selected');
                 $('#dropCabo').attr('disabled', true);
@@ -93,12 +105,18 @@
             ftth('Construtora/Lista?estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
             return false;
         });
-      
+
+        //PAGINAÇÃO DA TABELA FTTH BASE
         $('#ftthLista, #paged').on('click', '.btnPaged', function () {
             spinnerFtth();
             let urlFtth = $(this).find('a').attr('href');
             ftth(urlFtth + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
             return false;
+        });
+
+        //PEGAR VALORES DA TABELA FTTH BASE PARA REQUISIÇÃO ATUALIZAR
+        $('#ftthLista').on('click', '.tableFtth', function () {
+            console.log($(this).find('#indexCdo a').text());
         });
 
     }(contrutora());
