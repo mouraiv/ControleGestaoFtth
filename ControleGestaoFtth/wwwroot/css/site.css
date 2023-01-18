@@ -1,17 +1,17 @@
 @media only screen and (max-width: 768px) {
 
-    #cdo {
+    #plCdo {
         position: absolute;
         left: 0;
         bottom: 0;
     }
 
-    #celula {
+    #plCelula {
         position: absolute;
         bottom: 0;
     }
 
-    #cabo {
+    #plCabo {
         position: absolute;
     }
 

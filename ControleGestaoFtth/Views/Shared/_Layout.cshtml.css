@@ -4,12 +4,13 @@ for details on configuring this project to bundle and minify static web assets. 
 @media (min-width: 768px) {
 
     .container-grid {
-        display: grid;
+        display: grid !important;
         grid-template-areas:
             "header header"
-            "menu main";
-        grid-template-columns: 180px auto;
-        grid-auto-rows: max-content auto;
+            "menu main"
+            "menu footer" !important;
+        grid-template-columns: 150px auto !important;
+        grid-template-rows: max-content auto 50px !important;
     }
 
     .main-container {
@@ -18,11 +19,11 @@ for details on configuring this project to bundle and minify static web assets. 
 
     .menu {
         display: block;
-        min-height: calc(100vh - 101px);
+        min-height: calc(100vh - 41px);
     }
 
     .nav-bar {
-        background-color: #696969;
+        background-color: #2A2A33;
     }
 
     .fa-bars {
@@ -35,21 +36,40 @@ for details on configuring this project to bundle and minify static web assets. 
         left: 0;
         top:0;
         padding: 0.3rem;
-        background-color: #696969;
+        background-color: #2A2A33;
         height: 41px;
-        width: 180px;
+        width: 150px;
     }
+
     .footer-st {
-        width: 180px;
-        font-size: 0.6rem !important;
-        background-color: #696969 !important;
+        display:none !important;
+    }
+
+    .footer-stp {
+        display: block !important;
+        grid-area: footer;
+        text-align: center;
+        padding: 1rem;
+        font-size: 0.8rem;
+        color: #2A2A33;
     }
 
 }
 
+.container-grid {
+    display: grid;
+    grid-template-areas:
+        "header"
+        "menu"
+        "main"
+        "footer";
+    grid-template-columns: auto;
+    grid-template-rows: auto auto 1fr auto;
+}
+
     .nav-bar {
         grid-area: menu;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
         color: #CDCDCD;
         font-weight: bold;
     }
@@ -57,11 +77,13 @@ for details on configuring this project to bundle and minify static web assets. 
     .menu {
         padding-top: 2rem;
         padding-left: 1rem;
-        background-color: #696969;
+        background-color: #2A2A33;
     }
 
     .main-container {
+        grid-area: main;
         padding: 1rem;
+        min-height: 100vh;
     }
 
     .nav-user {
@@ -103,15 +125,16 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
     .footer-st {
-        position: relative;
+        grid-area: footer;
+        line-height: 60px;
         text-align: center;
-        padding-top: 1rem;
-        height: 60px;
-        font-size: 0.8rem;
-        white-space: nowrap;
         color: #ffffff;
-        line-height: 25px;
-        background-color: #0d6efd;
+        font-size: 0.8rem;
+        height: 60px;
+    }
+
+    .footer-stp {
+        display: none;
     }
 
 

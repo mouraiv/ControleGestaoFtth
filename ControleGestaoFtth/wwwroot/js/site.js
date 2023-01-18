@@ -68,6 +68,8 @@
             spinnerFtth();
             cdo = $('#dropCdo').val();
             if (cdo != "") {
+                $('#dropCabo option[value = ""]').prop('selected', 'selected');
+                $('#dropCelula option[value = ""]').prop('selected', 'selected');
                 $('#dropCabo').attr('disabled', true);
                 $('#dropCelula').attr('disabled', true);
             } else {
