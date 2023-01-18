@@ -33,7 +33,7 @@ namespace ControleGestaoFtth.Controllers
                 ViewData["selectCelulaFilter"] = _construtoraRepository.FilterCelula("");
             }
 
-            IEnumerable<Construtora> listar = _construtoraRepository.Listar(pagina, estacao, cdo, cabo, celula);
+            IEnumerable<Construtora> listar = _construtoraRepository.Listar(pagina, estacao ?? "", cdo, cabo, celula);
             
             return PartialView(listar);
         }

@@ -64,7 +64,7 @@ namespace ControleGestaoFtth.Repository
 
                 });
 
-            if (estacao != null && cdo == null && cabo == null && celula == null)
+            if (!string.IsNullOrEmpty(estacao) && cdo == null && cabo == null && celula == null)
             {
                 return resultado
                     .Where(p => p.Estacao.NomeEstacao.Equals(estacao))
@@ -108,7 +108,7 @@ namespace ControleGestaoFtth.Repository
                 Id = value.Id,
                 NomeEstacao = value.NomeEstacao,
 
-            }).OrderBy(p => p.NomeEstacao)
+                }).OrderBy(p => p.NomeEstacao)
             .ToList();
         }
 

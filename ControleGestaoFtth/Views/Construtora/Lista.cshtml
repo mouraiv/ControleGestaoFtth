@@ -8,10 +8,6 @@
         @Html.DropDownList("selectCdoFilter", new SelectList(ViewBag.selectCdoFilter,"CDO","CDO"), "--Selecionar--",new { @id="dropCdo", @class="custom-select"})
     </div>
 
-</div>
-
-<div id="updateCaboCelula">
-
     <div class="form-group" id="plCabo">
         <label>Cabo</label>
         @Html.DropDownList("selectCaboFilter", new SelectList(ViewBag.selectCaboFilter,"Cabo","Cabo"), "--Selecionar--",new { @id="dropCabo", @class="custom-select"})
@@ -40,7 +36,7 @@
                                  <td id="rowTitle" colspan="1" width="20%" align="center">
                                     <a>@construtora.Estacao?.NomeEstacao</a>
                                 </td>
-                                    <td colspan="2" width="10%">
+                                    <td colspan="2">
                                         Cabo:<a id="trCabo">@construtora.Cabo</a>
                                     </td>
                                 <td rowspan="2" width="20%" align="center" valign="baseline">
@@ -58,12 +54,12 @@
                                 <td>
                                         CDO:<a>@construtora.CDO</a>
                                 </td>
-                                 <td>
+                                    <td width="5%">
                                         Celula:<a id="trCelula">@construtora.Celula</a>
-                                </td>
-                                  <td>
+                                    </td>
+                                    <td width="5%">
                                         UMs:<a>@construtora.TotalUms</a>
-                                </td>
+                                    </td>
                                 <td>
                                         Data Construções:<a>@construtora.DatadeConstrucao</a>
                                 </td>
