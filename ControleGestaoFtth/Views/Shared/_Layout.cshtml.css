@@ -1,15 +1,16 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
-
 @media (min-width: 768px) {
 
     .container-grid {
         display: grid !important;
+        width: 100% !important;
         grid-template-areas:
             "header header"
             "menu main"
             "menu footer" !important;
         grid-template-columns: 150px auto !important;
+        grid-auto-columns: 150px auto !important;
         grid-template-rows: max-content auto 50px !important;
     }
 
@@ -55,17 +56,16 @@ for details on configuring this project to bundle and minify static web assets. 
     }
 
 }
-
-.container-grid {
-    display: grid;
-    grid-template-areas:
-        "header"
-        "menu"
-        "main"
-        "footer";
-    grid-template-columns: auto;
-    grid-template-rows: auto auto 1fr auto;
-}
+    .container-grid {
+        display: grid;
+        grid-template-areas:
+            "header"
+            "menu"
+            "main"
+            "footer";
+        grid-template-columns: auto;
+        grid-template-rows: auto auto 1fr auto;
+    }
 
     .nav-bar {
         grid-area: menu;
@@ -83,7 +83,6 @@ for details on configuring this project to bundle and minify static web assets. 
     .main-container {
         grid-area: main;
         padding: 1rem;
-        min-height: 100vh;
     }
 
     .nav-user {

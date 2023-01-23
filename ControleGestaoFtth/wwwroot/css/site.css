@@ -21,6 +21,10 @@
     }
 }
 
+    .modal{
+        overflow-y:scroll;
+    }
+
     .nav-link {
         color: #CDCDCD;
     }
@@ -108,30 +112,63 @@
     #ftthLista tbody table td {
         padding: 0.2rem;
         background-color: #ffffff;
-        border: 1px solid dimgrey;
+        border: 1px solid #2A2A33;
+    }
+
+    #ftthDetalhe {
+        display: table;
+        font-size: 0.8rem;
+        font-weight: 600;
+        width: 565px;
+    }
+
+    #ftthDetalhe a{
+        font-style:italic;
+        margin-left: 0.3rem;
+    }
+
+    #ftthDetalhe tr td {
+        padding: 0.2rem;
+        border: 5px solid #ffffff;
+        word-break: break-word;
+        background-color: #F2F2F2;    
+        font-size: 0.8rem;
+        font-weight:600;
+    }
+
+    #effectTableFtth:hover {
+        border: 2px solid #2A2A33;
     }
 
     #ftthLista table td {
         padding: 0.5rem;
         background-color: #ECF0F1;
-        padding-bottom: 0.2rem;
+        padding-bottom: 0.5rem;
+        font-weight: 600;
     }
 
     #ftthLista table td a{
-        padding: 0.2rem;
-        font-weight:500;
+        padding: 0.3rem;
         font-style:italic;
     }
 
     #ftthLista table td p{
          padding: 0.2rem;
-         font-weight: 700;
+         font-weight: 600;
          font-style: italic;
     }
 
     #ftthLista #rowTitle a {
         padding: 0.2rem;
-        font-weight: 700;
+        font-weight: 600;
         font-style: italic;
+    }
+
+    .modal-content {
+        min-width: 600px;
+    }
+
+    .modal{
+        padding-right: 6.4rem;
     }
 

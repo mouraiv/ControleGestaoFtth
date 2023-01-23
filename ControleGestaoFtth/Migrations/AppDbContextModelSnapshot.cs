@@ -38,6 +38,7 @@ namespace ControleGestaoFtth.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("CDO")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("CHAVE")
@@ -79,6 +80,9 @@ namespace ControleGestaoFtth.Migrations
                     b.Property<string>("Meta")
                         .HasColumnType("longtext");
 
+                    b.Property<int?>("NetwinId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Observacoes")
                         .HasColumnType("longtext");
 
@@ -103,20 +107,19 @@ namespace ControleGestaoFtth.Migrations
                     b.Property<int?>("TotalUms")
                         .HasColumnType("int");
 
-                    b.Property<short?>("Viabilidade")
-                        .HasColumnType("smallint");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EstacoesId");
 
                     b.HasIndex("EstadoCamposId");
 
+                    b.HasIndex("NetwinId");
+
                     b.HasIndex("StatesId");
 
                     b.HasIndex("TipoObraId");
 
-                    b.ToTable("construtoras");
+                    b.ToTable("Construtoras");
                 });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.Estacoe", b =>
@@ -139,7 +142,7 @@ namespace ControleGestaoFtth.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("estacoes");
+                    b.ToTable("Estacoes");
                 });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.EstadoCampo", b =>
@@ -174,7 +177,7 @@ namespace ControleGestaoFtth.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("netwins");
+                    b.ToTable("Netwins");
                 });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.State", b =>
@@ -197,7 +200,7 @@ namespace ControleGestaoFtth.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("states");
+                    b.ToTable("States");
                 });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.Tecnico", b =>
@@ -225,7 +228,7 @@ namespace ControleGestaoFtth.Migrations
 
                     b.HasIndex("UsuarioId");
 
-                    b.ToTable("tecnicos");
+                    b.ToTable("Tecnicos");
                 });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.TipoObra", b =>
@@ -239,7 +242,7 @@ namespace ControleGestaoFtth.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tipoObras");
+                    b.ToTable("TipoObras");
                 });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.Usuario", b =>
@@ -266,7 +269,7 @@ namespace ControleGestaoFtth.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("usuarios");
+                    b.ToTable("Usuarios");
                 });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.Construtora", b =>
@@ -279,6 +282,10 @@ namespace ControleGestaoFtth.Migrations
                         .WithMany()
                         .HasForeignKey("EstadoCamposId");
 
+                    b.HasOne("ControleGestaoFtth.Models.Netwin", "Netwin")
+                        .WithMany()
+                        .HasForeignKey("NetwinId");
+
                     b.HasOne("ControleGestaoFtth.Models.State", "State")
                         .WithMany()
                         .HasForeignKey("StatesId");
@@ -290,6 +297,8 @@ namespace ControleGestaoFtth.Migrations
                     b.Navigation("Estacao");
 
                     b.Navigation("EstadoCampo");
+
+                    b.Navigation("Netwin");
 
                     b.Navigation("State");
 

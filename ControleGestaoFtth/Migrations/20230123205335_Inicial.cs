@@ -14,21 +14,21 @@ namespace ControleGestaoFtth.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "estacoes",
+                name: "Estacoes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    NomeEstacao = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Sigla = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NomeEstacao = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Responsavel = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_estacoes", x => x.Id);
+                    table.PrimaryKey("PK_Estacoes", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -48,7 +48,7 @@ namespace ControleGestaoFtth.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "netwins",
+                name: "Netwins",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -61,12 +61,12 @@ namespace ControleGestaoFtth.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_netwins", x => x.Id);
+                    table.PrimaryKey("PK_Netwins", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "states",
+                name: "States",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -80,12 +80,12 @@ namespace ControleGestaoFtth.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_states", x => x.Id);
+                    table.PrimaryKey("PK_States", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "tipoObras",
+                name: "TipoObras",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -95,12 +95,12 @@ namespace ControleGestaoFtth.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tipoObras", x => x.Id);
+                    table.PrimaryKey("PK_TipoObras", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "usuarios",
+                name: "Usuarios",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -115,12 +115,12 @@ namespace ControleGestaoFtth.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_usuarios", x => x.Id);
+                    table.PrimaryKey("PK_Usuarios", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "construtoras",
+                name: "Construtoras",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -129,7 +129,7 @@ namespace ControleGestaoFtth.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     EstacoesId = table.Column<int>(type: "int", nullable: true),
                     TipoObraId = table.Column<int>(type: "int", nullable: true),
-                    CDO = table.Column<string>(type: "longtext", nullable: true)
+                    CDO = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Cabo = table.Column<int>(type: "int", nullable: true),
                     Celula = table.Column<int>(type: "int", nullable: true),
@@ -144,7 +144,7 @@ namespace ControleGestaoFtth.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Observacoes = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Viabilidade = table.Column<short>(type: "smallint", nullable: true),
+                    NetwinId = table.Column<int>(type: "int", nullable: true),
                     Meta = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DatadeConstrucao = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -166,32 +166,37 @@ namespace ControleGestaoFtth.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_construtoras", x => x.Id);
+                    table.PrimaryKey("PK_Construtoras", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_construtoras_estacoes_EstacoesId",
+                        name: "FK_Construtoras_Estacoes_EstacoesId",
                         column: x => x.EstacoesId,
-                        principalTable: "estacoes",
+                        principalTable: "Estacoes",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_construtoras_EstadoCampos_EstadoCamposId",
+                        name: "FK_Construtoras_EstadoCampos_EstadoCamposId",
                         column: x => x.EstadoCamposId,
                         principalTable: "EstadoCampos",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_construtoras_states_StatesId",
-                        column: x => x.StatesId,
-                        principalTable: "states",
+                        name: "FK_Construtoras_Netwins_NetwinId",
+                        column: x => x.NetwinId,
+                        principalTable: "Netwins",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_construtoras_tipoObras_TipoObraId",
+                        name: "FK_Construtoras_States_StatesId",
+                        column: x => x.StatesId,
+                        principalTable: "States",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Construtoras_TipoObras_TipoObraId",
                         column: x => x.TipoObraId,
-                        principalTable: "tipoObras",
+                        principalTable: "TipoObras",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "tecnicos",
+                name: "Tecnicos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -206,66 +211,71 @@ namespace ControleGestaoFtth.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_tecnicos", x => x.Id);
+                    table.PrimaryKey("PK_Tecnicos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_tecnicos_usuarios_UsuarioId",
+                        name: "FK_Tecnicos_Usuarios_UsuarioId",
                         column: x => x.UsuarioId,
-                        principalTable: "usuarios",
+                        principalTable: "Usuarios",
                         principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_construtoras_EstacoesId",
-                table: "construtoras",
+                name: "IX_Construtoras_EstacoesId",
+                table: "Construtoras",
                 column: "EstacoesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_construtoras_EstadoCamposId",
-                table: "construtoras",
+                name: "IX_Construtoras_EstadoCamposId",
+                table: "Construtoras",
                 column: "EstadoCamposId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_construtoras_StatesId",
-                table: "construtoras",
+                name: "IX_Construtoras_NetwinId",
+                table: "Construtoras",
+                column: "NetwinId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Construtoras_StatesId",
+                table: "Construtoras",
                 column: "StatesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_construtoras_TipoObraId",
-                table: "construtoras",
+                name: "IX_Construtoras_TipoObraId",
+                table: "Construtoras",
                 column: "TipoObraId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tecnicos_UsuarioId",
-                table: "tecnicos",
+                name: "IX_Tecnicos_UsuarioId",
+                table: "Tecnicos",
                 column: "UsuarioId");*/
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "construtoras");
+            /*migrationBuilder.DropTable(
+                name: "Construtoras");
 
             migrationBuilder.DropTable(
-                name: "netwins");
+                name: "Tecnicos");
 
             migrationBuilder.DropTable(
-                name: "tecnicos");
-
-            migrationBuilder.DropTable(
-                name: "estacoes");
+                name: "Estacoes");
 
             migrationBuilder.DropTable(
                 name: "EstadoCampos");
 
             migrationBuilder.DropTable(
-                name: "states");
+                name: "Netwins");
 
             migrationBuilder.DropTable(
-                name: "tipoObras");
+                name: "States");
 
             migrationBuilder.DropTable(
-                name: "usuarios");
+                name: "TipoObras");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");*/
         }
     }
 }

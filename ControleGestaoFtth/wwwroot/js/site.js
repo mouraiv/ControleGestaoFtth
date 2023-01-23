@@ -116,7 +116,21 @@
 
         //PEGAR VALORES DA TABELA FTTH BASE PARA REQUISIÇÃO ATUALIZAR
         $('#ftthLista').on('click', '.tableFtth', function () {
-            console.log($(this).find('#indexCdo a').text());
+            let carregarId = $(this).attr("data-id");
+
+            $.get('Construtora/Detalhe?id=' + carregarId,
+                {}, function (resposta) {
+                    $('.modal-body').html($(resposta).find('#displayDetalheFtth').html());
+                    return false;
+            });
+
+            $(this).find('#exampleModal').modal({
+                keyboard: true,
+                backdrop: "static",
+                show: false,
+
+            });
+            console.log($(this).attr("data-id"));
         });
 
     }(contrutora());

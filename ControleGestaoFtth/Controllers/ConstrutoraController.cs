@@ -1,6 +1,7 @@
 ﻿using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -36,6 +37,14 @@ namespace ControleGestaoFtth.Controllers
             IEnumerable<Construtora> listar = _construtoraRepository.Listar(pagina, estacao ?? "", cdo, cabo, celula);
             
             return PartialView(listar);
+        }
+
+        public IActionResult Detalhe(int id)
+        {
+            Construtora construtora = _construtoraRepository.CarregarId(id);
+
+            return View(construtora);
+
         }
     }
 }

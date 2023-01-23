@@ -40,6 +40,11 @@ namespace ControleGestaoFtth.Context
                 .WithMany()
                 .HasForeignKey(p => p.StatesId);
 
+            modelBuilder.Entity<Construtora>()
+                .HasOne(p => p.Netwin)
+                .WithMany()
+                .HasForeignKey(p => p.NetwinId);
+
             modelBuilder.Entity<Tecnico>()
                 .HasOne(p => p.usuario)
                 .WithMany()

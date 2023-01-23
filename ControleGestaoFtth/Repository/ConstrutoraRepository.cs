@@ -21,6 +21,7 @@ namespace ControleGestaoFtth.Repository
             if (db == null) throw new Exception("Houve um erro na atualização");
 
             db.Id = construtora.Id;
+            db.CDO = construtora.CDO;
 
             _context.Construtoras.Update(db);
             _context.SaveChanges();
@@ -35,7 +36,15 @@ namespace ControleGestaoFtth.Repository
 
         public Construtora CarregarId(int id)
         {
-            throw new NotImplementedException();
+            var carregarId = _context.Construtoras
+                .AsNoTracking()
+                .Include(p => p.Estacao)
+                .Include(p => p.TipoObra)
+                .Include(p => p.EstadoCampo)
+                .Include(p => p.Netwin)
+                .FirstOrDefault(p => p.Id == id);
+
+            return carregarId;
         }
 
         public bool Deletar(int id)
@@ -51,17 +60,22 @@ namespace ControleGestaoFtth.Repository
             IQueryable<Construtora> resultado = _context.Construtoras
                 .AsNoTracking()
                 .Include(p => p.Estacao)
+                .Include(p => p.Netwin)
                 .Select(value => new Construtora
                 {
+                    Id = value.Id,
                     Estacao = value.Estacao,
                     CDO = value.CDO,
                     Cabo = value.Cabo,
                     Celula = value.Celula,
                     TotalUms = value.TotalUms,
+                    Netwin = value.Netwin,
                     DatadeRecebimento = value.DatadeRecebimento,
+                    State = value.State,
                     DatadoTeste = value.DatadoTeste,
-                    DatadeConstrucao = value.DatadeConstrucao
-
+                    DatadeConstrucao = value.DatadeConstrucao,
+                    EquipedeConstrucao = value.EquipedeConstrucao,
+                    Tecnico = value.Tecnico,
                 });
 
             if (!string.IsNullOrEmpty(estacao) && cdo == null && cabo == null && celula == null)
@@ -93,20 +107,20 @@ namespace ControleGestaoFtth.Repository
                 return resultado
                    .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Cabo == cabo && p.Celula == celula)
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
-            } 
-           
+            }
+
             return resultado
-                .ToList().ToPagedList(paginaNumero, paginaTamanho); 
-                
+                .ToList().ToPagedList(paginaNumero, paginaTamanho);
+
         }
         public IEnumerable<Estacoe> Estacoes()
         {
             return _context.Estacoes
                 .AsNoTracking()
                 .Select(value => new Estacoe
-            {
-                Id = value.Id,
-                NomeEstacao = value.NomeEstacao,
+                {
+                    Id = value.Id,
+                    NomeEstacao = value.NomeEstacao,
 
                 }).OrderBy(p => p.NomeEstacao)
             .ToList();
