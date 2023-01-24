@@ -18,6 +18,12 @@ namespace ControleGestaoFtth.Controllers
             ViewData["selectEstacao"] = _construtoraRepository.Estacoes();
             return View();
         }
+        public IActionResult Editar(int id)
+        {
+            Construtora construtora = _construtoraRepository.CarregarId(id);
+
+            return View(construtora);
+        }
         [HttpGet]
         public IActionResult Lista(int? pagina, string estacao, string cdo, int? cabo, int? celula)
         {
@@ -27,7 +33,7 @@ namespace ControleGestaoFtth.Controllers
                 ViewData["selectCaboFilter"] = _construtoraRepository.FilterCabo(estacao);
                 ViewData["selectCelulaFilter"] = _construtoraRepository.FilterCelula(estacao);
             }
-            else 
+            else
             {
                 ViewData["selectCdoFilter"] = _construtoraRepository.FilterCdo("");
                 ViewData["selectCaboFilter"] = _construtoraRepository.FilterCabo("");
@@ -35,16 +41,21 @@ namespace ControleGestaoFtth.Controllers
             }
 
             IEnumerable<Construtora> listar = _construtoraRepository.Listar(pagina, estacao ?? "", cdo, cabo, celula);
-            
+
             return PartialView(listar);
         }
-
+        [HttpGet]
         public IActionResult Detalhe(int id)
         {
             Construtora construtora = _construtoraRepository.CarregarId(id);
 
             return View(construtora);
 
+        }
+        [HttpPost]
+        public IActionResult Editar(Construtora construtora)
+        {
+            return View();
         }
     }
 }

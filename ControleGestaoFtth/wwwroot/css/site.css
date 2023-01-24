@@ -196,3 +196,37 @@
         justify-content: center;
     }
 
+    #formEditar {
+        background-color: #ECF0F1;
+        padding-top: 0.5rem;
+        max-width: 900px;
+        margin: 0;
+    }
+
+    #formEditar label{
+        font-size: 0.7rem;
+        font-weight: 700;
+    }
+
+    .form-control{
+        font-size: 0.8rem;
+        font-weight: 600;
+        font-style:italic;
+    }
+
+    .form-control:focus {
+        border-color: #2A2A33;
+        box-shadow: 0 0 0 0 !important;
+    }
+
+    .btn{
+        width: 100px;
+        height: 35px;
+        border-radius: 0.2rem;
+        font-size: 0.8rem;
+        font-weight: normal;
+    }
+
+    .btnPaged{
+        width: auto;
+    }

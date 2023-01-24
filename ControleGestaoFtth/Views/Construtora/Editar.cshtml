@@ -1,0 +1,104 @@
+﻿@model Construtora
+
+<form>
+    <div id="formEditar" class="row">
+        <div class="form-group">
+            <label>Construtora:</label>
+            <input type="text" value="@Model.Estacao.Responsavel" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Estação:</label>
+            <input type="text" value="@Model.Estacao.NomeEstacao" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Tipo Obra:</label>
+            <input type="text" value="@Model.TipoObra?.Nome" class="form-control">
+        </div>
+        <div class="form-group">
+        <label>CDO:</label>
+        <input type="text" value="@Model.CDO" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Cabo:</label>
+            <input type="text" value="@Model.Cabo" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Celula:</label>
+            <input type="text" value="@Model.Celula" class="form-control">
+        </div>
+        <div class="w-100"></div>
+          <div class="form-group col">
+            <label>Capacidade:</label>
+            <input type="text" value="@Model.Capacidade" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Técnico</label>
+            <input type="text" value="@Model.Tecnico" class="form-control">
+        </div>
+        <div class="w-100"></div>
+          <div class="form-group col">
+            <label>Total Ums</label>
+            <input type="text" value="@Model.TotalUms" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Equipe Construção:</label>
+            <input type="text" value="@Model.EquipedeConstrucao" class="form-control">
+        </div>
+        <div class="w-100"></div>
+        <div class="form-group col">
+            <label>Estado Campo:</label>
+            <input type="text" value="@Model.EstadoCampo?.Nome" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Data teste</label>
+            <input type="date" value="@Model.DatadoTeste" class="form-control">
+        </div>
+        <div class="w-100"></div>
+        <div class="form-group col">
+            <label>Data Construção:</label>
+            <input type="date" value="@Model.DatadeConstrucao" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Data Recebimento:</label>
+            <input type="date" value="@Model.DatadeRecebimento" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Localidade:</label>
+            <textarea type="text" class="form-control">@Model.Endereco</textarea>
+        </div>
+         <div class="form-group col">
+            <label>Bobina Lançamento:</label>
+            <input type="text" value="@Model.BobinadeLancamento" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Posição ICX/DGO:</label>
+            <input type="text" value="@Model.PosicaoICX_DGO" class="form-control">
+        </div>
+        <div class="w-100"></div>
+         <div class="form-group col">
+            <label>Bobina de Recepção:</label>
+            <input type="text" value="@Model.BobinadeRecepcao" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Splitter CEOS:</label>
+            <input type="text" value="@Model.SplitterCEOS" class="form-control">
+        </div>
+        <div class="w-100"></div>
+         <div class="form-group col">
+            <label>Quantidade Teste:</label>
+            <input type="text" value="@Model.QuantidadeDeTeste" class="form-control">
+        </div>
+        <div class="form-group col">
+            <label>Fibra DGO:</label>
+            <input type="text" value="@Model.FibraDGO" class="form-control">
+        </div>
+        <div class="form-group">
+            <label>Observação:</label>
+            <textarea type="text" class="form-control">@Model.Observacoes</textarea>
+        </div>
+        <div class="d-flex bg-white mt-3 flex-row-reverse">
+            <button type="button" class="btn btn-secondary mt-4 ms-2">Voltar</button>
+            <button type="button" class="btn btn-primary mt-4">Salvar</button>
+        </div>
+    </div>
+</form>

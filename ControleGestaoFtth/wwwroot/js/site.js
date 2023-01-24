@@ -33,6 +33,7 @@
         var cdo = "";
         var cabo = "";
         var celula = "";
+        var carregarId = "";
 
         //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW TABELA FTTH BASE
         const ftth = (url) => $.get(url,
@@ -116,7 +117,7 @@
 
         //PEGAR VALORES DA TABELA FTTH BASE PARA REQUISIÇÃO ATUALIZAR
         $('#ftthLista').on('click', '.tableFtth', function () {
-            let carregarId = $(this).attr("data-id");
+            carregarId = $(this).attr("data-id");
 
             $.get('Construtora/Detalhe?id=' + carregarId,
                 {}, function (resposta) {
@@ -131,6 +132,11 @@
                 show: false,
 
             });
+        });
+
+        //CARREGAR VALORES A SEREM EDITADOS NA PAGINA EDITAR
+        $('.modal-content').on('click', '#editarFtth', function () {
+            window.location.href = 'Construtora/Editar?id=' + carregarId;
         });
 
     }(contrutora());
