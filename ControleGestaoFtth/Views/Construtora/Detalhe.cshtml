@@ -10,11 +10,11 @@
             <td>Estação: <a>@Model.Estacao?.NomeEstacao</a></td>
             <td>Tipo Obra: <a>@Model.TipoObra?.Nome</a></td>
         </tr>
-        <tr>
-            <td colspan="2">CDO: <a>@Model.CDO - @Model.Netwin?.Tipo</a></td>
+        <tr data-bs-toggle="collapse" href="#collapseFtthDetalhe" role="button">
+            <td colspan="2">CDO: <a>@Model.CDO - @Model.Netwin?.Tipo</a><i class="fa fa-exclamation-circle"></i></td>
         </tr>
-        <tr>
-            <td colspan="2"align="center" valign="baseline"><a>@Model.Netwin?.Descricao</a></td>
+        <tr class="collapse" id="collapseFtthDetalhe">
+            <td colspan="2" align="center" valign="baseline"><a>-- @Model.Netwin?.Descricao --</a></td>
         </tr>
         <tr>
             <td>Cabo: <a>@Model.Cabo</a></td>

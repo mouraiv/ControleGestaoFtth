@@ -49,8 +49,8 @@
         });
 
         //SPINNER LOADER
-        const spinnerFtth = () => {
-            $('#ftthLista').html(`
+        const spinnerFtth = (display) => {
+            $(display).html(`
             <div class= "d-flex justify-content-center">
                 <div class="spinner-border text-secondary m-5" role="status">
                     <span class="sr-only">Loading...</span>
@@ -64,7 +64,7 @@
 
         //FILTRO DROPDOWNLIST DA TABELA FTTH BASE
         $('#dropEstacao').on('change', function () {
-            spinnerFtth();
+            spinnerFtth('#ftthLista');
             estacao = $('#dropEstacao').val();
             panel('Construtora/lista?estacao=' + estacao);
             ftth('Construtora/lista?estacao=' + estacao);
@@ -72,7 +72,7 @@
         });
 
         $('.container-filter').on('change', '#dropCdo', function () {
-            spinnerFtth();
+            spinnerFtth('#ftthLista');
             cdo = $('#dropCdo').val();
 
             /* DESABILITAR DROPDOWNLIST "CABO" "CELULA" E RESETAR VARIAVEIS 
@@ -93,14 +93,14 @@
         });
 
         $('.container-filter').on('change', '#dropCabo', function () {
-            spinnerFtth();
+            spinnerFtth('#ftthLista');
             cabo = $('#dropCabo').val();
             ftth('Construtora/Lista?estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
             return false;
         });
 
         $('.container-filter').on('change', '#dropCelula', function () {
-            spinnerFtth();
+            spinnerFtth('#ftthLista');
             celula = $('#dropCelula').val();
             ftth('Construtora/Lista?estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
             return false;
@@ -108,7 +108,7 @@
 
         //PAGINAÇÃO DA TABELA FTTH BASE
         $('#ftthLista, #paged').on('click', '.btnPaged', function () {
-            spinnerFtth();
+            spinnerFtth('#ftthLista');
             let urlFtth = $(this).find('a').attr('href');
             ftth(urlFtth + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
             return false;
@@ -120,6 +120,7 @@
 
             $.get('Construtora/Detalhe?id=' + carregarId,
                 {}, function (resposta) {
+                    spinnerFtth('modal-body');
                     $('.modal-body').html($(resposta).find('#displayDetalheFtth').html());
                     return false;
             });
@@ -130,7 +131,6 @@
                 show: false,
 
             });
-            console.log($(this).attr("data-id"));
         });
 
     }(contrutora());
