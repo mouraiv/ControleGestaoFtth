@@ -1,23 +1,51 @@
 ﻿@model Construtora
 
+@section Scripts
+{
+    <script>
+
+        //var viabilidadeState = @Model.Netwin?.Codigo;
+        var jsonViabilidadeSelect = @Html.Raw(Json.Serialize(ViewBag.selectViabilidade));
+
+        //CARREGAR ESTADO DO SELECT VIABILIDADE NA PAGINA EDITAR
+        $('#dropViabilidade option[value = "' + @Model.Netwin?.Id + '"]').prop('selected', 'selected');
+
+        //CARREGAR VALORES A SEREM EDITADOS NA PAGINA EDITAR
+        $('#formEditar').on('change', '#dropViabilidade', function () {
+            let _JsonViabilidadeSelect = jsonViabilidadeSelect.find(p => p.id === parseInt($('#dropViabilidade').val()));
+                let textViabilidade = '[ ' + _JsonViabilidadeSelect.tipo + ' ] - ' + _JsonViabilidadeSelect.descricao;
+                $('form').find('#DescricaoViabilidade').text(textViabilidade);     
+        });
+
+    </script>
+}
+
 <form>
     <div id="formEditar" class="row">
-        <div class="form-group">
-            <label>Construtora:</label>
-            <input type="text" value="@Model.Estacao.Responsavel" class="form-control">
+        <div class="form-group" id="titleEditForm">
+            <a>@Model.Estacao.Responsavel</a>
         </div>
         <div class="form-group col">
             <label>Estação:</label>
-            <input type="text" value="@Model.Estacao.NomeEstacao" class="form-control">
+            @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"Id","NomeEstacao"),new { @id="dropEditEstacao", @class="custom-select w-100"})
         </div>
         <div class="form-group col">
             <label>Tipo Obra:</label>
-            <input type="text" value="@Model.TipoObra?.Nome" class="form-control">
+            @Html.DropDownList("selectObras", new SelectList(ViewBag.selectObras,"Id","Nome"),new { @id="dropEditTipoObras", @class="custom-select w-100"})
         </div>
-        <div class="form-group">
+        <div class="w-100"></div>
+        <div class="form-group col">
         <label>CDO:</label>
         <input type="text" value="@Model.CDO" class="form-control">
         </div>
+        <div class="form-group col">
+            <label>Viabilidade:</label>
+            <div class="rowSelectEdit">
+                 @Html.DropDownList("selectViabilidade", new SelectList(ViewBag.selectViabilidade,"Id","Codigo"),new { @id="dropViabilidade", @class="custom-select"})
+                 <a id="DescricaoViabilidade">[ @Model.Netwin?.Tipo ] - @Model.Netwin?.Descricao</a>
+            </div>
+        </div>
+        <div class="w-100"></div>
         <div class="form-group col">
             <label>Cabo:</label>
             <input type="text" value="@Model.Cabo" class="form-control">
@@ -32,7 +60,7 @@
             <input type="text" value="@Model.Capacidade" class="form-control">
         </div>
         <div class="form-group col">
-            <label>Técnico</label>
+            <label>Técnico:</label>
             <input type="text" value="@Model.Tecnico" class="form-control">
         </div>
         <div class="w-100"></div>
@@ -42,7 +70,7 @@
         </div>
         <div class="form-group col">
             <label>Equipe Construção:</label>
-            <input type="text" value="@Model.EquipedeConstrucao" class="form-control">
+            <textarea type="text" class="form-control">@Model.EquipedeConstrucao</textarea>
         </div>
         <div class="w-100"></div>
         <div class="form-group col">
@@ -50,17 +78,17 @@
             <input type="text" value="@Model.EstadoCampo?.Nome" class="form-control">
         </div>
         <div class="form-group col">
-            <label>Data teste</label>
-            <input type="date" value="@Model.DatadoTeste" class="form-control">
+            <label>Data teste:</label>
+            <input type="date" value="@Model.DatadoTeste?.ToString("yyyy-MM-dd")" class="form-control">
         </div>
         <div class="w-100"></div>
         <div class="form-group col">
             <label>Data Construção:</label>
-            <input type="date" value="@Model.DatadeConstrucao" class="form-control">
+            <input type="date" value="@Model.DatadeConstrucao?.ToString("yyyy-MM-dd")" class="form-control">
         </div>
         <div class="form-group col">
             <label>Data Recebimento:</label>
-            <input type="date" value="@Model.DatadeRecebimento" class="form-control">
+            <input type="date" value="@Model.DatadeRecebimento?.ToString("yyyy-MM-dd")" class="form-control">
         </div>
         <div class="form-group">
             <label>Localidade:</label>

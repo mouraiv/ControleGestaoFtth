@@ -120,10 +120,11 @@ namespace ControleGestaoFtth.Repository
                 .Select(value => new Estacoe
                 {
                     Id = value.Id,
+                    Responsavel = value.Responsavel.Equals(DBNull.Value) ? "INDEFINIDO" : value.Responsavel,
                     NomeEstacao = value.NomeEstacao,
 
                 }).OrderBy(p => p.NomeEstacao)
-            .ToList();
+                .ToList();
         }
 
         public IEnumerable<Construtora> FilterCdo(string estacao)
@@ -169,6 +170,23 @@ namespace ControleGestaoFtth.Repository
 
                 }).DistinctBy(p => p.Celula)
                 .OrderBy(p => p.Celula)
+                .ToList();
+        }
+
+        public IEnumerable<Netwin> Netwins()
+        {
+            return _context.Netwins
+                .AsNoTracking()
+                .ToList();
+        }
+
+        public IEnumerable<TipoObra> TipoObras()
+        {
+            return _context.TipoObras
+                .AsNoTracking()
+                .AsEnumerable()
+                .DistinctBy(p => p.Nome)
+                .OrderBy(p => p.Nome)
                 .ToList();
         }
     }

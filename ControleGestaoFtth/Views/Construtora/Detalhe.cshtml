@@ -30,11 +30,11 @@
         </tr>
         <tr>
             <td>Estado Campo: <a>@Model.EstadoCampo?.Nome</a></td>
-            <td>Data Teste: <a>@Model.DatadoTeste</a></td>
+            <td>Data Teste: <a>@Model.DatadoTeste?.ToString("dd/MM/yyyy")</a></td>
         </tr>
         <tr>
-            <td>Data Construção: <a>@Model.DatadeConstrucao</a></td>
-            <td>Data Recebimento: <a>@Model.DatadeRecebimento</a></td>
+            <td>Data Construção: <a>@Model.DatadeConstrucao?.ToString("dd/MM/yyyy")</a></td>
+            <td>Data Recebimento: <a>@Model.DatadeRecebimento?.ToString("dd/MM/yyyy")</a></td>
         </tr>
         <tr>
             <td colspan="2">Localização: <a>@Model.Endereco</a></td>

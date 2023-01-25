@@ -21,6 +21,9 @@ namespace ControleGestaoFtth.Controllers
         public IActionResult Editar(int id)
         {
             Construtora construtora = _construtoraRepository.CarregarId(id);
+            ViewData["selectViabilidade"] = _construtoraRepository.Netwins();
+            ViewData["selectEstacao"] = _construtoraRepository.Estacoes();
+            ViewData["selectObras"] = _construtoraRepository.TipoObras();
 
             return View(construtora);
         }
