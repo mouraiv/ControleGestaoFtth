@@ -13,7 +13,7 @@ namespace ControleGestaoFtth.Models
         public int? EstacoesId { get; set; }
         public TipoObra TipoObra { get; set; } = null!;
         public int? TipoObraId { get; set; }
-        public string? CDO { get; set; }
+        public string CDO { get; set; } = null!;
         public int? Cabo { get; set; }
         public int? Celula { get; set; }
         public int? Capacidade { get; set; }

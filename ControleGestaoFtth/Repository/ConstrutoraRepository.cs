@@ -55,14 +55,13 @@ namespace ControleGestaoFtth.Repository
 
         public Construtora CarregarId(int id)
         {
-            var carregarId = _context.Construtoras
+            return _context.Construtoras
                 .Include(p => p.Estacao)
                 .Include(p => p.TipoObra)
                 .Include(p => p.Netwin)
                 .Include(p => p.EstadoCampo)
                 .FirstOrDefault(p => p.Id == id);
 
-            return carregarId;
         }
 
         public bool Deletar(int id)
@@ -138,7 +137,7 @@ namespace ControleGestaoFtth.Repository
                 .Select(value => new Estacoe
                 {
                     Id = value.Id,
-                    Responsavel = value.Responsavel.Equals(DBNull.Value) ? null : value.Responsavel,
+                    Responsavel = value.Responsavel,
                     NomeEstacao = value.NomeEstacao,
 
                 }).OrderBy(p => p.NomeEstacao)
@@ -215,7 +214,7 @@ namespace ControleGestaoFtth.Repository
                 .Select(value => new EstadoCampo
                 {
                    Id = value.Id,
-                   Nome = value.Nome.Equals(DBNull.Value) ? null : (string) value.Nome
+                   Nome = value.Nome
 
                 })
                 .OrderBy(p => p.Nome)
