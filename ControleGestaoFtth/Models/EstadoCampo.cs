@@ -6,7 +6,6 @@ namespace ControleGestaoFtth.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
-        public string? Nome { get; set; }
+        public string? Nome { get; set; } = null!;
     }
 }

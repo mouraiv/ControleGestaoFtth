@@ -7,8 +7,11 @@
         //var viabilidadeState = @Model.Netwin?.Codigo;
         var jsonViabilidadeSelect = @Html.Raw(Json.Serialize(ViewBag.selectViabilidade));
 
-        //CARREGAR ESTADO DO SELECT VIABILIDADE NA PAGINA EDITAR
+        //CARREGAR ESTADO DO SELECT NA PAGINA EDITAR
+        $('#dropEditEstacao option[value = "' + @Model.Estacao?.Id + '"]').prop('selected', 'selected');
+        $('#dropEditTipoObras option[value = "' + @Model.TipoObra?.Id + '"]').prop('selected', 'selected');
         $('#dropViabilidade option[value = "' + @Model.Netwin?.Id + '"]').prop('selected', 'selected');
+        $('#dropEditEstadoCampo option[value = "' + @Model.EstadoCampo.Id + '"]').prop('selected', 'selected');
 
         //CARREGAR VALORES A SEREM EDITADOS NA PAGINA EDITAR
         $('#formEditar').on('change', '#dropViabilidade', function () {
@@ -20,113 +23,129 @@
     </script>
 }
 
-<form>
+    @if (TempData["Sucesso"] != null)
+    {
+        <div class="alert alert-success" role="alert">
+            <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Sucesso! </strong>@TempData["Sucesso"]
+        </div>
+    }
+    @if (TempData["Falha"] != null)
+    {
+        <div class="alert alert-danger" role="alert">
+            <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Error! </strong>@TempData["Falha"]
+        </div>
+    }
+
+<form asp-controller="Construtora" asp-action="Editar" method="post">
+    <input type="hidden" asp-for="Id">
     <div id="formEditar" class="row">
         <div class="form-group" id="titleEditForm">
             <a>@Model.Estacao.Responsavel</a>
         </div>
         <div class="form-group col">
             <label>Estação:</label>
-            @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"Id","NomeEstacao"),new { @id="dropEditEstacao", @class="custom-select w-100"})
+            @Html.DropDownListFor(model => model.EstacoesId, new SelectList(ViewBag.selectEstacao,"Id","NomeEstacao"), new {@id="#dropEditEstacao", @class="custom-select w-100"})
         </div>
         <div class="form-group col">
             <label>Tipo Obra:</label>
-            @Html.DropDownList("selectObras", new SelectList(ViewBag.selectObras,"Id","Nome"),new { @id="dropEditTipoObras", @class="custom-select w-100"})
+            @Html.DropDownListFor(model => model.TipoObraId, new SelectList(ViewBag.selectObras,"Id","Nome"), new {@id="#dropEditTipoObras", @class="custom-select w-100"})
         </div>
         <div class="w-100"></div>
         <div class="form-group col">
         <label>CDO:</label>
-        <input type="text" value="@Model.CDO" class="form-control">
+        <input type="text" asp-for="CDO" class="form-control">
         </div>
         <div class="form-group col">
             <label>Viabilidade:</label>
             <div class="rowSelectEdit">
-                 @Html.DropDownList("selectViabilidade", new SelectList(ViewBag.selectViabilidade,"Id","Codigo"),new { @id="dropViabilidade", @class="custom-select"})
+                 @Html.DropDownListFor(model => model.NetwinId, new SelectList(ViewBag.selectViabilidade,"Id","Codigo"), new { @id="dropViabilidade", @class="custom-select"})
                  <a id="DescricaoViabilidade">[ @Model.Netwin?.Tipo ] - @Model.Netwin?.Descricao</a>
             </div>
         </div>
         <div class="w-100"></div>
         <div class="form-group col">
             <label>Cabo:</label>
-            <input type="text" value="@Model.Cabo" class="form-control">
+            <input type="text" asp-for="Cabo" class="form-control">
         </div>
         <div class="form-group col">
             <label>Celula:</label>
-            <input type="text" value="@Model.Celula" class="form-control">
+            <input type="text" asp-for="Celula" class="form-control">
         </div>
         <div class="w-100"></div>
           <div class="form-group col">
             <label>Capacidade:</label>
-            <input type="text" value="@Model.Capacidade" class="form-control">
+            <input type="text" asp-for="Capacidade" class="form-control">
         </div>
         <div class="form-group col">
             <label>Técnico:</label>
-            <input type="text" value="@Model.Tecnico" class="form-control">
+            <input type="text" asp-for="Tecnico" class="form-control">
         </div>
         <div class="w-100"></div>
           <div class="form-group col">
             <label>Total Ums</label>
-            <input type="text" value="@Model.TotalUms" class="form-control">
+            <input type="text" asp-for="TotalUms" class="form-control">
         </div>
         <div class="form-group col">
             <label>Equipe Construção:</label>
-            <textarea type="text" class="form-control">@Model.EquipedeConstrucao</textarea>
+            <textarea type="text" asp-for="EquipedeConstrucao" class="form-control"></textarea>
         </div>
         <div class="w-100"></div>
         <div class="form-group col">
             <label>Estado Campo:</label>
-            <input type="text" value="@Model.EstadoCampo?.Nome" class="form-control">
+            @Html.DropDownListFor(model => model.EstadoCamposId, new SelectList(ViewBag.selectEstadoCampo,"Id","Nome"), new {@id="dropEditEstadoCampo", @class="custom-select w-100"})
         </div>
         <div class="form-group col">
             <label>Data teste:</label>
-            <input type="date" value="@Model.DatadoTeste?.ToString("yyyy-MM-dd")" class="form-control">
+            <input type="date" asp-for="DatadoTeste" class="form-control">
         </div>
         <div class="w-100"></div>
         <div class="form-group col">
             <label>Data Construção:</label>
-            <input type="date" value="@Model.DatadeConstrucao?.ToString("yyyy-MM-dd")" class="form-control">
+            <input type="date" asp-for="DatadeConstrucao" class="form-control">
         </div>
         <div class="form-group col">
             <label>Data Recebimento:</label>
-            <input type="date" value="@Model.DatadeRecebimento?.ToString("yyyy-MM-dd")" class="form-control">
+            <input type="date" asp-for="DatadeRecebimento" class="form-control">
         </div>
         <div class="form-group">
             <label>Localidade:</label>
-            <textarea type="text" class="form-control">@Model.Endereco</textarea>
+            <textarea type="text" asp-for="Endereco" class="form-control"></textarea>
         </div>
          <div class="form-group col">
             <label>Bobina Lançamento:</label>
-            <input type="text" value="@Model.BobinadeLancamento" class="form-control">
+            <input type="text" asp-for="BobinadeLancamento" class="form-control">
         </div>
         <div class="form-group col">
             <label>Posição ICX/DGO:</label>
-            <input type="text" value="@Model.PosicaoICX_DGO" class="form-control">
+            <input type="text" asp-for="PosicaoICX_DGO" class="form-control">
         </div>
         <div class="w-100"></div>
          <div class="form-group col">
             <label>Bobina de Recepção:</label>
-            <input type="text" value="@Model.BobinadeRecepcao" class="form-control">
+            <input type="text" asp-for="BobinadeRecepcao" class="form-control">
         </div>
         <div class="form-group col">
             <label>Splitter CEOS:</label>
-            <input type="text" value="@Model.SplitterCEOS" class="form-control">
+            <input type="text" asp-for="SplitterCEOS" class="form-control">
         </div>
         <div class="w-100"></div>
          <div class="form-group col">
             <label>Quantidade Teste:</label>
-            <input type="text" value="@Model.QuantidadeDeTeste" class="form-control">
+            <input type="text" asp-for="QuantidadeDeTeste" class="form-control">
         </div>
         <div class="form-group col">
             <label>Fibra DGO:</label>
-            <input type="text" value="@Model.FibraDGO" class="form-control">
+            <input type="text" asp-for="FibraDGO" class="form-control">
         </div>
         <div class="form-group">
             <label>Observação:</label>
-            <textarea type="text" class="form-control">@Model.Observacoes</textarea>
+            <textarea type="text" asp-for="Observacoes" class="form-control"></textarea>
         </div>
         <div class="d-flex bg-white mt-3 flex-row-reverse">
-            <button type="button" class="btn btn-secondary mt-4 ms-2">Voltar</button>
-            <button type="button" class="btn btn-primary mt-4">Salvar</button>
+            <button type="submit" class="btn btn-primary mt-4 ms-2">Salvar</button>
+            <button type="button" class="btn btn-secondary mt-4">Voltar</button>
         </div>
     </div>
 </form>

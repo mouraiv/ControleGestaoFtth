@@ -24,6 +24,7 @@ namespace ControleGestaoFtth.Controllers
             ViewData["selectViabilidade"] = _construtoraRepository.Netwins();
             ViewData["selectEstacao"] = _construtoraRepository.Estacoes();
             ViewData["selectObras"] = _construtoraRepository.TipoObras();
+            ViewData["selectEstadoCampo"] = _construtoraRepository.EstadoCampos();
 
             return View(construtora);
         }
@@ -58,7 +59,19 @@ namespace ControleGestaoFtth.Controllers
         [HttpPost]
         public IActionResult Editar(Construtora construtora)
         {
-            return View();
+            try
+            {
+             
+                _construtoraRepository.Atualizar(construtora);
+                TempData["Sucesso"] = "Atualizado com sucesso!.";
+                return RedirectToAction("Editar", new { id = construtora.Id });
+                
+            }
+            catch (Exception error)
+            {
+                TempData["Falha"] = $"Erro ao Atualizar - O Campo nome precisa conter um valor. {error.Message}";
+                return View(construtora);
+            }
         }
     }
 }

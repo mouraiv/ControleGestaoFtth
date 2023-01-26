@@ -20,8 +20,27 @@ namespace ControleGestaoFtth.Repository
 
             if (db == null) throw new Exception("Houve um erro na atualização");
 
-            db.Id = construtora.Id;
-            db.CDO = construtora.CDO;
+            db.EstacoesId = construtora.EstacoesId;
+            db.TipoObraId = construtora.TipoObraId;
+            db.NetwinId= construtora.NetwinId;
+            db.Cabo = construtora.Cabo;
+            db.Celula = construtora.Celula;
+            db.Capacidade = construtora.Capacidade;
+            db.Tecnico = construtora.Tecnico;
+            db.TotalUms = construtora.TotalUms;
+            db.EquipedeConstrucao = construtora.EquipedeConstrucao;
+            db.EstadoCamposId = construtora.EstadoCamposId;
+            db.DatadoTeste = construtora.DatadoTeste;
+            db.DatadeConstrucao = construtora.DatadeConstrucao;
+            db.DatadeRecebimento = construtora.DatadeRecebimento;
+            db.Endereco = construtora.Endereco;
+            db.BobinadeLancamento = construtora.BobinadeLancamento;
+            db.PosicaoICX_DGO = construtora.PosicaoICX_DGO;
+            db.BobinadeRecepcao = construtora.BobinadeRecepcao;
+            db.SplitterCEOS = construtora.SplitterCEOS;
+            db.QuantidadeDeTeste = construtora.QuantidadeDeTeste;
+            db.FibraDGO = construtora.FibraDGO;
+            db.Observacoes = construtora.Observacoes;
 
             _context.Construtoras.Update(db);
             _context.SaveChanges();
@@ -37,11 +56,10 @@ namespace ControleGestaoFtth.Repository
         public Construtora CarregarId(int id)
         {
             var carregarId = _context.Construtoras
-                .AsNoTracking()
                 .Include(p => p.Estacao)
                 .Include(p => p.TipoObra)
-                .Include(p => p.EstadoCampo)
                 .Include(p => p.Netwin)
+                .Include(p => p.EstadoCampo)
                 .FirstOrDefault(p => p.Id == id);
 
             return carregarId;
@@ -120,7 +138,7 @@ namespace ControleGestaoFtth.Repository
                 .Select(value => new Estacoe
                 {
                     Id = value.Id,
-                    Responsavel = value.Responsavel.Equals(DBNull.Value) ? "INDEFINIDO" : value.Responsavel,
+                    Responsavel = value.Responsavel.Equals(DBNull.Value) ? null : value.Responsavel,
                     NomeEstacao = value.NomeEstacao,
 
                 }).OrderBy(p => p.NomeEstacao)
@@ -188,6 +206,31 @@ namespace ControleGestaoFtth.Repository
                 .DistinctBy(p => p.Nome)
                 .OrderBy(p => p.Nome)
                 .ToList();
+        }
+
+        public IEnumerable<EstadoCampo> EstadoCampos()
+        {
+            return _context.EstadoCampos
+                .AsNoTracking()
+                .Select(value => new EstadoCampo
+                {
+                   Id = value.Id,
+                   Nome = value.Nome.Equals(DBNull.Value) ? null : (string) value.Nome
+
+                })
+                .OrderBy(p => p.Nome)
+                .ToList();
+        }
+
+        public IEnumerable<Construtora> UniqueCdo()
+        {
+            return _context.Construtoras
+                .AsNoTracking()
+                .Select(value => new Construtora
+                {
+                    CDO = value.CDO,
+
+                }).ToList();
         }
     }
 }

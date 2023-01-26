@@ -25,6 +25,16 @@
         });
     })()
 
+    //CASO O BOTÃO NÃO SEJA ACIONADO, FECHAR A ALERT 10S
+    setTimeout(function () {
+        $('.alert').hide('hide');
+    }, 10000);
+
+    //BOTÃO FECHAR ALERTA
+    $('.close-alert').click(function () {
+        $('.alert').hide('hide');
+    });
+
     //FUNÇÃO REPONSÁVEL PELAS ACÕES DA VIEW CONSTRUTORA
     function contrutora() {
 
