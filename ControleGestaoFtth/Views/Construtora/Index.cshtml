@@ -6,11 +6,26 @@
 
 }
 
-<div>
+@if (TempData["Sucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Sucesso! </strong>@TempData["Sucesso"]
+    </div>
+}
+@if (TempData["Falha"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Error! </strong>@TempData["Falha"]
+    </div>
+}
 
-    <button type="button" class="btn btn-primary btn-sm">Modelo Base</button>
-    <button type="button" class="btn btn-warning btn-sm">Importar Base</button>
-
+<div id="menuBarVertical">
+    <a role="button" class="btn btn-primary btn-sm" style="padding-top:0.4rem;">Adicionar</a>
+    <hr class="divisorMenu m-0 p-0 ms-3">
+    <button type="button" class="btn btn-primary btn-sm ms-3">Modelo Base</button>
+    <button type="button" class="btn btn-warning btn-sm ms-2">Importar Base</button>
 </div>
 
 <div class="container-filter">

@@ -307,7 +307,7 @@
     #btnIconExcluir {
         position: absolute;
         color: #4b4b4b;
-        font-size: 1.2rem;
+        font-size: 1rem;
         padding-right: 0.6rem;
         padding-left: 0.6rem;
         padding-top: 0.4rem;
@@ -316,4 +316,20 @@
         top: 0;
         margin-top: 1.7rem;
         margin-right: 0.9rem;
+    }
+
+    #formEditar #btnRoles{
+        padding-top: 0.4rem;
+        font-size: 0.8rem;
+        font-weight: normal;
+    }
+
+    .divisorMenu {
+        min-height: 30px;
+        border: 1px solid;
+    }
+
+    #menuBarVertical{
+        display:flex;
+        align-items:center;
     }

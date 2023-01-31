@@ -86,7 +86,7 @@
         </div>
         <div class="form-group col">
             <label>Técnico:</label>
-            <input type="text" asp-for="Tecnico" class="form-control" maxlength="50" required>
+            <input type="text" asp-for="Tecnico" class="form-control" maxlength="50">
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
@@ -97,7 +97,7 @@
         </div>
         <div class="form-group col">
             <label>Equipe Construção:</label>
-            <textarea type="text" asp-for="EquipedeConstrucao" class="form-control" maxlength="250" required></textarea>
+            <textarea type="text" asp-for="EquipedeConstrucao" class="form-control" maxlength="250"></textarea>
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
@@ -114,65 +114,65 @@
         </div>
         <div class="form-group col">
             <label>Data teste:</label>
-            <input type="date" asp-for="DatadoTeste" class="form-control" required>
+            <input type="date" asp-for="DatadoTeste" class="form-control">
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
         <div class="form-group col">
             <label>Data Construção:</label>
-            <input type="date" asp-for="DatadeConstrucao" class="form-control" required>
+            <input type="date" asp-for="DatadeConstrucao" class="form-control">
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Data Recebimento:</label>
-            <input type="date" asp-for="DatadeRecebimento" class="form-control" required>
+            <input type="date" asp-for="DatadeRecebimento" class="form-control">
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group">
             <label>Localidade:</label>
-            <textarea type="text" asp-for="Endereco" class="form-control" maxlength="250" id="inputArea" required></textarea>
+            <textarea type="text" asp-for="Endereco" class="form-control" maxlength="250" id="inputArea"></textarea>
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
          <div class="form-group col">
             <label>Bobina Lançamento:</label>
-            <input type="number" asp-for="BobinadeLancamento" class="form-control" min="0" max="10000000" required>
+            <input type="number" asp-for="BobinadeLancamento" class="form-control" min="0" max="10000000">
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Posição ICX/DGO:</label>
-            <input type="text" asp-for="PosicaoICX_DGO" class="form-control" maxlength="50" required>
+            <input type="text" asp-for="PosicaoICX_DGO" class="form-control" maxlength="50">
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
          <div class="form-group col">
             <label>Bobina de Recepção:</label>
-            <input type="text" asp-for="BobinadeRecepcao" class="form-control" min="0" max="10000000" required>
+            <input type="text" asp-for="BobinadeRecepcao" class="form-control" min="0" max="10000000">
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Splitter CEOS:</label>
-            <input type="text" asp-for="SplitterCEOS" class="form-control" maxlength="50" required>
+            <input type="text" asp-for="SplitterCEOS" class="form-control" maxlength="50">
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
          <div class="form-group col">
             <label>Quantidade Teste:</label>
-            <input type="number" asp-for="QuantidadeDeTeste" class="form-control" min="0" max="10000000" required>
+            <input type="number" asp-for="QuantidadeDeTeste" class="form-control" min="0" max="10000000">
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Fibra DGO:</label>
-            <input type="text" asp-for="FibraDGO" class="form-control" maxlength="50" required>
+            <input type="text" asp-for="FibraDGO" class="form-control" maxlength="50">
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group">
             <label>Observação:</label>
-            <textarea type="text" asp-for="Observacoes" class="form-control" maxlength="500" id="inputArea" required></textarea>
+            <textarea type="text" asp-for="Observacoes" class="form-control" maxlength="500" id="inputArea"></textarea>
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="d-flex bg-white mt-3 flex-row-reverse">
             <button type="submit" class="btn btn-primary mt-4 ms-2">Salvar</button>
-            <button type="button" class="btn btn-secondary mt-4">Voltar</button>
+            <a role="button" asp-action="Index" asp-controller="Construtora" id="btnRoles" class="btn btn-secondary mt-4">Voltar</a>
         </div>
     </div>
 </form>
