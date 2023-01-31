@@ -61,15 +61,14 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-             
                 _construtoraRepository.Atualizar(construtora);
-                TempData["Sucesso"] = "Atualizado com sucesso!.";
+                TempData["Sucesso"] = "Atualizado com sucesso!";
                 return RedirectToAction("Editar", new { id = construtora.Id });
                 
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao Atualizar - O Campo nome precisa conter um valor. {error.Message}";
+                TempData["Falha"] = $"Erro ao Atualizar - {error.Message}";
                 return View(construtora);
             }
         }

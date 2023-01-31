@@ -55,13 +55,15 @@ namespace ControleGestaoFtth.Repository
 
         public Construtora CarregarId(int id)
         {
-            return _context.Construtoras
-                .Include(p => p.Estacao)
-                .Include(p => p.TipoObra)
-                .Include(p => p.Netwin)
-                .Include(p => p.EstadoCampo)
-                .FirstOrDefault(p => p.Id == id);
-
+          var carregarId = _context.Construtoras
+                    .Include(p => p.Estacao)
+                    .Include(p => p.TipoObra)
+                    .Include(p => p.Netwin)
+                    .Include(p => p.EstadoCampo)
+                    .Where(p => p.Id == id)
+                    .FirstOrDefault();
+      
+            return carregarId;
         }
 
         public bool Deletar(int id)
@@ -167,7 +169,7 @@ namespace ControleGestaoFtth.Repository
                .AsEnumerable()
                .Select(value => new Construtora
                {
-                   Cabo = value.Cabo == null ? 0 : value.Cabo,
+                   Cabo = value.Cabo,
 
                }).DistinctBy(p => p.Cabo)
                .OrderBy(p => p.Cabo)

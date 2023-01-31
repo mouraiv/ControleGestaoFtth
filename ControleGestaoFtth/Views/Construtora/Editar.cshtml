@@ -1,28 +1,5 @@
 ﻿@model Construtora
 
-@section Scripts
-{
-    <script>
-
-        //var viabilidadeState = @Model.Netwin?.Codigo;
-        var jsonViabilidadeSelect = @Html.Raw(Json.Serialize(ViewBag.selectViabilidade));
-
-        //CARREGAR ESTADO DO SELECT NA PAGINA EDITAR
-        $('#dropEditEstacao option[value = "' + @Model.Estacao?.Id + '"]').prop('selected', 'selected');
-        $('#dropEditTipoObras option[value = "' + @Model.TipoObra?.Id + '"]').prop('selected', 'selected');
-        $('#dropViabilidade option[value = "' + @Model.Netwin?.Id + '"]').prop('selected', 'selected');
-        $('#dropEditEstadoCampo option[value = "' + @Model.EstadoCampo.Id + '"]').prop('selected', 'selected');
-
-        //CARREGAR VALORES A SEREM EDITADOS NA PAGINA EDITAR
-        $('#formEditar').on('change', '#dropViabilidade', function () {
-            let _JsonViabilidadeSelect = jsonViabilidadeSelect.find(p => p.id === parseInt($('#dropViabilidade').val()));
-                let textViabilidade = '[ ' + _JsonViabilidadeSelect.tipo + ' ] - ' + _JsonViabilidadeSelect.descricao;
-                $('form').find('#DescricaoViabilidade').text(textViabilidade);     
-        });
-
-    </script>
-}
-
     @if (TempData["Sucesso"] != null)
     {
         <div class="alert alert-success" role="alert">
@@ -42,106 +19,156 @@
     <input type="hidden" asp-for="Id">
     <div id="formEditar" class="row">
         <div class="form-group" id="titleEditForm">
-            <a>@Model.Estacao.Responsavel</a>
+
+            <a id="DescricaoResponsavel">@Model.Estacao.Responsavel</a>
         </div>
-        <div class="form-group col">
+        <div class="selectEstacaoClass form-group col">
             <label>Estação:</label>
-            @Html.DropDownListFor(model => model.EstacoesId, new SelectList(ViewBag.selectEstacao,"Id","NomeEstacao"), new {@id="#dropEditEstacao", @class="custom-select w-100"})
+            <div class="row">
+                <div class="col">
+                    @Html.DropDownListFor(model => model.EstacoesId, new SelectList(ViewBag.selectEstacao,"Id","NomeEstacao"), new {@id="#dropEditEstacao", @class="custom-select w-100"})
+                </div>
+                <div class="col-auto">
+                    <i id="iconBtn" title="Adicionar" role="button" class="fa fa-plus"></i>
+                </div>
+            </div>
         </div>
         <div class="form-group col">
             <label>Tipo Obra:</label>
-            @Html.DropDownListFor(model => model.TipoObraId, new SelectList(ViewBag.selectObras,"Id","Nome"), new {@id="#dropEditTipoObras", @class="custom-select w-100"})
+            <div class="row">
+                <div class="col">
+                     @Html.DropDownListFor(model => model.TipoObraId, new SelectList(ViewBag.selectObras,"Id","Nome"), new {@id="#dropEditTipoObras", @class="custom-select w-100"})
+                </div>
+             <div class="col-auto">
+                    <i id="iconBtn" role="button" class="fa fa-plus"></i>
+                </div>
+             </div>
         </div>
         <div class="w-100"></div>
-        <div class="form-group col">
+        <div id="cdoInput" class="form-group col">
         <label>CDO:</label>
-        <input type="text" asp-for="CDO" class="form-control">
+            <input type="text" asp-for="CDO" class="form-control" disabled>
+            <i id="btnIconExcluir" role="button" title="Excluir" class="fa fa-trash"></i>
         </div>
-        <div class="form-group col">
+        <div id="vlrow" class="form-group col">
             <label>Viabilidade:</label>
-            <div class="rowSelectEdit">
-                 @Html.DropDownListFor(model => model.NetwinId, new SelectList(ViewBag.selectViabilidade,"Id","Codigo"), new { @id="dropViabilidade", @class="custom-select"})
-                 <a id="DescricaoViabilidade">[ @Model.Netwin?.Tipo ] - @Model.Netwin?.Descricao</a>
+            <div class="row">
+                <div id="vldrop" class="col">
+                    @Html.DropDownListFor(model => model.NetwinId, new SelectList(ViewBag.selectViabilidade,"Id","Codigo"), new { @id="dropViabilidade", @class="custom-select", @data_bs_target="#vldesc"})
+                </div>
+                <div id="vldesc" class="collapse in width col">
+                    <a id="DescricaoViabilidade">[ @Model.Netwin?.Tipo ] - @Model.Netwin?.Descricao</a>
+                 </div>
+                <div id="vlicon" class="col">
+                    <i id="iconBtn" title="Adicionar" role="button" class="fa fa-plus"></i>
+                </div>
+            </div>
+            <div id="vlmdesc" class="collapse in width">
+                <a id="DescricaoViabilidade">[ @Model.Netwin?.Tipo ] - @Model.Netwin?.Descricao</a>
             </div>
         </div>
         <div class="w-100"></div>
         <div class="form-group col">
-            <label>Cabo:</label>
-            <input type="text" asp-for="Cabo" class="form-control">
+            <label class="form-label">Cabo:</label>
+            <input type="number" asp-for="Cabo" class="form-control" min="0" max="1000" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Celula:</label>
-            <input type="text" asp-for="Celula" class="form-control">
+            <input type="number" asp-for="Celula" class="form-control" min="0" max="1000" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
           <div class="form-group col">
             <label>Capacidade:</label>
-            <input type="text" asp-for="Capacidade" class="form-control">
+            <input type="number" asp-for="Capacidade" class="form-control" min="0" max="1000" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Técnico:</label>
-            <input type="text" asp-for="Tecnico" class="form-control">
+            <input type="text" asp-for="Tecnico" class="form-control" maxlength="50" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
           <div class="form-group col">
             <label>Total Ums</label>
-            <input type="text" asp-for="TotalUms" class="form-control">
+            <input type="number" asp-for="TotalUms" class="form-control" min="0" max="1000" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Equipe Construção:</label>
-            <textarea type="text" asp-for="EquipedeConstrucao" class="form-control"></textarea>
+            <textarea type="text" asp-for="EquipedeConstrucao" class="form-control" maxlength="250" required></textarea>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
         <div class="form-group col">
             <label>Estado Campo:</label>
-            @Html.DropDownListFor(model => model.EstadoCamposId, new SelectList(ViewBag.selectEstadoCampo,"Id","Nome"), new {@id="dropEditEstadoCampo", @class="custom-select w-100"})
+            <div class="row">
+                <div class="col">
+                    @Html.DropDownListFor(model => model.EstadoCamposId, new SelectList(ViewBag.selectEstadoCampo,"Id","Nome"), new {@id="dropEditEstadoCampo", @class="custom-select w-100"})
+                </div>
+                <div class="col-auto">
+                    <i id="iconBtn" title="Adicionar" role="button" class="fa fa-plus"></i>
+                </div>
+            </div>
         </div>
         <div class="form-group col">
             <label>Data teste:</label>
-            <input type="date" asp-for="DatadoTeste" class="form-control">
+            <input type="date" asp-for="DatadoTeste" class="form-control" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
         <div class="form-group col">
             <label>Data Construção:</label>
-            <input type="date" asp-for="DatadeConstrucao" class="form-control">
+            <input type="date" asp-for="DatadeConstrucao" class="form-control" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Data Recebimento:</label>
-            <input type="date" asp-for="DatadeRecebimento" class="form-control">
+            <input type="date" asp-for="DatadeRecebimento" class="form-control" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group">
             <label>Localidade:</label>
-            <textarea type="text" asp-for="Endereco" class="form-control"></textarea>
+            <textarea type="text" asp-for="Endereco" class="form-control" maxlength="250" id="inputArea" required></textarea>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
          <div class="form-group col">
             <label>Bobina Lançamento:</label>
-            <input type="text" asp-for="BobinadeLancamento" class="form-control">
+            <input type="number" asp-for="BobinadeLancamento" class="form-control" min="0" max="10000000" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Posição ICX/DGO:</label>
-            <input type="text" asp-for="PosicaoICX_DGO" class="form-control">
+            <input type="text" asp-for="PosicaoICX_DGO" class="form-control" maxlength="50" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
          <div class="form-group col">
             <label>Bobina de Recepção:</label>
-            <input type="text" asp-for="BobinadeRecepcao" class="form-control">
+            <input type="text" asp-for="BobinadeRecepcao" class="form-control" min="0" max="10000000" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Splitter CEOS:</label>
-            <input type="text" asp-for="SplitterCEOS" class="form-control">
+            <input type="text" asp-for="SplitterCEOS" class="form-control" maxlength="50" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="w-100"></div>
          <div class="form-group col">
             <label>Quantidade Teste:</label>
-            <input type="text" asp-for="QuantidadeDeTeste" class="form-control">
+            <input type="number" asp-for="QuantidadeDeTeste" class="form-control" min="0" max="10000000" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group col">
             <label>Fibra DGO:</label>
-            <input type="text" asp-for="FibraDGO" class="form-control">
+            <input type="text" asp-for="FibraDGO" class="form-control" maxlength="50" required>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="form-group">
             <label>Observação:</label>
-            <textarea type="text" asp-for="Observacoes" class="form-control"></textarea>
+            <textarea type="text" asp-for="Observacoes" class="form-control" maxlength="500" id="inputArea" required></textarea>
+            <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="d-flex bg-white mt-3 flex-row-reverse">
             <button type="submit" class="btn btn-primary mt-4 ms-2">Salvar</button>
@@ -149,3 +176,81 @@
         </div>
     </div>
 </form>
+
+@section Scripts
+    {
+    <script>
+
+        $(document).ready(function () {
+
+            //VALIDAÇÃO FORMULÁRIO BOOTSTRAP
+            (function () {
+                'use strict';
+                window.addEventListener('load', function () {
+                    // fetch all the forms we want to apply custom style
+                    var inputs = document.getElementsByClassName('form-control')
+
+                    // loop over each input and watch blur event
+                    var validation = Array.prototype.filter.call(inputs, function (input) {
+
+                        input.addEventListener('blur', function (event) {
+                            // reset
+                            input.classList.remove('is-invalid')
+                            input.classList.remove('is-valid')
+
+                            if (input.checkValidity() === false) {
+                                input.classList.add('is-invalid')
+                            }
+                            else {
+                                input.classList.add('is-valid')
+                            }
+                        }, false);
+                    });
+                }, false);
+            })()
+
+            //VARIAVEIS GLOBAIS DE ACESSO JSON
+            var jsonViabilidadeSelect = @Html.Raw(Json.Serialize(ViewBag.selectViabilidade));
+            var jsonEstacaoSelect = @Html.Raw(Json.Serialize(ViewBag.selectEstacao));
+
+            //CARREGAR ESTADO DO SELECT NA PAGINA EDITAR
+            $('#dropEditEstacao option[value = "' + @Model.Estacao?.Id + '"]').prop('selected', 'selected');
+            $('#dropEditTipoObras option[value = "' + @Model.TipoObra?.Id + '"]').prop('selected', 'selected');
+            $('#dropViabilidade option[value = "' + @Model.Netwin?.Id + '"]').prop('selected', 'selected');
+            $('#dropEditEstadoCampo option[value = "' + @Model.EstadoCampo.Id + '"]').prop('selected', 'selected');
+
+            //CARREGAR DESCRIÇÃO DO SELECT ESTAÇÃO
+            $('#formEditar').on('change','.selectEstacaoClass select', function (){
+                let _JsonEstacaoSelect = jsonEstacaoSelect.find(p => p.id === parseInt($(this).val()));
+                let textResponsavel = _JsonEstacaoSelect.responsavel;
+                $('form').find('#DescricaoResponsavel').text(textResponsavel);
+            });
+
+            //CARREGAR DESCRIÇÃO DO SELECT VIABILIDADE
+            $('#formEditar').on('change', '#dropViabilidade', function () {
+                let _JsonViabilidadeSelect = jsonViabilidadeSelect.find(p => p.id === parseInt($('#dropViabilidade').val()));
+                let textViabilidade = '[ ' + _JsonViabilidadeSelect.tipo + ' ] - ' + _JsonViabilidadeSelect.descricao;
+                $('form').find('#DescricaoViabilidade').text(textViabilidade);
+                $('form #vlmdesc').find('#DescricaoViabilidade').text(textViabilidade);
+
+                //CONDIÇÃO RESPONSIVA PARA EXECUÇÃO SHOW ME COLLAPSE
+                if ($(window).width() < 768) {
+                    $('form #vlmdesc').collapse('show');
+                }else{
+                    $('#vldesc').collapse('show');
+                }
+                
+                setTimeout(function () {
+                    //CONDIÇÃO RESPONSIVA PARA EXECUÇÃO HIDE ME COLLAPSE
+                    if ($(window).width() < 768) {
+                        $('form #vlmdesc').collapse('hide');
+                    } else {
+                        $('#vldesc').collapse('hide');
+                    }
+                }, 10000);
+            });
+
+        });
+
+    </script>
+}
