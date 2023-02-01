@@ -15,7 +15,7 @@
         </div>
     }
 
-<form asp-controller="Construtora" asp-action="Editar" method="post">
+<form asp-controller="Construtora" asp-action="Editar" method="post" class="needs-validation" novalidate>
     <input type="hidden" asp-for="Id">
     <div id="formEditar" class="row">
         <div class="form-group" id="titleEditForm">
@@ -180,35 +180,8 @@
 @section Scripts
     {
     <script>
-
-        $(document).ready(function () {
-
-            //VALIDAÇÃO FORMULÁRIO BOOTSTRAP
-            (function () {
-                'use strict';
-                window.addEventListener('load', function () {
-                    // fetch all the forms we want to apply custom style
-                    var inputs = document.getElementsByClassName('form-control')
-
-                    // loop over each input and watch blur event
-                    var validation = Array.prototype.filter.call(inputs, function (input) {
-
-                        input.addEventListener('blur', function (event) {
-                            // reset
-                            input.classList.remove('is-invalid')
-                            input.classList.remove('is-valid')
-
-                            if (input.checkValidity() === false) {
-                                input.classList.add('is-invalid')
-                            }
-                            else {
-                                input.classList.add('is-valid')
-                            }
-                        }, false);
-                    });
-                }, false);
-            })()
-
+        //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW EDITAR CONSTRUTORA
+        function ConstrutoraEditar() {
             //VARIAVEIS GLOBAIS DE ACESSO JSON
             var jsonViabilidadeSelect = @Html.Raw(Json.Serialize(ViewBag.selectViabilidade));
             var jsonEstacaoSelect = @Html.Raw(Json.Serialize(ViewBag.selectEstacao));
@@ -249,8 +222,6 @@
                     }
                 }, 10000);
             });
-
-        });
-
+        } (ConstrutoraEditar());
     </script>
 }
