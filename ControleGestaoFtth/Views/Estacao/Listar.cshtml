@@ -1,4 +1,45 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.PagedList<Estacoe>
+
+<div id="tableUpdate">
+
+    <table class="table">
+
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var estacao in Model)
+                {
+                            <tr id="effectTableFtth">
+                                <td>
+                                    <table class="tableFtth" data-bs-toggle="modal" data-id="@estacao.Id" data-bs-target="#exampleModal" style="cursor: pointer;">
+                                        <tr>
+                                            <td id="rowTitle">
+                                                <a>@estacao.NomeEstacao</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                }
+            }
+            else
+            {
+                    <tr>
+                        <td>Nenhum resultado.</td>
+                    </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (Model != null && Model.Any() && Model.PageCount > 1)
+    {
+            <div id="paged" class="d-flex justify-content-center">
+            @Html.PagedListPager(
+                Model, pagina => Url.Action(null , new {pagina}),
+                new X.PagedList.Web.Common.PagedListRenderOptions(){
+                LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm btnPaged"}
+                })
+            </div>
+    }
+</div>

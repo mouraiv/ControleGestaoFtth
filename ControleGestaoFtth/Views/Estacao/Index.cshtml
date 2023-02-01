@@ -1,1 +1,150 @@
-﻿
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.PagedList<Estacoe>
+@{
+
+    ViewData["Title"] = "Estações";
+
+}
+
+<div id="menuBarVertical">
+    <a role="button" class="btn btn-primary btn-sm" style="padding-top:0.4rem;">Adicionar</a>
+</div>
+
+<div class="container-filter">
+
+    <div class="form-group" id="estacao">
+        <label>Estação</label>
+        @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"NomeEstacao","NomeEstacao"), "--Todos--",new { @id="dropEstacao", @class="custom-select"})
+    </div>
+    <div class="form-group" id="pl">
+        <label>Responsável</label>
+        @Html.DropDownList("selectEstacao", new SelectList(ViewBag.selectEstacao,"Responsavel","Responsavel"), "--Todos--",new { @id="dropResponsavel", @class="custom-select"})
+    </div>
+
+</div>
+
+<div id="ftthLista">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-secondary m-5" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="modal-title" id="exampleModalLabel">-- Descrição --</a>
+            </div>
+            <div class="modal-body">
+
+                <!--Conteudo Display-->
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-secondary m-5" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="button" id="editarFtth" class="btn btn-primary">Editar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts
+    {
+    <script>
+        //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW INDEX CONSTRUTORA
+        function EstacaoIndex() {
+
+            //VARIAVEIS GLOBAIS LOCAL
+            var nomeEstacao = "";
+            var responsavel = ""
+
+            //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW TABELA FTTH BASE
+            const ftth = (url) => $.get(url,
+                {}, function (resposta) {
+                    $('#ftthLista').html($(resposta).html());
+                    return false;
+                });
+
+            //SPINNER LOADER
+            const spinnerFtth = (display) => {
+                $(display).html(`
+                                <div class= "d-flex justify-content-center">
+                                    <div class="spinner-border text-secondary m-5" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            `   )
+            }
+
+            // ATUALIZAR DISPLAY PARTIAL VIEW
+            ftth('Estacao/listar');
+
+            //FILTRO DROPDOWNLIST DA TABELA FTTH BASE
+            $('#dropEstacao').on('change', function () {
+                spinnerFtth('#ftthLista');
+                nomeEstacao = $('#dropEstacao').val();
+
+                /* DESABILITAR DROPDOWNLIST "RESPONSAVEL" E RESETAR VARIAVEIS
+               GLOBAIS DO MESMO, CASO UM VALOR SEJA SET EM ESTACAO */
+                if (nomeEstacao != "") {
+                    responsavel = "";
+                    $('#dropResponsavel option[value = ""]').prop('selected', 'selected');
+                    $('#dropResponsavel').attr('disabled', true);
+                } else {
+                    $('#dropResponsavel').attr('disabled', false);
+                }
+
+                ftth('Estacao/listar?nomeEstacao=' + nomeEstacao);
+                return false;
+            });
+
+            $('.container-filter').on('change', '#dropResponsavel', function () {
+                spinnerFtth('#ftthLista');
+                responsavel = $('#dropResponsavel').val();
+                ftth('Estacao/Listar?responsavel=' + responsavel);
+                return false;
+            });
+
+            //PAGINAÇÃO DA TABELA FTTH BASE
+            $('#ftthLista, #paged').on('click', '.btnPaged', function () {
+                spinnerFtth('#ftthLista');
+                let urlFtth = $(this).find('a').attr('href');
+                ftth(urlFtth + '&estacao=' + nomeEstacao + '&responsavel=' + responsavel);
+                return false;
+            });
+
+            //PEGAR VALORES DA TABELA FTTH BASE PARA REQUISIÇÃO ATUALIZAR
+            /*$('#ftthLista').on('click', '.tableFtth', function () {
+                carregarId = $(this).attr("data-id");
+
+                $.get('Construtora/Detalhe?id=' + carregarId,
+                    {}, function (resposta) {
+                        spinnerFtth('modal-body');
+                        $('.modal-body').html($(resposta).find('#displayDetalheFtth').html());
+                        return false;
+                    });
+
+                $(this).find('#exampleModal').modal({
+                    keyboard: true,
+                    backdrop: "static",
+                    show: false,
+
+                });
+            });
+
+            //CARREGAR VALORES A SEREM EDITADOS NA PAGINA EDITAR
+            $('.modal-content').on('click', '#editarFtth', function () {
+                window.location.href = 'Construtora/Editar?id=' + carregarId;
+            });*/
+
+        } (EstacaoIndex());
+    </script>
+        }

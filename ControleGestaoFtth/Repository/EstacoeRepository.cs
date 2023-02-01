@@ -1,6 +1,8 @@
 ﻿using ControleGestaoFtth.Context;
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
+using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace ControleGestaoFtth.Repository
 {
@@ -33,7 +35,35 @@ namespace ControleGestaoFtth.Repository
 
         public IEnumerable<Estacoe> Listar()
         {
-            throw new NotImplementedException();
+            return _context.Estacoes
+                .AsNoTracking()
+                .Select(value => new Estacoe
+                {
+                    Id = value.Id,
+                    Responsavel = value.Responsavel,
+                    NomeEstacao = value.NomeEstacao,
+
+                }).OrderBy(p => p.NomeEstacao)
+                .ToList();
+        }
+
+        public IEnumerable<Estacoe> Listar(int? pagina, string nomeEstacao, string responsavel)
+        {
+            int paginaTamanho = 10;
+            int paginaNumero = (pagina ?? 1);
+
+            IQueryable<Estacoe> resultado = _context.Estacoes.AsNoTracking();
+
+            if (nomeEstacao != null || responsavel != null)
+            {
+                return resultado.
+                    Where(p => p.NomeEstacao.Equals(nomeEstacao) || p.Responsavel.Equals(responsavel))
+                   .ToList().ToPagedList(paginaNumero, paginaTamanho);
+            }
+            
+            return resultado
+                .ToList().ToPagedList(paginaNumero, paginaTamanho); 
+            
         }
     }
 }

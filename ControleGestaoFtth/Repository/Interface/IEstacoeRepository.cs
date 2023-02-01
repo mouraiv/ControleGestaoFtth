@@ -8,6 +8,7 @@ namespace ControleGestaoFtth.Repository.Interface
         Estacoe Atualizar(Estacoe construtora);
         bool Deletar(int id);
         IEnumerable<Estacoe> Listar();
+        IEnumerable<Estacoe> Listar(int? pagina, string nomeEstacao, string responsavel);
         Estacoe CarregarId(int id);
     }
 }
