@@ -10,24 +10,31 @@
             {
                 foreach (var estacao in Model)
                 {
-                            <tr id="effectTableFtth">
-                                <td>
-                                    <table class="tableFtth" data-bs-toggle="modal" data-id="@estacao.Id" data-bs-target="#exampleModal" style="cursor: pointer;">
-                                        <tr>
-                                            <td id="rowTitle">
-                                                <a>@estacao.NomeEstacao</a>
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </td>
-                            </tr>
+
+                    <tr id="effectTableFtth">
+                        <td>
+                            <table class="tableFtth" data-bs-toggle="modal" data-id="@estacao.Id" data-bs-target="#exampleModal" style="cursor: pointer;">
+                                <tr>
+                                     <td width="25%" id="rowTitle">
+                                        <a>Responsável: @estacao.Responsavel</a>
+                                     </td>
+                                     <td width="30%">
+                                        <a>Estação: @estacao.NomeEstacao</a>
+                                     </td>
+                                     <td width="45%">
+                                        <a>Sigla: @estacao.Sigla</a>
+                                     </td>
+                                 </tr>
+                            </table>
+                        </td>
+                    </tr>
                 }
             }
             else
             {
-                    <tr>
-                        <td>Nenhum resultado.</td>
-                    </tr>
+                <tr>
+                    <td>Nenhum resultado.</td>
+                 </tr>    
             }
         </tbody>
     </table>

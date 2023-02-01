@@ -40,7 +40,6 @@ namespace ControleGestaoFtth.Repository
                 .Select(value => new Estacoe
                 {
                     Id = value.Id,
-                    Responsavel = value.Responsavel,
                     NomeEstacao = value.NomeEstacao,
 
                 }).OrderBy(p => p.NomeEstacao)
@@ -63,7 +62,21 @@ namespace ControleGestaoFtth.Repository
             
             return resultado
                 .ToList().ToPagedList(paginaNumero, paginaTamanho); 
-            
+        }
+
+        public IEnumerable<Estacoe> Responsavel()
+        {
+            return _context.Estacoes
+                .AsNoTracking()
+                .AsEnumerable()
+                .Select(value => new Estacoe
+                {
+                    Id = value.Id,
+                    Responsavel = value.Responsavel
+
+                }).DistinctBy(p => p.Responsavel)
+                .OrderBy(p => p.Responsavel)
+                .ToList();
         }
     }
 }

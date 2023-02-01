@@ -7,7 +7,7 @@
 }
 
 <div id="menuBarVertical">
-    <a role="button" class="btn btn-primary btn-sm" style="padding-top:0.4rem;">Adicionar</a>
+    <a role="button" id="btnRoles" class="btn btn-primary btn-sm">Adicionar</a>
     <hr class="divisorMenu m-0 p-0 ms-3">
     <button type="button" class="btn btn-primary btn-sm ms-3">Modelo Base</button>
     <button type="button" class="btn btn-warning btn-sm ms-2">Importar Base</button>
@@ -103,6 +103,7 @@
                 $('#dropEstacao').on('change', function () {
                     spinnerFtth('#ftthLista');
                     estacao = $('#dropEstacao').val();
+
                     panel('Construtora/lista?estacao=' + estacao);
                     ftth('Construtora/lista?estacao=' + estacao);
                     return false;

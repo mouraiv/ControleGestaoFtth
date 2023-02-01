@@ -16,12 +16,12 @@ namespace ControleGestaoFtth.Controllers
         public IActionResult Index()
         {
             ViewData ["selectEstacao"] = _estacaoRepository.Listar();
+            ViewData["selectResponsavel"] = _estacaoRepository.Responsavel();
             return View();
         }
         [HttpGet]
         public IActionResult Listar(int? pagina, string nomeEstacao, string responsavel)
         {
-            ViewData["selectEstacao"] = _estacaoRepository.Listar();
 
             IEnumerable<Estacoe> listar = _estacaoRepository.Listar(pagina, nomeEstacao, responsavel);
 

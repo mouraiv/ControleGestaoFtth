@@ -40,39 +40,39 @@
                     <tr id="effectTableFtth">
                         <td>
                             <table class="tableFtth" data-bs-toggle="modal" data-id="@construtora.Id" data-bs-target="#exampleModal" style="cursor: pointer;">
-                            <tr>
-                                 <td id="rowTitle" colspan="1" width="20%" align="center">
+                               <tr>
+                                <td id="rowTitle" colspan="1" align="center" style="width: 20%;">
                                     <a>@construtora.Estacao.NomeEstacao</a>
                                 </td>
-                                    <td colspan="2">
-                                        Cabo:<a>@construtora.Cabo</a>
-                                    </td>
+                                    <td width="20%" colspan="2">
+                                        <a>Cabo: @construtora.Cabo</a>
+                                 </td>
                                 <td width="20%" align="center" valign="baseline">
-                                    Data Recebimento:<a>@construtora.DatadeRecebimento?.ToString("dd/MM/yyyy")</a>
+                                        <a>Data Recebimento: @construtora.DatadeRecebimento?.ToString("dd/MM/yyyy")</a>
                                 </td>
-                                 <td width="25%">
-                                        Data Teste:<a>@construtora.DatadoTeste?.ToString("dd/MM/yyyy")</a>
+                                 <td width="20%">
+                                        <a>Data Teste: @construtora.DatadoTeste?.ToString("dd/MM/yyyy")</a>
                                     </td>
-                                  <td width="25%">
-                                        Técnico:<a>@construtora.Tecnico</a>
+                                  <td width="20%">
+                                        <a>Técnico: @construtora.Tecnico</a>
                                 </td>
-                            </tr>
+                                </tr>
                                 <tr>
                                 <td>
-                                        CDO:<a>@construtora.CDO</a>
+                                        <a>CDO: @construtora.CDO</a>
                                 </td>
                                     <td width="5%">
-                                        Celula:<a>@construtora.Celula</a>
+                                        <a>Celula: @construtora.Celula</a>
                                     </td>
                                     <td width="5%">
-                                        UMs:<a>@construtora.TotalUms</a>
+                                        <a>UMs: @construtora.TotalUms</a>
                                     </td>
                                     <td align="center" valign="baseline"><a>@construtora.Netwin?.Tipo</a></td>
                                 <td>
-                                        Data Construções:<a>@construtora.DatadeConstrucao?.ToString("dd/MM/yyyy")</a>
+                                        <a>Data Construções: @construtora.DatadeConstrucao?.ToString("dd/MM/yyyy")</a>
                                 </td>
                                   <td>
-                                        Equipe:<a>@construtora.EquipedeConstrucao</a>
+                                        <a>Equipe: @construtora.EquipedeConstrucao</a>
                                 </td>
                             </tr>
                             </table>

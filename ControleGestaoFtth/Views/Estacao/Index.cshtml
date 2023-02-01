@@ -7,18 +7,18 @@
 }
 
 <div id="menuBarVertical">
-    <a role="button" class="btn btn-primary btn-sm" style="padding-top:0.4rem;">Adicionar</a>
+    <a role="button" id="btnRoles" class="btn btn-primary btn-sm" style="padding-top:0.4rem;">Adicionar</a>
 </div>
 
 <div class="container-filter">
 
-    <div class="form-group" id="estacao">
+    <div class="form-group">
         <label>Estação</label>
         @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"NomeEstacao","NomeEstacao"), "--Todos--",new { @id="dropEstacao", @class="custom-select"})
     </div>
-    <div class="form-group" id="pl">
+    <div class="form-group">
         <label>Responsável</label>
-        @Html.DropDownList("selectEstacao", new SelectList(ViewBag.selectEstacao,"Responsavel","Responsavel"), "--Todos--",new { @id="dropResponsavel", @class="custom-select"})
+        @Html.DropDownList("selectResponsavel", new SelectList(ViewBag.selectResponsavel,"Responsavel","Responsavel"), "--Todos--",new { @id="dropResponsavel", @class="custom-select"})
     </div>
 
 </div>
