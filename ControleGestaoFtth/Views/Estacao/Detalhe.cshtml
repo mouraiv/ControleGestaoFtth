@@ -1,0 +1,25 @@
+﻿@model Estacoe
+
+<div id="displayDetalheFtth">
+    <!-- Condição Nula do Modal -->
+    @if (Model != null)
+    {
+        <table id="ftthDetalhe">
+            <tr>
+                <td colspan="2">Responsável: <a>@Model.Responsavel</a></td>
+            </tr>
+            <tr>
+                <td>Estação: <a>@Model.NomeEstacao</a></td>
+                <td>Sigla: <a>@Model.Sigla</a></td>
+            </tr>
+        </table>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            <a role="button" id="btnRoles" asp-controller="Estacao" asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+            <a role="button" id="btnRoles" asp-controller="Estacao" asp-action="Comfirmacao" asp-route-id="@Model.Id" class="btn btn-danger">Excluir</a>
+        </div>
+    }
+    <!-- End condição -->
+</div>
+

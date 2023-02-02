@@ -25,7 +25,9 @@ namespace ControleGestaoFtth.Repository
 
         public Estacoe CarregarId(int id)
         {
-            throw new NotImplementedException();
+            return _context.Estacoes
+                    .Where(p => p.Id == id)
+                    .First();
         }
 
         public bool Deletar(int id)

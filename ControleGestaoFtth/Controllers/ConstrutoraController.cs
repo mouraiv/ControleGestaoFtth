@@ -1,7 +1,6 @@
 ﻿using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -37,8 +36,14 @@ namespace ControleGestaoFtth.Controllers
 
             return View(construtora);
         }
+        public IActionResult Confirmacao(int id)
+        {
+            Construtora construtora = _construtoraRepository.CarregarId(id);
+
+            return View(construtora);
+        }
         [HttpGet]
-        public IActionResult Lista(int? pagina, string estacao, string cdo, int? cabo, int? celula)
+        public IActionResult Listar(int? pagina, string estacao, string cdo, int? cabo, int? celula)
         {
             if (estacao != null)
             {
@@ -66,6 +71,39 @@ namespace ControleGestaoFtth.Controllers
 
         }
         [HttpPost]
+        public IActionResult Inserir(Construtora construtora)
+        {
+            ViewData["selectViabilidade"] = _construtoraRepository.Netwins();
+            ViewData["selectEstacao"] = _construtoraRepository.Estacoes();
+            ViewData["selectObras"] = _construtoraRepository.TipoObras();
+            ViewData["selectEstadoCampo"] = _construtoraRepository.EstadoCampos();
+
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    if (_construtoraRepository.UniqueCdo().Any(p => p.CDO.Equals(construtora.CDO)))
+                    {
+                        TempData["Falha"] = $"A Mercadoria {construtora.CDO} já existe!";
+
+                        return View(construtora);
+                    }
+                    else
+                    {
+                        _construtoraRepository.Cadastrar(construtora);
+                        TempData["Sucesso"] = "Cadastrado com sucesso!.";
+                        return RedirectToAction("Inserir");
+                    }
+                }
+                return View(construtora);
+            }
+            catch (Exception error)
+            {
+                TempData["Falha"] = $"Erro ao inserir - {error.Message}";
+                return View(construtora);
+            }
+        }
+        [HttpPost]
         public IActionResult Editar(Construtora construtora)
         {
             try
@@ -79,6 +117,21 @@ namespace ControleGestaoFtth.Controllers
             {
                 TempData["Falha"] = $"Erro ao Atualizar - {error.Message}";
                 return View(construtora);
+            }
+        }
+        [HttpPost]
+        public IActionResult Apagar(int id)
+        {
+            try
+            {
+                _construtoraRepository.Deletar(id);
+                TempData["Sucesso"] = "CDO Excluída com sucesso.";
+                return RedirectToAction("Index");
+            }
+            catch (Exception error)
+            {
+                TempData["Falha"] = $"Erro ao Excluir - {error.Message}";
+                return RedirectToAction("Index");
             }
         }
     }

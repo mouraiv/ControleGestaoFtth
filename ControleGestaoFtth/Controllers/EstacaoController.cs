@@ -19,6 +19,26 @@ namespace ControleGestaoFtth.Controllers
             ViewData["selectResponsavel"] = _estacaoRepository.Responsavel();
             return View();
         }
+        public IActionResult Inserir()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult Inserir(Estacoe estacao)
+        {
+            return View();
+        }
+
+        [HttpGet]
+        public IActionResult Detalhe(int id)
+        {
+            Estacoe estacao = _estacaoRepository.CarregarId(id);
+
+            return View(estacao);
+
+        }
+
         [HttpGet]
         public IActionResult Listar(int? pagina, string nomeEstacao, string responsavel)
         {

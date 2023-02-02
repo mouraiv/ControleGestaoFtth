@@ -50,25 +50,31 @@ namespace ControleGestaoFtth.Repository
 
         public Construtora Cadastrar(Construtora construtora)
         {
-            throw new NotImplementedException();
+            _context.Construtoras.Add(construtora);
+            _context.SaveChanges();
+            return construtora;
         }
 
         public Construtora CarregarId(int id)
         {
-          var carregarId = _context.Construtoras
+          return _context.Construtoras
                     .Include(p => p.Estacao)
                     .Include(p => p.TipoObra)
                     .Include(p => p.Netwin)
                     .Include(p => p.EstadoCampo)
                     .Where(p => p.Id == id)
-                    .FirstOrDefault();
-      
-            return carregarId;
+                    .First();
         }
 
         public bool Deletar(int id)
         {
-            throw new NotImplementedException();
+            Construtora db = CarregarId(id);
+
+            if (db == null) throw new Exception("Houve um erro ao apagar");
+
+            _context.Construtoras.Remove(db);
+            _context.SaveChanges();
+            return true;
         }
 
         public IEnumerable<Construtora> Listar(int? pagina, string estacao, string cdo, int? cabo, int? celula)

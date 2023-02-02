@@ -1,5 +1,6 @@
 ﻿@model Construtora
 
+    <!-- Alert para tratamento de exceções -->
     @if (TempData["Sucesso"] != null)
     {
         <div class="alert alert-success" role="alert">
@@ -14,12 +15,13 @@
             <strong>Error! </strong>@TempData["Falha"]
         </div>
     }
+    <!-- End  Alert-->
 
+<!-- Formulário para edição -->
 <form asp-controller="Construtora" asp-action="Editar" method="post" class="needs-validation" novalidate>
     <input type="hidden" asp-for="Id">
     <div id="formEditar" class="row">
         <div class="form-group" id="titleEditForm">
-
             <a id="DescricaoResponsavel">@Model.Estacao.Responsavel</a>
         </div>
         <div class="selectEstacaoClass form-group col">
@@ -176,13 +178,14 @@
         </div>
     </div>
 </form>
+<!-- End Formulário-->
 
 @section Scripts
     {
     <script>
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW EDITAR CONSTRUTORA
         function ConstrutoraEditar() {
-            //VARIAVEIS GLOBAIS DE ACESSO JSON
+            //VARIAVEIS GLOBAIS DE ACESSO JSON MODAL SERIALIZE
             var jsonViabilidadeSelect = @Html.Raw(Json.Serialize(ViewBag.selectViabilidade));
             var jsonEstacaoSelect = @Html.Raw(Json.Serialize(ViewBag.selectEstacao));
 
@@ -192,21 +195,33 @@
             $('#dropViabilidade option[value = "' + @Model.Netwin?.Id + '"]').prop('selected', 'selected');
             $('#dropEditEstadoCampo option[value = "' + @Model.EstadoCampo.Id + '"]').prop('selected', 'selected');
 
-            //CARREGAR DESCRIÇÃO DO SELECT ESTAÇÃO
+            //CARREGAR DESCRIÇÃO DO SELECT TAG ESTAÇÃO
             $('#formEditar').on('change','.selectEstacaoClass select', function (){
+                //FILTRAR ID E ARMAZENAR
                 let _JsonEstacaoSelect = jsonEstacaoSelect.find(p => p.id === parseInt($(this).val()));
+
+                //GET OBJECT CORRESPONDENTE A ID E ARMAZENAR
                 let textResponsavel = _JsonEstacaoSelect.responsavel;
+
+                //MOSTRAR OBJECT CORRESPONDENTE NA TAG
                 $('form').find('#DescricaoResponsavel').text(textResponsavel);
             });
 
-            //CARREGAR DESCRIÇÃO DO SELECT VIABILIDADE
+            //CARREGAR DESCRIÇÃO DO SELECT TAG VIABILIDADE
             $('#formEditar').on('change', '#dropViabilidade', function () {
+                //FILTRAR ID E ARMAZENAR
                 let _JsonViabilidadeSelect = jsonViabilidadeSelect.find(p => p.id === parseInt($('#dropViabilidade').val()));
+
+                //GET OBJECT CORRESPONDENTE A ID E ARMAZENAR
                 let textViabilidade = '[ ' + _JsonViabilidadeSelect.tipo + ' ] - ' + _JsonViabilidadeSelect.descricao;
+
+                //MOSTRAR OBJECT CORRESPONDENTE NA TAG
                 $('form').find('#DescricaoViabilidade').text(textViabilidade);
+
+                //MOSTRAR OBJECT CORRESPONDENTE NA TAG SE A LARGURA FOR < 768
                 $('form #vlmdesc').find('#DescricaoViabilidade').text(textViabilidade);
 
-                //CONDIÇÃO RESPONSIVA PARA EXECUÇÃO SHOW ME COLLAPSE
+                //CONDIÇÃO RESPONSIVA PARA EXECUÇÃO DA TAG DESCRIÇÃO DO COLLAPSE
                 if ($(window).width() < 768) {
                     $('form #vlmdesc').collapse('show');
                 }else{
