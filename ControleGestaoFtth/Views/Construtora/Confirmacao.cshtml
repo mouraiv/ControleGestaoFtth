@@ -2,13 +2,14 @@
 @{
     ViewData["Title"] = "Confirmação";
 }
-
-<div class="modal-content">
-    <div class="modal-body">
-        <a id="AvisoConfirmacao">O registro N°@Model.Id referente a "@Model.CDO" será excluído permanentemente. <br /><br /> Deseja realmente excluir?   </a>
-        <div class="modal-footer mt-4">
-            <a role="button" id="btnRoles" asp-controller="Construtora" asp-action="Index" class="btn btn-secondary mt-2">Cancelar</a>
-            <a role="button" id="btnRoles" asp-controller="Construtora" asp-action="Apagar" asp-route-id="@Model.Id" class="btn btn-primary mt-2">Confirmar</a>
+<div class="d-flex flex-row justify-content-center">
+    <div class="modal-content">
+        <div class="modal-body">
+            <a id="AvisoConfirmacao">O registro N°@Model.Id referente a "@Model.CDO" será excluído permanentemente. <br /><br /> Deseja realmente excluir?   </a>
+            <div class="modal-footer mt-4">
+                <button onclick="location.href='@Url.Action("Index", "Construtora")'" class="btn btn-secondary mt-2 cancelar">Cancelar</button>
+                <button onclick="location.href='@Url.Action("Apagar", "Construtora", new {id = Model.Id})'" class="btn btn-primary mt-2">Confirmar</button>
+            </div>
         </div>
     </div>
 </div>

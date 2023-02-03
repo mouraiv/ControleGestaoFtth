@@ -4,6 +4,16 @@
         font-size: 0.8rem;
     }
 
+    .main-container #iconBtn {
+        width: 1.7rem;
+        height: 1.7rem;
+        margin-top: 0.2rem;
+    }
+
+    .main-container #btnIconExcluir {
+        margin-top: 1.4rem;
+    }
+
     #plCdo {
         position: absolute;
         left: 0;
@@ -298,7 +308,7 @@
         width: auto;
     }
 
-    .alert {
+    #alertForm {
         max-width: 900px;
     }
 
@@ -313,8 +323,9 @@
         padding-bottom: 0.3rem;
         padding-left: 0.4rem;
         padding-right: 0.4rem;
-        border-radius: 1rem;
-        font-size: 0.7rem;
+        border-radius: 100%;
+        width: 1.8rem;
+        font-size: 0.6rem;
         margin-right: 1rem; 
     }
 
@@ -334,19 +345,21 @@
         color: #2A2A33
     }
 
-    #btnIconExcluir {
-        position: absolute;
-        color: #4b4b4b;
-        font-size: 1rem;
-        padding-right: 0.6rem;
-        padding-left: 0.6rem;
-        padding-top: 0.4rem;
-        padding-bottom: 0.4rem;
-        right: 0;
-        top: 0;
-        margin-top: 1.7rem;
-        margin-right: 0.9rem;
-    }
+#btnIconExcluir {
+    position: absolute;
+    color: #4b4b4b;
+    font-size: 1rem;
+    padding-right: 0.6rem;
+    padding-left: 0.6rem;
+    padding-top: 0.1rem;
+    padding-bottom: 0.3rem;
+    right: 0;
+    top: 0;
+    border: 0 !important;
+    background-color: #e9ecef;
+    margin-top: 1.7rem;
+    margin-right: 0.9rem;
+}
 
     .main-container #btnRoles {
         padding-top: 0.4rem;

@@ -1,22 +1,24 @@
 ﻿@model Construtora
 
-    <!-- Alert para tratamento de exceções -->
-    @if (TempData["Sucesso"] != null)
-    {
-        <div class="alert alert-success" role="alert">
-            <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Sucesso! </strong>@TempData["Sucesso"]
-        </div>
-    }
-    @if (TempData["Falha"] != null)
-    {
-        <div class="alert alert-danger" role="alert">
-            <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            <strong>Error! </strong>@TempData["Falha"]
-        </div>
-    }
-    <!-- End  Alert-->
-
+<div class="d-flex flex-row justify-content-center">
+    <div class="d-flex flex-column">
+        <!-- Alert para tratamento de exceções -->
+        @if (TempData["Sucesso"] != null)
+        {
+            <div id="alertForm" class="alert alert-success" role="alert">
+                <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Sucesso! </strong>@TempData["Sucesso"]
+            </div>
+        }
+        @if (TempData["Falha"] != null)
+        {
+            <div id="alertForm" class="alert alert-danger" role="alert">
+                <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <strong>Error! </strong>@TempData["Falha"]
+            </div>
+        }
+        <!-- End  Alert-->
+   
 <!-- Formulário para edição -->
 <form asp-controller="Construtora" asp-action="Editar" method="post" class="needs-validation" novalidate>
     <input type="hidden" asp-for="Id">
@@ -31,7 +33,7 @@
                     @Html.DropDownListFor(model => model.EstacoesId, new SelectList(ViewBag.selectEstacao,"Id","NomeEstacao"), new {@id="#dropEditEstacao", @class="custom-select w-100"})
                 </div>
                 <div class="col-auto">
-                    <i id="iconBtn" title="Adicionar" role="button" class="fa fa-plus"></i>
+                      <button type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
                 </div>
             </div>
         </div>
@@ -42,7 +44,7 @@
                      @Html.DropDownListFor(model => model.TipoObraId, new SelectList(ViewBag.selectObras,"Id","Nome"), new {@id="#dropEditTipoObras", @class="custom-select w-100"})
                 </div>
              <div class="col-auto">
-                    <i id="iconBtn" role="button" class="fa fa-plus"></i>
+                     <button type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
                 </div>
              </div>
         </div>
@@ -50,7 +52,7 @@
         <div id="cdoInput" class="form-group col">
         <label>CDO:</label>
             <input type="text" asp-for="CDO" class="form-control" disabled>
-            <i id="btnIconExcluir" role="button" title="Excluir" class="fa fa-trash"></i>
+                    <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" id="btnIconExcluir" title="Excluir"><i class="fa fa-trash"></i></button>
         </div>
         <div id="vlrow" class="form-group col">
             <label>Viabilidade:</label>
@@ -62,7 +64,7 @@
                     <a id="DescricaoViabilidade">[ @Model.Netwin?.Tipo ] - @Model.Netwin?.Descricao</a>
                  </div>
                 <div id="vlicon" class="col">
-                    <i id="iconBtn" title="Adicionar" role="button" class="fa fa-plus"></i>
+                     <button type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
                 </div>
             </div>
             <div id="vlmdesc" class="collapse in width">
@@ -110,7 +112,7 @@
                     @Html.DropDownListFor(model => model.EstadoCamposId, new SelectList(ViewBag.selectEstadoCampo,"Id","Nome"), new {@id="dropEditEstadoCampo", @class="custom-select w-100"})
                 </div>
                 <div class="col-auto">
-                    <i id="iconBtn" title="Adicionar" role="button" class="fa fa-plus"></i>
+                    <button type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
                 </div>
             </div>
         </div>
@@ -179,6 +181,31 @@
     </div>
 </form>
 <!-- End Formulário-->
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a class="modal-title" id="exampleModalLabel">Ficha Técnica</a>
+            </div>
+            <div class="modal-body">
+
+                <!--Conteudo Display-->
+                <div class="d-flex justify-content-center">
+                    <div class="spinner-border text-secondary m-5" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                </div>
+                <!-- End -->
+
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
 
 @section Scripts
     {
@@ -194,6 +221,17 @@
             $('#dropEditTipoObras option[value = "' + @Model.TipoObra?.Id + '"]').prop('selected', 'selected');
             $('#dropViabilidade option[value = "' + @Model.Netwin?.Id + '"]').prop('selected', 'selected');
             $('#dropEditEstadoCampo option[value = "' + @Model.EstadoCampo.Id + '"]').prop('selected', 'selected');
+
+            //SPINNER LOADER
+            const spinnerFtth = (display) => {
+                $(display).html(`
+                                <div class= "d-flex justify-content-center">
+                                    <div class="spinner-border text-secondary m-5" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div>
+                                </div>
+                            `   )
+            }
 
             //CARREGAR DESCRIÇÃO DO SELECT TAG ESTAÇÃO
             $('#formEditar').on('change','.selectEstacaoClass select', function (){
@@ -227,7 +265,7 @@
                 }else{
                     $('#vldesc').collapse('show');
                 }
-                
+  
                 setTimeout(function () {
                     //CONDIÇÃO RESPONSIVA PARA EXECUÇÃO HIDE ME COLLAPSE
                     if ($(window).width() < 768) {
@@ -237,6 +275,36 @@
                     }
                 }, 10000);
             });
+
+            //AÇÃO BUTTON ICON EXCLUIR SHOW ME MODAL
+            $('#formEditar').on('click', '#btnIconExcluir', function () {
+                //CARREGAR DETAHLE VIEW E CHAMAR O COLLAPSE MODAL
+                $.get('../../Construtora/Confirmacao?id=' + @Model.Id,
+                    {}, function (resposta) {
+                        //CARREGAR SPINNER LOADER
+                        spinnerFtth('modal-body');
+
+                        //CARREGAR PARTIAL VIEW
+                        $('.modal-body').html($(resposta).find('.modal-body').html());
+
+                        //EDITAR MODAL FOOTER
+                        $('.modal-body .modal-footer').html(`
+                            <button onclick = "location.href='@Url.Action("Editar", "Construtora", new {id = Model.Id})'" class= "btn btn-secondary mt-2">Cancelar</button>
+                            <button onclick="location.href='@Url.Action("Apagar", "Construtora", new {id = Model.Id})'" class="btn btn-primary mt-2">Confirmar</button>
+                        `);
+
+                        return false;
+                    });
+
+                //CARREGAR ATRIBUTOS MODAL
+                $(this).find('#exampleModal').modal({
+                    keyboard: true,
+                    backdrop: "static",
+                    show: false,
+
+                });
+            });
+
         } (ConstrutoraEditar());
     </script>
 }

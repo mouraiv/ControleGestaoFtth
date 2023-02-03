@@ -6,6 +6,23 @@
 
 }
 
+<!-- Alert para tratamento de exceções -->
+@if (TempData["Sucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Sucesso! </strong>@TempData["Sucesso"]
+    </div>
+}
+@if (TempData["Falha"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong>Error! </strong>@TempData["Falha"]
+    </div>
+}
+<!-- End  Alert-->
+
 <!-- Menu button vertical -->
 <div id="menuBarVertical">
     <a role="button" id="btnRoles" class="btn btn-primary btn-sm" style="padding-top:0.4rem;">Adicionar</a>
@@ -54,10 +71,6 @@
                 </div>
                 <!-- End -->
 
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
-                <button type="button" id="editarFtth" class="btn btn-primary">Editar</button>
             </div>
         </div>
     </div>

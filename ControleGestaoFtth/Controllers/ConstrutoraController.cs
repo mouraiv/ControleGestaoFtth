@@ -119,7 +119,7 @@ namespace ControleGestaoFtth.Controllers
                 return View(construtora);
             }
         }
-        [HttpPost]
+        [HttpGet]
         public IActionResult Apagar(int id)
         {
             try
