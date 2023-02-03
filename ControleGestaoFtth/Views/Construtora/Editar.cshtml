@@ -188,8 +188,7 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-                <a class="modal-title" id="exampleModalLabel">Ficha Técnica</a>
+            <div class="modal-header bg-primary p-2 position-relative">
             </div>
             <div class="modal-body">
 
@@ -284,12 +283,20 @@
                         //CARREGAR SPINNER LOADER
                         spinnerFtth('modal-body');
 
+                        //EDITAR MODAL HEADER
+                        $('.modal-header').html(`
+                              <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden="true""></i>
+                        <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
+                         -- Atenção --
+                        </a>
+                        `);
+
                         //CARREGAR PARTIAL VIEW
                         $('.modal-body').html($(resposta).find('.modal-body').html());
 
                         //EDITAR MODAL FOOTER
                         $('.modal-body .modal-footer').html(`
-                            <button onclick = "location.href='@Url.Action("Editar", "Construtora", new {id = Model.Id})'" class= "btn btn-secondary mt-2">Cancelar</button>
+                            <button data-bs-dismiss="modal" class= "btn btn-secondary mt-2">Cancelar</button>
                             <button onclick="location.href='@Url.Action("Apagar", "Construtora", new {id = Model.Id})'" class="btn btn-primary mt-2">Confirmar</button>
                         `);
 

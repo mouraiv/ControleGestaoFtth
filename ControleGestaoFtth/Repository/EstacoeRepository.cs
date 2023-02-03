@@ -13,14 +13,27 @@ namespace ControleGestaoFtth.Repository
         {
             _context = context;
         }
-        public Estacoe Atualizar(Estacoe construtora)
+        public Estacoe Atualizar(Estacoe estacao)
         {
-            throw new NotImplementedException();
+            Estacoe db = CarregarId(estacao.Id);
+
+            if (db == null) throw new Exception("Houve um erro na atualização");
+
+            db.Responsavel = estacao.Responsavel;
+            db.NomeEstacao = estacao.NomeEstacao;
+            db.Sigla = estacao.Sigla;
+
+            _context.Estacoes.Update(db);
+            _context.SaveChanges();
+
+            return db;
         }
 
-        public Estacoe Cadastrar(Estacoe construtora)
+        public Estacoe Cadastrar(Estacoe estacao)
         {
-            throw new NotImplementedException();
+            _context.Estacoes.Add(estacao);
+            _context.SaveChanges();
+            return estacao;
         }
 
         public Estacoe CarregarId(int id)
@@ -32,7 +45,13 @@ namespace ControleGestaoFtth.Repository
 
         public bool Deletar(int id)
         {
-            throw new NotImplementedException();
+            Estacoe db = CarregarId(id);
+
+            if (db == null) throw new Exception("Houve um erro ao apagar");
+
+            _context.Estacoes.Remove(db);
+            _context.SaveChanges();
+            return true;
         }
 
         public IEnumerable<Estacoe> Listar()
