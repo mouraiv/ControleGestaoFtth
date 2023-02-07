@@ -13,8 +13,8 @@
         <div class="modal-body">
             <a id="AvisoConfirmacao">O registro N°@Model.Id referente a "@Model.CDO" será excluído permanentemente. <br /><br /> Deseja realmente excluir?   </a>
             <div class="modal-footer mt-4">
-                <button onclick="location.href='@Url.Action("Index", "Construtora")'" class="btn btn-secondary mt-2 cancelar">Cancelar</button>
                 <button onclick="location.href='@Url.Action("Apagar", "Construtora", new {id = Model.Id})'" class="btn btn-primary mt-2">Confirmar</button>
+                <button onclick="location.href='@Url.Action("Index", "Construtora")'" class="btn btn-secondary mt-2 cancelar">Cancelar</button>
             </div>
         </div>
     </div>

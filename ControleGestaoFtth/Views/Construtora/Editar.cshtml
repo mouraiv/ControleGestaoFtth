@@ -22,6 +22,7 @@
 <!-- Formulário para edição -->
 <form asp-controller="Construtora" asp-action="Editar" method="post" class="needs-validation" novalidate>
     <input type="hidden" asp-for="Id">
+            <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- EDITAR --</a></div>
     <div id="formEditar" class="row">
         <div class="form-group" id="titleEditForm">
             <a id="DescricaoResponsavel">@Model.Estacao.Responsavel</a>
@@ -49,7 +50,7 @@
              </div>
         </div>
         <div class="w-100"></div>
-        <div id="cdoInput" class="form-group col">
+        <div id="cdoInput" class="form-group position-relative col">
         <label>CDO:</label>
             <input type="text" asp-for="CDO" class="form-control" disabled>
                     <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" id="btnIconExcluir" title="Excluir"><i class="fa fa-trash"></i></button>
@@ -174,9 +175,9 @@
             <textarea type="text" asp-for="Observacoes" class="form-control" maxlength="500" id="inputArea"></textarea>
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
-        <div class="d-flex bg-white mt-3 flex-row-reverse">
-            <button type="submit" class="btn btn-primary mt-4 ms-2">Salvar</button>
-            <a role="button" asp-action="Index" asp-controller="Construtora" id="btnRoles" class="btn btn-secondary mt-4">Voltar</a>
+        <div class="modal-footer p-0 m-0 mt-4">
+            <button type="submit" class="btn btn-primary mt-4 ms-2">Editar</button>
+            <a role="button" asp-action="Index" asp-controller="Construtora" id="btnRoles" class="btn btn-secondary mt-4 me-2">Voltar</a>
         </div>
     </div>
 </form>
@@ -296,8 +297,8 @@
 
                         //EDITAR MODAL FOOTER
                         $('.modal-body .modal-footer').html(`
-                            <button data-bs-dismiss="modal" class= "btn btn-secondary mt-2">Cancelar</button>
                             <button onclick="location.href='@Url.Action("Apagar", "Construtora", new {id = Model.Id})'" class="btn btn-primary mt-2">Confirmar</button>
+                            <button data-bs-dismiss="modal" class= "btn btn-secondary mt-2">Cancelar</button>
                         `);
 
                         return false;

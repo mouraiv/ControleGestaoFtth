@@ -22,9 +22,11 @@ namespace ControleGestaoFtth.Controllers
         {
             return View();
         }
-        public IActionResult Editar()
+        public IActionResult Editar(int id)
         {
-            return View();
+            Estacoe estacao = _estacaoRepository.CarregarId(id);
+
+            return View(estacao);
         }
         public IActionResult Confirmacao(int id)
         {
@@ -38,26 +40,22 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (_estacaoRepository.Listar().Any(p => p.NomeEstacao.Equals(estacao.NomeEstacao)))
                 {
-                    if (_estacaoRepository.Listar().Any(p => p.NomeEstacao.Equals(estacao.NomeEstacao)))
-                    {
-                        TempData["Falha"] = $"A Mercadoria {estacao.NomeEstacao} já existe!";
+                    TempData["Falha"] = $"O estação {estacao.NomeEstacao} já existe!";
 
-                        return View(estacao);
-                    }
-                    else
-                    {
-                        _estacaoRepository.Cadastrar(estacao);
-                        TempData["Sucesso"] = "Cadastrado com sucesso!.";
-                        return RedirectToAction("Inserir");
-                    }
+                    return View(estacao);
                 }
-                return View(estacao);
+                else
+                {
+                    _estacaoRepository.Cadastrar(estacao);
+                    TempData["Sucesso"] = "Cadastrado com sucesso!.";
+                    return RedirectToAction("Inserir");
+                }
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao inserir - {error.Message}";
+                TempData["Falha"] = $"Erro ao inserir - {error}";
                 return View(estacao);
             }
         }
@@ -83,9 +81,17 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                _estacaoRepository.Deletar(id);
-                TempData["Sucesso"] = "CDO Excluída com sucesso.";
-                return RedirectToAction("Index");
+                if (!_estacaoRepository.UniqueFk().Any(p => p.EstacoesId.Equals(id)))
+                {
+                    _estacaoRepository.Deletar(id);
+                    TempData["Sucesso"] = $"Estação Excluída com sucesso.";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["Falha"] = $"Estação N°{id} contém registros relacionais e não pode ser excluída.";
+                    return RedirectToAction("Index");
+                }
             }
             catch (Exception error)
             {

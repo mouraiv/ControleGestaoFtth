@@ -50,11 +50,31 @@
     .container-filter {
         position: relative;
         min-height: 115px;
-    }    
+    }
 }
 
     .modal{
         overflow-y:scroll;
+    }
+
+    .modal-header {
+        border-bottom: 0.1rem solid #0d6efd;
+        justify-content: center;
+        background-color: #0d6efd;
+    }
+
+    .modal-title {
+        margin-bottom: 0;
+        line-height: 0.2rem;
+        text-decoration: none;
+        font-size:0.8rem;
+        font-weight: 600;
+        color: #ffffff;
+    }
+
+    .modal-body {
+        border: 0.1rem solid #0d6efd;
+        margin:0 !important;
     }
 
     .nav-link {
@@ -222,23 +242,13 @@
         padding-right: 6.4rem;
     }
 
-    .modal-title {
-        margin-bottom: 0;
-        line-height: 1.5;
-        text-decoration: none;
-        font-weight: 600;
-        color: #000000
-    }
-
-    .modal-header {
-        justify-content: center;
-    }
-
     #formEditar {
         background-color: #ECF0F1;
         padding-top: 0.5rem;
+        padding-bottom: 2rem;
         max-width: 900px;
         margin: 0;
+        border: 0.1rem solid #0d6efd;
     }
 
     #formEditar label{
@@ -314,7 +324,6 @@
 
     .close-alert {
         border: 0;
-        background-color: #d1e7dd;
     }
 
     #iconBtn{
@@ -345,21 +354,21 @@
         color: #2A2A33
     }
 
-#btnIconExcluir {
-    position: absolute;
-    color: #4b4b4b;
-    font-size: 1rem;
-    padding-right: 0.6rem;
-    padding-left: 0.6rem;
-    padding-top: 0.1rem;
-    padding-bottom: 0.3rem;
-    right: 0;
-    top: 0;
-    border: 0 !important;
-    background-color: #e9ecef;
-    margin-top: 1.7rem;
-    margin-right: 0.9rem;
-}
+    #btnIconExcluir {
+        position: absolute;
+        color: #4b4b4b;
+        font-size: 1rem;
+        padding-right: 0.6rem;
+        padding-left: 0.6rem;
+        padding-top: 0.1rem;
+        padding-bottom: 0.3rem;
+        right: 0;
+        top: 0;
+        border: 0 !important;
+        background-color: #e9ecef;
+        margin-top: 1.7rem;
+        margin-right: 0.9rem;
+    }
 
     .main-container #btnRoles {
         padding-top: 0.4rem;
