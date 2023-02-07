@@ -40,7 +40,7 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                if (_estacaoRepository.Listar().Any(p => p.NomeEstacao.Equals(estacao.NomeEstacao)))
+                if (_estacaoRepository.Listar().Any(p => p.NomeEstacao.Equals(estacao.NomeEstacao.ToUpper())))
                 {
                     TempData["Falha"] = $"O estação {estacao.NomeEstacao} já existe!";
 
@@ -103,19 +103,36 @@ namespace ControleGestaoFtth.Controllers
         [HttpGet]
         public IActionResult Detalhe(int id)
         {
-            Estacoe estacao = _estacaoRepository.CarregarId(id);
+            try
+            {
+                Estacoe estacao = _estacaoRepository.CarregarId(id);
 
-            return View(estacao);
+                return View(estacao);
+            }
+            catch (Exception error)
+            {
+                TempData["Falha"] = $"Erro - {error.Message}";
+                return PartialView();
+            }
 
         }
 
         [HttpGet]
         public IActionResult Listar(int? pagina, string nomeEstacao, string responsavel)
         {
+            try
+            {
+                IEnumerable<Estacoe> listar = _estacaoRepository.Listar(pagina, nomeEstacao, responsavel);
 
-            IEnumerable<Estacoe> listar = _estacaoRepository.Listar(pagina, nomeEstacao, responsavel);
+                return PartialView(listar);
+            }
+            catch (Exception error)
+            {
+                TempData["Falha"] = $"Erro - {error.Message}";
+                return PartialView();
+            }
 
-            return PartialView(listar);
+                
         }
     }
 }

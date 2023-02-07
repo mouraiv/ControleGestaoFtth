@@ -15,6 +15,7 @@ namespace ControleGestaoFtth.Controllers
         public IActionResult Index()
         {
             ViewData["selectEstacao"] = _construtoraRepository.Estacoes();
+
             return View();
         }
         public IActionResult Inserir()
@@ -58,16 +59,33 @@ namespace ControleGestaoFtth.Controllers
                 ViewData["selectCelulaFilter"] = _construtoraRepository.FilterCelula("");
             }
 
-            IEnumerable<Construtora> listar = _construtoraRepository.Listar(pagina, estacao ?? "", cdo, cabo, celula);
+            try
+            {
+                IEnumerable<Construtora> listar = _construtoraRepository.Listar(pagina, estacao ?? "", cdo, cabo, celula);
 
-            return PartialView(listar);
+                return PartialView(listar);
+            }
+            catch (Exception error)
+            {
+                TempData["Falha"] = $"Erro ao Listar - {error.Message}";
+                return PartialView();
+            }
+             
         }
         [HttpGet]
         public IActionResult Detalhe(int id)
         {
-            Construtora construtora = _construtoraRepository.CarregarId(id);
+            try
+            {
+                Construtora construtora = _construtoraRepository.CarregarId(id);
 
-            return View(construtora);
+                return View(construtora);
+            }
+            catch (Exception error)
+            {
+                TempData["Falha"] = $"Erro ao Listar - {error.Message}";
+                return PartialView();
+            }
 
         }
         [HttpPost]
@@ -82,7 +100,7 @@ namespace ControleGestaoFtth.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    if (_construtoraRepository.UniqueCdo().Any(p => p.CDO.Equals(construtora.CDO)))
+                    if (_construtoraRepository.UniqueCdo().Any(p => p.CDO.Equals(construtora.CDO.ToUpper())))
                     {
                         TempData["Falha"] = $"A Mercadoria {construtora.CDO} já existe!";
 
