@@ -324,6 +324,12 @@
 
     .close-alert {
         border: 0;
+        background-color: transparent !important;
+    }
+
+    .alert a{
+        font-size:0.8rem;
+        font-weight: 600;
     }
 
     #iconBtn{

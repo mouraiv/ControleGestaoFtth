@@ -67,7 +67,7 @@ namespace ControleGestaoFtth.Controllers
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao Listar - {error.Message}";
+                TempData["Falha"] = $"Erro ao listar - {error.Message}.";
                 return PartialView();
             }
              
@@ -83,7 +83,7 @@ namespace ControleGestaoFtth.Controllers
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao Listar - {error.Message}";
+                TempData["Falha"] = $"Erro ao listar - {error.Message}.";
                 return PartialView();
             }
 
@@ -102,14 +102,14 @@ namespace ControleGestaoFtth.Controllers
                 {
                     if (_construtoraRepository.UniqueCdo().Any(p => p.CDO.Equals(construtora.CDO.ToUpper())))
                     {
-                        TempData["Falha"] = $"A Mercadoria {construtora.CDO} já existe!";
+                        TempData["Falha"] = $"CDO {construtora.CDO} já existe.";
 
                         return View(construtora);
                     }
                     else
                     {
                         _construtoraRepository.Cadastrar(construtora);
-                        TempData["Sucesso"] = "Cadastrado com sucesso!.";
+                        TempData["Sucesso"] = "Inserido com sucesso.";
                         return RedirectToAction("Inserir");
                     }
                 }
@@ -117,7 +117,7 @@ namespace ControleGestaoFtth.Controllers
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao inserir - {error.Message}";
+                TempData["Falha"] = $"Erro ao inserir - {error.Message}.";
                 return View(construtora);
             }
         }
@@ -127,13 +127,13 @@ namespace ControleGestaoFtth.Controllers
             try
             {
                 _construtoraRepository.Atualizar(construtora);
-                TempData["Sucesso"] = "Atualizado com sucesso!";
+                TempData["Sucesso"] = "Editado com sucesso.";
                 return RedirectToAction("Editar", new { id = construtora.Id });
                 
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao Atualizar - {error.Message}";
+                TempData["Falha"] = $"Erro ao editar - {error.Message}.";
                 return View(construtora);
             }
         }
@@ -148,7 +148,7 @@ namespace ControleGestaoFtth.Controllers
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao Excluir - {error.Message}";
+                TempData["Falha"] = $"Erro ao excluir - {error.Message}";
                 return RedirectToAction("Index");
             }
         }

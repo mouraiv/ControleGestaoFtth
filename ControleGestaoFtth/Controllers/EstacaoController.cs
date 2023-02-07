@@ -42,20 +42,20 @@ namespace ControleGestaoFtth.Controllers
             {
                 if (_estacaoRepository.Listar().Any(p => p.NomeEstacao.Equals(estacao.NomeEstacao.ToUpper())))
                 {
-                    TempData["Falha"] = $"O estação {estacao.NomeEstacao} já existe!";
+                    TempData["Falha"] = $"Estação {estacao.NomeEstacao} já existe.";
 
                     return View(estacao);
                 }
                 else
                 {
                     _estacaoRepository.Cadastrar(estacao);
-                    TempData["Sucesso"] = "Cadastrado com sucesso!.";
+                    TempData["Sucesso"] = "Inserido com sucesso.";
                     return RedirectToAction("Inserir");
                 }
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao inserir - {error}";
+                TempData["Falha"] = $"Erro ao inserir - {error}.";
                 return View(estacao);
             }
         }
@@ -65,13 +65,14 @@ namespace ControleGestaoFtth.Controllers
             try
             {
                 _estacaoRepository.Atualizar(estacao);
-                TempData["Sucesso"] = "Atualizado com sucesso!";
+                TempData["Sucesso"] = "Editado com sucesso.";
                 return RedirectToAction("Editar", new { id = estacao.Id });
 
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao Atualizar - {error.Message}";
+                TempData["Falha"] = $"Erro ao editar - {error.Message}.";
+
                 return View(estacao);
             }
         }
@@ -84,7 +85,7 @@ namespace ControleGestaoFtth.Controllers
                 if (!_estacaoRepository.UniqueFk().Any(p => p.EstacoesId.Equals(id)))
                 {
                     _estacaoRepository.Deletar(id);
-                    TempData["Sucesso"] = $"Estação Excluída com sucesso.";
+                    TempData["Sucesso"] = $"Estação excluída com sucesso.";
                     return RedirectToAction("Index");
                 }
                 else
@@ -95,7 +96,7 @@ namespace ControleGestaoFtth.Controllers
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao Excluir - {error.Message}";
+                TempData["Falha"] = $"Erro ao excluir - {error.Message}.";
                 return RedirectToAction("Index");
             }
         }
@@ -111,7 +112,7 @@ namespace ControleGestaoFtth.Controllers
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro - {error.Message}";
+                TempData["Falha"] = $"Erro - {error.Message}.";
                 return PartialView();
             }
 
@@ -128,7 +129,7 @@ namespace ControleGestaoFtth.Controllers
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro - {error.Message}";
+                TempData["Falha"] = $"Erro - {error.Message}.";
                 return PartialView();
             }
 

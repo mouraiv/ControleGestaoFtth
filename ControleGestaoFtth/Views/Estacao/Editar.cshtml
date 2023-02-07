@@ -7,14 +7,14 @@
         {
             <div id="alertForm" class="alert alert-success" role="alert">
                 <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Sucesso! </strong>@TempData["Sucesso"]
+                <a>@TempData["Sucesso"]</a>
             </div>
         }
         @if (TempData["Falha"] != null)
         {
             <div id="alertForm" class="alert alert-danger" role="alert">
                 <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <strong>Error! </strong>@TempData["Falha"]
+                <a>@TempData["Falha"]</a>
             </div>
         }
         <!-- End  Alert-->
