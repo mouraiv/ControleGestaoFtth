@@ -1,4 +1,4 @@
-﻿@model Estacoe
+﻿@model TipoObra
 
 <div class="d-flex flex-row justify-content-center">
     <div class="d-flex flex-column">
@@ -19,29 +19,18 @@
         }
         <!-- End  Alert-->
         <!-- Formulário para edição -->
-        <form asp-controller="Estacao" asp-action="Editar" method="post" class="needs-validation" novalidate>
+        <form asp-controller="TipoObra" asp-action="Editar" method="post" class="needs-validation" novalidate>
             <input type="hidden" asp-for="Id">
             <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- EDITAR --</a></div>
             <div id="formEditar" class="row">
                 <div class="form-group col">
-                    <label>Responsável:</label>
-                    <input type="text" asp-for="Responsavel" class="form-control" maxlength="50" required>
-                    <div class="invalid-feedback">Campo Obrigatório.</div>
-                </div>
-                <div class="w-100"></div>
-                <div class="form-group position-relative col">
-                    <label>Estação:</label>
-                    <input type="text" asp-for="NomeEstacao" class="form-control" maxlength="50" required>
-                    <div class="invalid-feedback">Campo Obrigatório.</div>
-                </div>
-                <div class="form-group col">
-                    <label>Sigla:</label>
-                    <input type="text" asp-for="Sigla" class="form-control" maxlength="50" required>
+                    <label>Tipo Obra:</label>
+                    <input type="text" asp-for="Nome" class="form-control" maxlength="50" required>
                     <div class="invalid-feedback">Campo Obrigatório.</div>
                 </div>
                 <div class="modal-footer p-0 m-0 mt-4">
                     <button type="submit" class="btn btn-primary mt-4 ms-2">Editar</button>
-                    <a role="button" asp-action="Index" asp-controller="Estacao" id="btnRoles" class="btn btn-secondary mt-4 me-2">Voltar</a>
+                    <a role="button" asp-action="Index" asp-controller="TipoObra" id="btnRoles" class="btn btn-secondary mt-4 me-2">Voltar</a>
                 </div>
             </div>
         </form>

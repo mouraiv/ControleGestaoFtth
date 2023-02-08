@@ -4,18 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ControleGestaoFtth.Controllers
 {
-    public class EstacaoController : Controller
+    public class TipoObraController : Controller
     {
-        private readonly IEstacoeRepository _estacaoRepository;
+        private readonly ITipoObraRepository _tipoObraRepository;
 
-        public EstacaoController(IEstacoeRepository estacaoRepository)
+        public TipoObraController(ITipoObraRepository tipoObraRepository)
         {
-            _estacaoRepository = estacaoRepository;
+            _tipoObraRepository = tipoObraRepository;
         }
         public IActionResult Index()
         {
-            ViewData ["selectEstacao"] = _estacaoRepository.Listar();
-            ViewData["selectResponsavel"] = _estacaoRepository.Responsavel();
+            ViewData["selectObras"] = _tipoObraRepository.Obras();
             return View();
         }
         public IActionResult Inserir()
@@ -24,31 +23,31 @@ namespace ControleGestaoFtth.Controllers
         }
         public IActionResult Editar(int id)
         {
-            Estacoe estacao = _estacaoRepository.CarregarId(id);
+            TipoObra tipoObra = _tipoObraRepository.CarregarId(id);
 
-            return View(estacao);
+            return View(tipoObra);
         }
         public IActionResult Confirmacao(int id)
         {
-            Estacoe estacao = _estacaoRepository.CarregarId(id);
+            TipoObra tipoObra = _tipoObraRepository.CarregarId(id);
 
-            return View(estacao);
+            return View(tipoObra);
         }
 
         [HttpPost]
-        public IActionResult Inserir(Estacoe estacao)
+        public IActionResult Inserir(TipoObra tipoObra)
         {
             try
             {
-                if (_estacaoRepository.Listar().Any(p => p.NomeEstacao.Equals(estacao.NomeEstacao.ToUpper())))
+                if (_tipoObraRepository.Listar().Any(p => p.Nome.Equals(tipoObra.Nome.ToUpper())))
                 {
-                    TempData["Falha"] = $"Estação {estacao.NomeEstacao} já existe.";
+                    TempData["Falha"] = $"Tipo obra {tipoObra.Nome} já existe.";
 
-                    return View(estacao);
+                    return View(tipoObra);
                 }
                 else
                 {
-                    _estacaoRepository.Cadastrar(estacao);
+                    _tipoObraRepository.Cadastrar(tipoObra);
                     TempData["Sucesso"] = "Inserido com sucesso.";
                     return RedirectToAction("Inserir");
                 }
@@ -56,23 +55,23 @@ namespace ControleGestaoFtth.Controllers
             catch (Exception error)
             {
                 TempData["Falha"] = $"Erro ao inserir - {error}.";
-                return View(estacao);
+                return View(tipoObra);
             }
         }
         [HttpPost]
-        public IActionResult Editar(Estacoe estacao)
+        public IActionResult Editar(TipoObra tipoObra)
         {
             try
             {
-                _estacaoRepository.Atualizar(estacao);
-                TempData["Sucesso"] = "Editado com sucesso.";
-                return RedirectToAction("Editar", new { id = estacao.Id });
+                 _tipoObraRepository.Atualizar(tipoObra);
+                 TempData["Sucesso"] = "Editado com sucesso.";
+                 return RedirectToAction("Editar", new { id = tipoObra.Id });
             }
             catch (Exception error)
             {
                 TempData["Falha"] = $"Erro ao editar - {error.Message}.";
 
-                return View(estacao);
+                return View(tipoObra);
             }
         }
 
@@ -81,15 +80,15 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                if (!_estacaoRepository.UniqueFk().Any(p => p.EstacoesId.Equals(id)))
+                if (!_tipoObraRepository.UniqueFk().Any(p => p.TipoObraId.Equals(id)))
                 {
-                    _estacaoRepository.Deletar(id);
-                    TempData["Sucesso"] = $"Estação excluída com sucesso.";
+                    _tipoObraRepository.Deletar(id);
+                    TempData["Sucesso"] = $"Excluído com sucesso.";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["Falha"] = $"Estação N°{id} contém registros relacionais e não pode ser excluída.";
+                    TempData["Falha"] = $"Tipo Obra N°{id} contém registros relacionais e não pode ser excluída.";
                     return RedirectToAction("Index");
                 }
             }
@@ -105,9 +104,9 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                Estacoe estacao = _estacaoRepository.CarregarId(id);
+                TipoObra tipoObra = _tipoObraRepository.CarregarId(id);
 
-                return View(estacao);
+                return View(tipoObra);
             }
             catch (Exception error)
             {
@@ -118,11 +117,11 @@ namespace ControleGestaoFtth.Controllers
         }
 
         [HttpGet]
-        public IActionResult Listar(int? pagina, string nomeEstacao, string responsavel)
+        public IActionResult Listar(int? pagina, string nome)
         {
             try
             {
-                IEnumerable<Estacoe> listar = _estacaoRepository.Listar(pagina, nomeEstacao, responsavel);
+                IEnumerable<TipoObra> listar = _tipoObraRepository.Listar(pagina, nome);
 
                 return PartialView(listar);
             }
@@ -132,7 +131,7 @@ namespace ControleGestaoFtth.Controllers
                 return PartialView();
             }
 
-                
+
         }
     }
 }

@@ -1,0 +1,26 @@
+﻿@model Netwin
+
+<div id="displayDetalheFtth">
+    <!-- Condição Nula do Modal -->
+    @if (Model != null)
+    {
+        <table id="ftthDetalhe">
+            <tr>
+                <td colspan="2">Codigo: <a>@Model.Codigo</a></td>
+            </tr>
+            <tr>
+                <td>Estação: <a>@Model.Tipo</a></td>
+                <td>Sigla: <a>@Model.Descricao</a></td>
+            </tr>
+        </table>
+
+        <div class="modal-footer mt-4">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+            <a role="button" id="btnRoles" asp-controller="Netwin" asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+            <a role="button" id="btnRoles" asp-controller="Netwin" asp-action="Confirmacao" asp-route-id="@Model.Id" class="btn btn-danger">Excluir</a>
+        </div>
+    }
+    <!-- End condição -->
+</div>
+
+

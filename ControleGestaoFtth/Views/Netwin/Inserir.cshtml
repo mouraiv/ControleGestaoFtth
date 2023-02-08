@@ -1,0 +1,49 @@
+﻿@model Netwin
+
+<div class="d-flex flex-row justify-content-center">
+    <div class="d-flex flex-column">
+        <!-- Alert para tratamento de exceções -->
+        @if (TempData["Sucesso"] != null)
+        {
+            <div id="alertForm" class="alert alert-success" role="alert">
+                <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <a>@TempData["Sucesso"]</a>
+            </div>
+        }
+        @if (TempData["Falha"] != null)
+        {
+            <div id="alertForm" class="alert alert-danger" role="alert">
+                <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <a>@TempData["Falha"]</a>
+            </div>
+        }
+        <!-- End  Alert-->
+        <!-- Formulário para edição -->
+        <form asp-controller="Netwin" asp-action="Inserir" method="post" class="needs-validation" novalidate>
+            <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- INSERIR --</a></div>
+            <div id="formEditar" class="row">
+                <div class="form-group col">
+                    <label>Codigo:</label>
+                    <input type="number" asp-for="Codigo" class="form-control" min="0" max="1000" required>
+                    <div class="invalid-feedback">Campo Obrigatório.</div>
+                </div>
+                <div class="w-100"></div>
+                <div class="form-group position-relative col">
+                    <label>Tipo:</label>
+                    <input type="text" asp-for="Tipo" class="form-control" maxlength="50" required>
+                    <div class="invalid-feedback">Campo Obrigatório.</div>
+                </div>
+                <div class="form-group col">
+                    <label>Descrição:</label>
+                    <input type="text" asp-for="Descricao" class="form-control" maxlength="50" required>
+                    <div class="invalid-feedback">Campo Obrigatório.</div>
+                </div>
+                <div class="modal-footer p-0 m-0 mt-4">
+                    <button type="submit" class="btn btn-primary mt-4 ms-2">Inserir</button>
+                    <a role="button" asp-action="Index" asp-controller="Netwin" id="btnRoles" class="btn btn-secondary mt-4 me-2">Voltar</a>
+                </div>
+            </div>
+        </form>
+        <!-- End Formulário-->
+    </div>
+</div>

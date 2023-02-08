@@ -4,18 +4,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ControleGestaoFtth.Controllers
 {
-    public class EstacaoController : Controller
+    public class NetwinController : Controller
     {
-        private readonly IEstacoeRepository _estacaoRepository;
+        private readonly INetwinRepository _netwinRepository;
 
-        public EstacaoController(IEstacoeRepository estacaoRepository)
+        public NetwinController(INetwinRepository netwinRepository)
         {
-            _estacaoRepository = estacaoRepository;
+            _netwinRepository = netwinRepository;
         }
         public IActionResult Index()
         {
-            ViewData ["selectEstacao"] = _estacaoRepository.Listar();
-            ViewData["selectResponsavel"] = _estacaoRepository.Responsavel();
+            ViewData["selectNetwin"] = _netwinRepository.Descricao();
             return View();
         }
         public IActionResult Inserir()
@@ -24,31 +23,31 @@ namespace ControleGestaoFtth.Controllers
         }
         public IActionResult Editar(int id)
         {
-            Estacoe estacao = _estacaoRepository.CarregarId(id);
+            Netwin netwin = _netwinRepository.CarregarId(id);
 
-            return View(estacao);
+            return View(netwin);
         }
         public IActionResult Confirmacao(int id)
         {
-            Estacoe estacao = _estacaoRepository.CarregarId(id);
+            Netwin netwin = _netwinRepository.CarregarId(id);
 
-            return View(estacao);
+            return View(netwin);
         }
 
         [HttpPost]
-        public IActionResult Inserir(Estacoe estacao)
+        public IActionResult Inserir(Netwin netwin)
         {
             try
             {
-                if (_estacaoRepository.Listar().Any(p => p.NomeEstacao.Equals(estacao.NomeEstacao.ToUpper())))
+                if (_netwinRepository.Listar().Any(p => p.Codigo.Equals(netwin.Codigo)))
                 {
-                    TempData["Falha"] = $"Estação {estacao.NomeEstacao} já existe.";
+                    TempData["Falha"] = $"Codigo {netwin.Codigo} já existe.";
 
-                    return View(estacao);
+                    return View(netwin);
                 }
                 else
                 {
-                    _estacaoRepository.Cadastrar(estacao);
+                    _netwinRepository.Cadastrar(netwin);
                     TempData["Sucesso"] = "Inserido com sucesso.";
                     return RedirectToAction("Inserir");
                 }
@@ -56,23 +55,24 @@ namespace ControleGestaoFtth.Controllers
             catch (Exception error)
             {
                 TempData["Falha"] = $"Erro ao inserir - {error}.";
-                return View(estacao);
+                return View(netwin);
             }
         }
         [HttpPost]
-        public IActionResult Editar(Estacoe estacao)
+        public IActionResult Editar(Netwin netwin)
         {
             try
             {
-                _estacaoRepository.Atualizar(estacao);
-                TempData["Sucesso"] = "Editado com sucesso.";
-                return RedirectToAction("Editar", new { id = estacao.Id });
+                 _netwinRepository.Atualizar(netwin);
+                 TempData["Sucesso"] = "Editado com sucesso.";
+                 return RedirectToAction("Editar", new { id = netwin.Id });
+              
             }
             catch (Exception error)
             {
                 TempData["Falha"] = $"Erro ao editar - {error.Message}.";
 
-                return View(estacao);
+                return View(netwin);
             }
         }
 
@@ -81,15 +81,15 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                if (!_estacaoRepository.UniqueFk().Any(p => p.EstacoesId.Equals(id)))
+                if (!_netwinRepository.UniqueFk().Any(p => p.NetwinId.Equals(id)))
                 {
-                    _estacaoRepository.Deletar(id);
-                    TempData["Sucesso"] = $"Estação excluída com sucesso.";
+                    _netwinRepository.Deletar(id);
+                    TempData["Sucesso"] = $"Excluído com sucesso.";
                     return RedirectToAction("Index");
                 }
                 else
                 {
-                    TempData["Falha"] = $"Estação N°{id} contém registros relacionais e não pode ser excluída.";
+                    TempData["Falha"] = $"Codigo referente a id N°{id} contém registros relacionais e não pode ser excluída.";
                     return RedirectToAction("Index");
                 }
             }
@@ -105,9 +105,8 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                Estacoe estacao = _estacaoRepository.CarregarId(id);
-
-                return View(estacao);
+                Netwin netwin = _netwinRepository.CarregarId(id);
+                return View(netwin);
             }
             catch (Exception error)
             {
@@ -118,11 +117,11 @@ namespace ControleGestaoFtth.Controllers
         }
 
         [HttpGet]
-        public IActionResult Listar(int? pagina, string nomeEstacao, string responsavel)
+        public IActionResult Listar(int? pagina, string descricao)
         {
             try
             {
-                IEnumerable<Estacoe> listar = _estacaoRepository.Listar(pagina, nomeEstacao, responsavel);
+                IEnumerable<Netwin> listar = _netwinRepository.Listar(pagina, descricao);
 
                 return PartialView(listar);
             }
@@ -132,7 +131,7 @@ namespace ControleGestaoFtth.Controllers
                 return PartialView();
             }
 
-                
+
         }
     }
 }

@@ -84,7 +84,7 @@ namespace ControleGestaoFtth.Controllers
             catch (Exception error)
             {
                 TempData["Falha"] = $"Erro ao listar - {error.Message}.";
-                return PartialView();
+                return RedirectToAction("Index");
             }
 
         }

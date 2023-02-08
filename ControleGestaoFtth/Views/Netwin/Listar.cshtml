@@ -1,0 +1,61 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.PagedList<Netwin>
+
+<div id="tableUpdate">
+
+    <table class="table">
+
+        <tbody>
+            <!-- Condição Nula do Modal -->
+            @if (Model != null && Model.Any())
+            {
+                <!-- Interar valores e preencher grid -->
+                foreach (var netwin in Model)
+                {
+
+                    <tr id="effectTableFtth">
+                        <td>
+                            <table class="tableFtth" data-bs-toggle="modal" data-id="@netwin.Id" data-bs-target="#exampleModal" style="cursor: pointer;">
+                                <tr>
+                                    <td width="25%" id="rowTitle">
+                                        <a>Codigo: @netwin.Codigo</a>
+                                    </td>
+                                    <td width="30%">
+                                        <a>Tipo: @netwin.Tipo</a>
+                                    </td>
+                                    <td width="45%">
+                                        <a>Descrição: @netwin.Descricao</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                }
+                <!-- End Interar -->
+            }
+            else
+            {
+                <tr>
+                    <td>Nenhum resultado.</td>
+                </tr>
+            }
+            <!-- End Condição -->
+        </tbody>
+    </table>
+
+    <!-- Condição nula do modal e preencher paginação acaso haja (0 > 1) paginas - Construtora -->
+    @if (Model != null && Model.Any() && Model.PageCount > 1)
+    {
+        <div id="paged" class="d-flex justify-content-center">
+            <!-- Exibir paginação -->
+        @Html.PagedListPager(
+        Model, pagina => Url.Action(null , new {pagina}),
+        new X.PagedList.Web.Common.PagedListRenderOptions(){
+        LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm btnPaged"}
+        })
+            <!-- End paginação -->
+        </div>
+    }
+    <!-- End Condição -->
+</div>
+

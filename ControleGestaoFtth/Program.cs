@@ -15,6 +15,8 @@ builder.Services.AddDbContext<AppDbContext>(
 
 builder.Services.AddScoped<IConstrutoraRepository, ConstrutoraRepository>();
 builder.Services.AddScoped<IEstacoeRepository, EstacoeRepository>();
+builder.Services.AddScoped<ITipoObraRepository, TipoObraRepository>();
+builder.Services.AddScoped<INetwinRepository, NetwinRepository>();
 
 var app = builder.Build();
 

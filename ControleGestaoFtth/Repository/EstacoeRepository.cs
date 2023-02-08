@@ -20,6 +20,7 @@ namespace ControleGestaoFtth.Repository
             if (db == null) throw new Exception("Houve um erro na atualização");
 
             db.Responsavel = estacao.Responsavel;
+            db.NomeEstacao = estacao.NomeEstacao;
             db.Sigla = estacao.Sigla;
 
             _context.Estacoes.Update(db);
