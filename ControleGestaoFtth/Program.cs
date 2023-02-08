@@ -17,6 +17,7 @@ builder.Services.AddScoped<IConstrutoraRepository, ConstrutoraRepository>();
 builder.Services.AddScoped<IEstacoeRepository, EstacoeRepository>();
 builder.Services.AddScoped<ITipoObraRepository, TipoObraRepository>();
 builder.Services.AddScoped<INetwinRepository, NetwinRepository>();
+builder.Services.AddScoped<IEstadoCampoRepository, EstadoCampoRepository>();
 
 var app = builder.Build();
 
