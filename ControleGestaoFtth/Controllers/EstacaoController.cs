@@ -1,6 +1,7 @@
 ﻿using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -40,6 +41,7 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
+
                 if (_estacaoRepository.Listar().Any(p => p.NomeEstacao.Equals(estacao.NomeEstacao.ToUpper())))
                 {
                     TempData["Falha"] = $"Estação {estacao.NomeEstacao} já existe.";

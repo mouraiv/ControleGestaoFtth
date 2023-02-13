@@ -34,7 +34,7 @@
                     @Html.DropDownListFor(model => model.EstacoesId, new SelectList(ViewBag.selectEstacao,"Id","NomeEstacao"), new {@id="#dropEditEstacao", @class="custom-select w-100"})
                 </div>
                 <div class="col-auto">
-                      <button type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
+                      <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" id="iconBtn" class="btn-plus-estacao" title="Adicionar"><i class="fa fa-plus"></i></button>
                 </div>
             </div>
         </div>
@@ -176,7 +176,7 @@
             <div class="invalid-feedback">Campo Obrigatório.</div>
         </div>
         <div class="modal-footer p-0 m-0 mt-4">
-            <button type="submit" class="btn btn-primary mt-4 ms-2">Editar</button>
+            <button type="submit" id="btn" class="btn btn-primary mt-4 ms-2">Editar</button>
             <a role="button" asp-action="Index" asp-controller="Construtora" id="btnRoles" class="btn btn-secondary mt-4 me-2">Voltar</a>
         </div>
     </div>
@@ -189,9 +189,6 @@
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header bg-primary p-2 position-relative">
-            </div>
-            <div class="modal-body">
 
                 <!--Conteudo Display-->
                 <div class="d-flex justify-content-center">
@@ -200,8 +197,6 @@
                     </div>
                 </div>
                 <!-- End -->
-
-            </div>
         </div>
     </div>
 </div>
@@ -210,28 +205,71 @@
 @section Scripts
     {
     <script>
+        //SPINNER LOADER
+        function spinnerFtth (display) {
+            $(display).html(`
+                                        <div class= "d-flex justify-content-center">
+                                            <div class="spinner-border text-secondary m-5" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+                                    `)
+        }
+
+        //FUNÇÃO GET CARREGAR ADD INSERT VIEW E CHAMAR O COLLAPSE MODAL
+        function AddInsertModal (url) {
+            $.get(url,
+                {}, function (resposta) {
+                   //ATUALIZAR
+                   AtualizarModalInsert(resposta);
+                    return false;
+                });
+        }
+
+        //ATUALIZAR MODAL INSERT
+        function AtualizarModalInsert (resposta) {
+             //CARREGAR SPINNER LOADER
+                    spinnerFtth('modal-content');
+
+                    //EDITAR MODAL HEADER
+                    $('.modal-content').html(`
+                        <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden="true""></i>
+                        <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
+                           -- INSERIR --
+                        </a>
+                     `);
+
+                    //CARREGAR PARTIAL VIEW
+                    $('.modal-content').html($(resposta).find('#formInsert').html());
+
+                    //REMOVER ATRIBUTOS
+                    $('.modal-content form').removeAttr('action');
+                    $('.modal-content form').removeAttr('method');
+                    $('.modal-content form').removeAttr('asp-controlle');
+                    $('.modal-content form').removeAttr('asp-action');
+
+                    //EDITAR MODAL FOOTER
+                    $('.modal-content .modal-footer').html(`
+                        <button type="button" id="submit" class="btn btn-primary mt-2">Inserir</button>
+                        <button type="button" onclick="location.href='@Url.Action("Editar", "Construtora", new {id = Model.Id})'" class= "btn btn-secondary mt-2 me-2">Fechar</button>
+                    `);
+
+                    //VALIDAR E INSERIR FORMULÁRIO
+                    validarForm()
+        }
+
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW EDITAR CONSTRUTORA
         function ConstrutoraEditar() {
             //VARIAVEIS GLOBAIS DE ACESSO JSON MODAL SERIALIZE
             var jsonViabilidadeSelect = @Html.Raw(Json.Serialize(ViewBag.selectViabilidade));
             var jsonEstacaoSelect = @Html.Raw(Json.Serialize(ViewBag.selectEstacao));
+            var id = @Model.Id;
 
             //CARREGAR ESTADO DO SELECT NA PAGINA EDITAR
             $('#dropEditEstacao option[value = "' + @Model.Estacao?.Id + '"]').prop('selected', 'selected');
             $('#dropEditTipoObras option[value = "' + @Model.TipoObra?.Id + '"]').prop('selected', 'selected');
             $('#dropViabilidade option[value = "' + @Model.Netwin?.Id + '"]').prop('selected', 'selected');
             $('#dropEditEstadoCampo option[value = "' + @Model.EstadoCampo.Id + '"]').prop('selected', 'selected');
-
-            //SPINNER LOADER
-            const spinnerFtth = (display) => {
-                $(display).html(`
-                                <div class= "d-flex justify-content-center">
-                                    <div class="spinner-border text-secondary m-5" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
-                                </div>
-                            `   )
-            }
 
             //CARREGAR DESCRIÇÃO DO SELECT TAG ESTAÇÃO
             $('#formEditar').on('change','.selectEstacaoClass select', function (){
@@ -282,37 +320,83 @@
                 $.get('../../Construtora/Confirmacao?id=' + @Model.Id,
                     {}, function (resposta) {
                         //CARREGAR SPINNER LOADER
-                        spinnerFtth('modal-body');
-
-                        //EDITAR MODAL HEADER
-                        $('.modal-header').html(`
-                              <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden="true""></i>
-                        <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
-                         -- Atenção --
-                        </a>
-                        `);
+                        spinnerFtth('modal-content');
 
                         //CARREGAR PARTIAL VIEW
-                        $('.modal-body').html($(resposta).find('.modal-body').html());
+                        $('.modal-content').html($(resposta).find('.modal-content').html());
+
+                        //EDITAR MODAL HEADER
+                        $('.modal-content .modal-header').html(`
+                             <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden="true""></i>
+                                <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
+                                    -- ATENÇÃO --
+                                </a>
+                         `);
 
                         //EDITAR MODAL FOOTER
-                        $('.modal-body .modal-footer').html(`
+                        $('.modal-content .modal-footer').html(`
                             <button onclick="location.href='@Url.Action("Apagar", "Construtora", new {id = Model.Id})'" class="btn btn-primary mt-2">Confirmar</button>
-                            <button data-bs-dismiss="modal" class= "btn btn-secondary mt-2">Cancelar</button>
+                            <button type="button" data-bs-dismiss="modal" class= "btn btn-secondary mt-2">Cancelar</button>
                         `);
 
                         return false;
                     });
+            });
 
-                //CARREGAR ATRIBUTOS MODAL
-                $(this).find('#exampleModal').modal({
-                    keyboard: true,
-                    backdrop: "static",
-                    show: false,
-
-                });
+            //AÇÃO INSERT ICON ADD SHOW ESTAÇÃO ME MODAL
+            $('#formEditar').on('click', '.btn-plus-estacao', function () {
+                //CARREGAR FUNÇÃO INSERT ADD MODAL
+                AddInsertModal('../../Estacao/Inserir');
+                return false;
             });
 
         } (ConstrutoraEditar());
+
+        //VALIDAÇÃO DE FORMULÁRIO MODAL
+        function validarForm() {
+            'use strict'
+
+            //PEGAR DOM DO FORMULARIO BOOTSTRAP PARA VALIDAÇÃO
+            var forms = document.querySelectorAll('.modal-content form');
+
+            //VARIAVEL DE TRATAMENTO
+            var obj = {};
+
+            //PERCORRER PROPS IMPUT EVENT
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    $('.modal-content form').on('click', '#submit', function () {
+                        if (!form.checkValidity()) {
+                            event.preventDefault();
+                            event.stopPropagation();
+
+                        }else{
+                            //VARIAVEL RECEBE E SERIALIZA OS DADOS DO FORMULÁRIO
+                            let json = $('.modal-content #formEditar input').serializeArray();
+
+                            //PERCORRER VARIAVEL JSON
+                            $.each(json, function () {
+                                //INTERRAR E ARMAZENAR VALORES
+                                obj[this.name] = this.value || '';
+                            });
+
+                            //EFETUAR REQUISIÇÃO POST
+                           $.post('../../Estacao/Inserir',
+                                {
+                                    estacao: obj
+
+                                }, function (resposta) {
+                                    //ATUALIZAR MODAL INSERT
+                                    AtualizarModalInsert(resposta);
+                                    return false;
+                                });
+                        }
+                        //CARREGAR VALIDAÇÃO
+                        form.classList.add('was-validated');
+                        return false;
+                    });
+                   
+                });
+        } 
     </script>
 }

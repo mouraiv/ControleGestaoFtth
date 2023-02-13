@@ -236,9 +236,10 @@
 
     .modal-content {
         width: 600px;
+        background-color: #ECF0F1;
     }
 
-    .modal{
+    .modal {
         padding-right: 6.4rem;
     }
 

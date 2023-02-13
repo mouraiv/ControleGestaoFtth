@@ -27,7 +27,7 @@
 <div id="menuBarVertical">
     <a role="button" id="btnRoles" class="btn btn-primary btn-sm">Adicionar</a>
     <hr class="divisorMenu m-0 p-0 ms-3">
-    <button type="button" class="btn btn-primary btn-sm ms-3">Modelo Base</button>
+    <button type="button" id="modeloBase" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-primary btn-sm ms-3">Modelo Base</button>
     <button type="button" class="btn btn-warning btn-sm ms-2">Importar Base</button>
 </div>
 <!-- End -->
@@ -118,6 +118,27 @@
 
                 //ATUALIZAR DISPLAY PARTIAL VIEW
                 ftth('Construtora/listar');
+
+                //BAIXAR MODELO BASE
+                $('#modeloBase').on('click', function () {
+                    //CARREGAR SPINNER LOADER
+                    spinnerFtth('modal-body');
+
+                    //REMOVER MODAL HEADER
+                    $('.modal-header').remove();
+
+                    //CARREGAR MODEL DE DOWNLOAD MODELO BASE
+                    $('.modal-body').html("<h1>DOWNLOAD</h1>");
+
+                    //CARREGAR ATRIBUTOS MODAL
+                    $(this).find('#exampleModal').modal({
+                        keyboard: true,
+                        backdrop: "static",
+                        show: false,
+
+                    });
+                    return false;
+                });
 
                 //FILTRO DROPDOWNLIST ESTACAO
                 $('#dropEstacao').on('change', function () {
@@ -210,7 +231,6 @@
 
                 //PEGAR VALORES DA TABELA PARA REQUISIÇÃO ATUALIZAR
                 $('#ftthLista').on('click', '.tableFtth', function () {
-
                     //VARIAVEL PEGA ID DE REGISTRO DA GRID VIEW
                     let carregarId = $(this).attr("data-id");
 
