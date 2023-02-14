@@ -45,7 +45,7 @@
                      @Html.DropDownListFor(model => model.TipoObraId, new SelectList(ViewBag.selectObras,"Id","Nome"), new {@id="#dropEditTipoObras", @class="custom-select w-100"})
                 </div>
              <div class="col-auto">
-                     <button type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
+                    <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" class="btn-plus-tipoObra" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
                 </div>
              </div>
         </div>
@@ -65,7 +65,7 @@
                     <a id="DescricaoViabilidade">[ @Model.Netwin?.Tipo ] - @Model.Netwin?.Descricao</a>
                  </div>
                 <div id="vlicon" class="col">
-                     <button type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
+                    <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn-plus-viabilidade" type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
                 </div>
             </div>
             <div id="vlmdesc" class="collapse in width">
@@ -113,7 +113,7 @@
                     @Html.DropDownListFor(model => model.EstadoCamposId, new SelectList(ViewBag.selectEstadoCampo,"Id","Nome"), new {@id="dropEditEstadoCampo", @class="custom-select w-100"})
                 </div>
                 <div class="col-auto">
-                    <button type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
+                    <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn-plus-estadoCampo" type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
                 </div>
             </div>
         </div>
@@ -254,8 +254,9 @@
                         <button type="button" onclick="location.href='@Url.Action("Editar", "Construtora", new {id = Model.Id})'" class= "btn btn-secondary mt-2 me-2">Fechar</button>
                     `);
 
-                    //VALIDAR E INSERIR FORMULÁRIO
-                    validarForm()
+            //CARREGAR EVENTO
+            EventInsertModel();
+
         }
 
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW EDITAR CONSTRUTORA
@@ -343,60 +344,111 @@
                     });
             });
 
-            //AÇÃO INSERT ICON ADD SHOW ESTAÇÃO ME MODAL
-            $('#formEditar').on('click', '.btn-plus-estacao', function () {
-                //CARREGAR FUNÇÃO INSERT ADD MODAL
-                AddInsertModal('../../Estacao/Inserir');
-                return false;
-            });
-
         } (ConstrutoraEditar());
 
-        //VALIDAÇÃO DE FORMULÁRIO MODAL
-        function validarForm() {
+         //AÇÃO INSERT ICON ADD SHOW ESTAÇÃO ME MODAL
+         $('#formEditar').on('click', '.btn-plus-estacao', function () {
+            //CARREGAR FUNÇÃO INSERT ADD MODAL
+            AddInsertModal('../../Estacao/Inserir');
+            return false;
+         });
+
+        //AÇÃO INSERT ICON ADD SHOW TIPO OBRA ME MODAL
+        $('#formEditar').on('click', '.btn-plus-tipoObra', function () {
+            //CARREGAR FUNÇÃO INSERT ADD MODAL
+            AddInsertModal('../../TipoObra/Inserir');
+            return false;
+        });
+
+        //AÇÃO INSERT ICON ADD SHOW VIABILIDADE ME MODAL
+        $('#formEditar').on('click', '.btn-plus-viabilidade', function () {
+            //CARREGAR FUNÇÃO INSERT ADD MODAL
+            AddInsertModal('../../Netwin/Inserir');
+            return false;
+        });
+
+        //AÇÃO INSERT ICON ADD SHOW ESTACAO CAMPO ME MODAL
+        $('#formEditar').on('click', '.btn-plus-estadoCampo', function () {
+            //CARREGAR FUNÇÃO INSERT ADD MODAL
+            AddInsertModal('../../EstadoCampo/Inserir');
+            return false;
+        });
+
+        //FUNÇÃO DE TRATAMENTO JSON FORMULÁRIO RESPONSE PARA POST CONTROLLER
+        function JsonFormPost(){
+            //VARIAVEL RECEBE E SERIALIZA OS DADOS DO FORMULÁRIO
+            let json = $('.modal-content #formEditar input').serializeArray();
+
+            //VARIAVEL DE TRATAMENTO
+            var obj = {};
+
+            //PERCORRER VARIAVEL JSON
+            $.each(json, function () {
+                //INTERRAR E ARMAZENAR VALORES
+                obj[this.name] = this.value || '';
+            });
+            return obj;
+        }
+
+        //FUNÇÃO VALIDAR E INSERIR DADOS DO FORMULÁRIO VIA POST JQUERY
+        function InsertValidarModal(url, model, ativar) {
+            //VALIDAÇÃO DE FORMULÁRIO MODAL
             'use strict'
 
             //PEGAR DOM DO FORMULARIO BOOTSTRAP PARA VALIDAÇÃO
             var forms = document.querySelectorAll('.modal-content form');
 
-            //VARIAVEL DE TRATAMENTO
-            var obj = {};
-
             //PERCORRER PROPS IMPUT EVENT
             Array.prototype.slice.call(forms)
                 .forEach(function (form) {
-                    $('.modal-content form').on('click', '#submit', function () {
-                        if (!form.checkValidity()) {
-                            event.preventDefault();
-                            event.stopPropagation();
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
 
-                        }else{
-                            //VARIAVEL RECEBE E SERIALIZA OS DADOS DO FORMULÁRIO
-                            let json = $('.modal-content #formEditar input').serializeArray();
-
-                            //PERCORRER VARIAVEL JSON
-                            $.each(json, function () {
-                                //INTERRAR E ARMAZENAR VALORES
-                                obj[this.name] = this.value || '';
+                    } else {
+                        if(ativar == true){
+                        //EFETUAR REQUISIÇÃO POST
+                        $.post(url,
+                            {
+                               [model] : JsonFormPost()
+                            }, function (resposta) {
+                                //ATUALIZAR MODAL INSERT
+                                AtualizarModalInsert(resposta);
+                                return false;
                             });
-
-                            //EFETUAR REQUISIÇÃO POST
-                           $.post('../../Estacao/Inserir',
-                                {
-                                    estacao: obj
-
-                                }, function (resposta) {
-                                    //ATUALIZAR MODAL INSERT
-                                    AtualizarModalInsert(resposta);
-                                    return false;
-                                });
                         }
-                        //CARREGAR VALIDAÇÃO
-                        form.classList.add('was-validated');
-                        return false;
-                    });
-                   
+                    }
+                    //CARREGAR VALIDAÇÃO
+                    form.classList.add('was-validated');
+                    return false;
                 });
-        } 
+        }
+
+        function EventInsertModel(){
+            $('.modal-content form').on('click', '#submit', function () {
+                //FILTRA ENTRADA MODEL DA REQUISIÇÃO
+                switch ($('.modal-content #formEditar').attr('name')) {
+                    case "estacao":
+                        //INSERIR ESTACAO
+                        InsertValidarModal('../../Estacao/Inserir', 'estacao', true);
+                        break;
+                    case "tipoObra":
+                        //INSERIR TIPO OBRA
+                        InsertValidarModal('../../TipoObra/Inserir', 'tipoObra', true);
+                        break;
+                    case "viabilidade":
+                        //INSERIR VIABILIDADE
+                        InsertValidarModal('../../Netwin/Inserir', 'netwin', true);
+                        break;
+                     case "estadoCampo":
+                        //INSERIR VIABILIDADE
+                        InsertValidarModal('../../EstadoCampo/Inserir', 'estadoCampo', true);
+                        break;
+                     default:
+                        return false;
+                }
+            });
+        }
+     
     </script>
 }

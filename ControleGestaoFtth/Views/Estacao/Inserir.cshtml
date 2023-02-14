@@ -21,7 +21,7 @@
         <!-- Formulário para edição -->
         <form asp-controller="Estacao" asp-action="Inserir" method="post" class="needs-validation" novalidate>
             <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- INSERIR --</a></div>
-            <div id="formEditar" class="row">
+            <div id="formEditar" name="estacao" class="row">
                 <div class="form-group col">
                     <label>Responsável:</label>
                     <input type="text" asp-for="Responsavel" class="form-control" maxlength="50" required>

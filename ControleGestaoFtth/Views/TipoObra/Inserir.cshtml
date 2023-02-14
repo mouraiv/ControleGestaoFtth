@@ -1,6 +1,6 @@
 ﻿@model TipoObra
 
-<div class="d-flex flex-row justify-content-center">
+<div id="formInsert" class="d-flex flex-row justify-content-center">
     <div class="d-flex flex-column">
         <!-- Alert para tratamento de exceções -->
         @if (TempData["Sucesso"] != null)
@@ -21,7 +21,7 @@
         <!-- Formulário para edição -->
         <form asp-controller="TipoObra" asp-action="Inserir" method="post" class="needs-validation" novalidate>
             <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- INSERIR --</a></div>
-            <div id="formEditar" class="row">
+            <div id="formEditar" name="tipoObra" class="row">
                 <div class="form-group col">
                     <label>Tipo Obra:</label>
                     <input type="text" asp-for="Nome" class="form-control" maxlength="50" required>
