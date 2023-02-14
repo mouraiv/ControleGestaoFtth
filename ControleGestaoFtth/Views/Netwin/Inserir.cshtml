@@ -2,26 +2,28 @@
 
 <div id="formInsert" class="d-flex flex-row justify-content-center">
     <div class="d-flex flex-column">
-        <!-- Alert para tratamento de exceções -->
-        @if (TempData["Sucesso"] != null)
-        {
-            <div id="alertForm" class="alert alert-success" role="alert">
-                <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <a>@TempData["Sucesso"]</a>
-            </div>
-        }
-        @if (TempData["Falha"] != null)
-        {
-            <div id="alertForm" class="alert alert-danger" role="alert">
-                <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <a>@TempData["Falha"]</a>
-            </div>
-        }
-        <!-- End  Alert-->
         <!-- Formulário para edição -->
         <form asp-controller="Netwin" asp-action="Inserir" method="post" class="needs-validation" novalidate>
             <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- INSERIR --</a></div>
             <div id="formEditar" name="viabilidade" class="row">
+                <div>
+                    <!-- Alert para tratamento de exceções -->
+                    @if (TempData["Sucesso"] != null)
+                    {
+                        <div id="alertForm" class="alert alert-success" role="alert">
+                            <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <a>@TempData["Sucesso"]</a>
+                        </div>
+                    }
+                    @if (TempData["Falha"] != null)
+                    {
+                        <div id="alertForm" class="alert alert-danger" role="alert">
+                            <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <a>@TempData["Falha"]</a>
+                        </div>
+                    }
+                    <!-- End  Alert-->
+                </div>
                 <div class="form-group col">
                     <label>Codigo:</label>
                     <input type="number" asp-for="Codigo" class="form-control" min="0" max="1000" required>
