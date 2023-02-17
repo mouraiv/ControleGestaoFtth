@@ -1,0 +1,22 @@
+﻿@model Cdo
+@{
+    ViewData["Title"] = "Confirmação";
+}
+<div class="d-flex flex-row justify-content-center">
+    <div class="modal-content">
+        <div class="modal-header bg-primary p-2 position-relative">
+            <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden=" true""></i>
+            <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
+                -- ATENÇÃO --
+            </a>
+        </div>
+        <div class="modal-body">
+            <a id="AvisoConfirmacao">O registro N°@Model.Id referente a "@Model.CDO" será excluído permanentemente. <br /><br /> Deseja realmente excluir?   </a>
+            <div class="modal-footer mt-4">
+                <button onclick="location.href='@Url.Action("Apagar", "Cdo", new {id = Model.Id})'" class="btn btn-primary mt-2">Confirmar</button>
+                <button onclick="location.href='@Url.Action("Index", "Cdo")'" class="btn btn-secondary mt-2 cancelar">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,103 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.PagedList<Cdo>
+
+<div id="panelUpdate">
+
+    <!-- Condição Nula do Modal -->
+    @if (Model != null && Model.Any())
+    {
+
+        <div class="form-group" id="plCdo">
+            <label>CDO</label>
+            @Html.DropDownList("selectCdoFilter", new SelectList(ViewBag.selectCdoFilter,"CDO","CDO"), "--Todos--",new { @id="dropCdo", @class="custom-select"})
+        </div>
+
+        <div class="form-group" id="plCabo">
+            <label>Cabo</label>
+            @Html.DropDownList("selectCaboFilter", new SelectList(ViewBag.selectCaboFilter,"Cabo","Cabo"), "--Todos--",new { @id="dropCabo", @class="custom-select"})
+        </div>
+
+        <div class="form-group" id="plCelula">
+            <label>Celula</label>
+            @Html.DropDownList("selectCelulaFilter", new SelectList(ViewBag.selectCelulaFilter,"Celula","Celula"), "--Todos--",new { @id="dropCelula", @class="custom-select"})
+        </div>
+
+        <div id="metricaFtth">
+            <a></a>
+        </div>
+    }
+    <!-- End condição -->
+
+</div>
+
+<div id="tableUpdate">
+
+    <table class="table">
+
+        <tbody>
+            <!-- Condição Nula do Modal -->
+            @if (Model != null && Model.Any())
+            {
+                <!-- Interar valores e preencher grid -->
+                foreach (var cdo in Model)
+                {
+                    <tr id="effectTableFtth">
+                        <td>
+                            <table class="tableFtth" data-bs-toggle="modal" data-id="@cdo.Id" data-bs-target="#exampleModal" style="cursor: pointer;">
+                                <tr>
+                                    <td id="rowTitle" colspan="1" align="center" style="width: 30%;">
+                                        <a>@cdo.Estacao.NomeEstacao</a>
+                                    </td>
+                                    <td width="20%">
+                                        <a>Cabo: @cdo.Cabo</a>
+                                    </td>
+                                    <td width="80" colspan="2">
+                                        <a>Capacidade: @cdo.Capacidade</a>
+                                    </td>
+                                 </tr>
+                                <tr>
+                                    <td>
+                                        <a>CDO: @cdo.CDO</a>
+                                    </td>
+                                    <td width="20%">
+                                        <a>Celula: @cdo.Celula</a>
+                                    </td>
+                                    <td width="80%">
+                                        <a>UMs: @cdo.TotalUms</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                }
+                <!-- End Interar -->
+            }
+            else
+            {
+                <tr>
+                    <td>Nenhum resultado.</td>
+                </tr>
+            }
+            <!-- End condição -->
+        </tbody>
+    </table>
+
+    <!-- Condição nula do modal e preencher paginação acaso haja (0 > 1) paginas - cdo -->
+    @if (Model != null && Model.Any() && Model.PageCount > 1)
+    {
+        <div id="paged" class="d-flex justify-content-center">
+            <!-- Exibir paginação -->
+        @Html.PagedListPager(
+        Model, pagina => Url.Action(null , new {pagina}),
+        new X.PagedList.Web.Common.PagedListRenderOptions(){
+        LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm btnPaged"}
+        })
+            <!-- End Paginação -->
+        </div>
+    }
+    <!-- End Condição -->
+</div>
+
+
+
+

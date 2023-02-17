@@ -31,5 +31,12 @@ $(document).ready(function () {
     $('.close-alert').click(function () {
         $('.alert').hide('hide');
     });
+
+    //EFEITO DE ALTERNANCIA SETA DROPDOWN MENU
+    $("#toggleBtn").click(function () {
+        console.log($(".fa-caret-right"));
+        $(".fa-caret-right").toggleClass("fa-caret-down");
+    });
+
 });
     

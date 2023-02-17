@@ -53,6 +53,10 @@
     }
 }
 
+    input[type=text] {
+        text-transform: uppercase;
+    }
+
     .modal{
         overflow-y:scroll;
     }

@@ -10,6 +10,8 @@ namespace ControleGestaoFtth.Context
         }
 
         public DbSet<Construtora> Construtoras => Set<Construtora>();
+        public DbSet<Cdo> Cdos => Set<Cdo>();
+        public DbSet<TesteOptico> TesteOpticos => Set<TesteOptico>();
         public DbSet<Estacoe> Estacoes => Set<Estacoe>();
         public DbSet<EstadoCampo> EstadoCampos => Set<EstadoCampo>();
         public DbSet<Netwin> Netwins => Set<Netwin>();
@@ -44,6 +46,16 @@ namespace ControleGestaoFtth.Context
                 .HasOne(p => p.Netwin)
                 .WithMany()
                 .HasForeignKey(p => p.NetwinId);
+
+            modelBuilder.Entity<Cdo>()
+                .HasOne(p => p.Estacao)
+                .WithMany()
+                .HasForeignKey(p => p.EstacoesId);
+
+            modelBuilder.Entity<Cdo>()
+                .HasOne(p => p.TipoObra)
+                .WithMany()
+                .HasForeignKey(p => p.TipoObraId);
 
             modelBuilder.Entity<Tecnico>()
                 .HasOne(p => p.usuario)
