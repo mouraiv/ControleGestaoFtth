@@ -2,7 +2,7 @@
 
 <div class="d-flex flex-row justify-content-center">
     <!-- Formulário para edição -->
-    <form asp-controller="Construtora" asp-action="Editar" method="post" class="needs-validation" novalidate>
+    <form asp-controller="TesteOptico" asp-action="Editar" method="post" class="needs-validation" novalidate>
         <input type="hidden" asp-for="Id">
         <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- EDITAR --</a></div>
         <div id="formEditar" class="row">
@@ -25,7 +25,7 @@
                 <!-- End  Alert-->
             </div>
             <div class="form-group" id="titleEditForm">
-                <a id="DescricaoResponsavel">@Model.Estacao.Responsavel</a>
+                <a id="DescricaoResponsavel">Responsavél</a>
             </div>
             <div class="selectEstacaoClass form-group col">
                 <label>Estação:</label>

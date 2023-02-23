@@ -9,7 +9,6 @@ namespace ControleGestaoFtth.Repository.Interface
         bool Deletar(int id);
         IEnumerable<Estacoe> Listar();
         IEnumerable<Estacoe> Listar(int? pagina, string nomeEstacao, string responsavel);
-        IEnumerable<Estacoe> Responsavel();
         IEnumerable<TesteOptico> UniqueFk();
         Estacoe CarregarId(int id);
     }

@@ -16,7 +16,6 @@ namespace ControleGestaoFtth.Controllers
         public IActionResult Index()
         {
             ViewData ["selectEstacao"] = _estacaoRepository.Listar();
-            ViewData["selectResponsavel"] = _estacaoRepository.Responsavel();
             return View();
         }
         public IActionResult Inserir()

@@ -14,7 +14,6 @@ builder.Services.AddDbContext<AppDbContext>(
     options => options.UseMySql(conn, new MySqlServerVersion(new Version(8, 0, 31))));
 
 builder.Services.AddScoped<IConstrutoraRepository, ConstrutoraRepository>();
-builder.Services.AddScoped<ICdoRepository, CdoRepository>();
 builder.Services.AddScoped<IEstacoeRepository, EstacoeRepository>();
 builder.Services.AddScoped<ITipoObraRepository, TipoObraRepository>();
 builder.Services.AddScoped<INetwinRepository, NetwinRepository>();

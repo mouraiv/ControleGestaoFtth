@@ -31,7 +31,7 @@
 <div class="container-filter-sm">
 
     <div class="form-group">
-        <label>Tipo Obra</label>
+        <label>Construtora</label>
         @Html.DropDownList("selectConstrutora", new SelectList(ViewBag.selectConstrutora,"Nome","Nome"), "--Todos--",new { @id="dropConstrutora", @class="custom-select"})
     </div>
 
@@ -75,7 +75,7 @@
         function ConstrutoraIndex() {
 
             //VARIAVEIS GLOBAIS LOCAL
-            var nomeObra = "";
+            var nomeConstrutora = "";
 
             //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW
             const ftth = (url) => $.get(url,
@@ -104,10 +104,10 @@
                 spinnerFtth('#ftthLista');
 
                 //CARREGAR VALOR DROPDOWN NA VARIAVEL
-                nomeObra = $('#dropConstrutora').val();
+                nomeConstrutora = $('#dropConstrutora').val();
 
                 //CARREGAR TABELA GRID
-                ftth('Construtora/listar?nome=' + nomeObra);
+                ftth('Construtora/listar?nome=' + nomeConstrutora);
                 return false;
             });
 
@@ -120,7 +120,7 @@
                 let urlFtth = $(this).find('a').attr('href');
 
                 //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
-                ftth(urlFtth + '&nome=' + nomeObra);
+                ftth(urlFtth + '&nome=' + nomeConstrutora);
                 return false;
             });
 
@@ -155,7 +155,7 @@
                 window.location.href = 'Construtora/Editar?id=' + carregarId;
             })
 
-        } (TipoObraIndex());
+        } (ConstrutoraIndex());
     </script>
         }
 

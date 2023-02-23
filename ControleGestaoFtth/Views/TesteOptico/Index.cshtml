@@ -180,7 +180,7 @@
                     $('#dropCelula').attr('disabled', false);
                 }
                 //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
-                ftth('Construtora/Listar?estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
+                ftth('TesteOptico/Listar?estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
                 return false;
             });
 
@@ -229,7 +229,7 @@
                 let carregarId = $(this).attr("data-id");
 
                 //CARREGAR DETAHLE VIEW E CHAMAR O COLLAPSE MODAL
-                $.get('Construtora/Detalhe?id=' + carregarId,
+                $.get('TesteOptico/Detalhe?id=' + carregarId,
                     {}, function (resposta) {
                         //CARREGAR SPINNER LOADER
                         spinnerFtth('modal-body');

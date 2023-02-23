@@ -23,6 +23,7 @@ namespace ControleGestaoFtth.Repository
             db.EstacoesId = TesteOptico.EstacoesId;
             db.TipoObraId = TesteOptico.TipoObraId;
             db.NetwinId = TesteOptico.NetwinId;
+            db.ConstrutorasId = TesteOptico.ConstrutorasId;
             db.Cabo = TesteOptico.Cabo;
             db.Celula = TesteOptico.Celula;
             db.Capacidade = TesteOptico.Capacidade;
@@ -145,7 +146,6 @@ namespace ControleGestaoFtth.Repository
                 .Select(value => new Estacoe
                 {
                     Id = value.Id,
-                    Responsavel = value.Responsavel,
                     NomeEstacao = value.NomeEstacao,
 
                 }).OrderBy(p => p.NomeEstacao)
@@ -156,6 +156,7 @@ namespace ControleGestaoFtth.Repository
         {
             return _context.TesteOpticos
                 .AsNoTracking()
+                .Include(p => p.Estacao)
                 .Where(p => p.Estacao.NomeEstacao == estacao)
                 .AsEnumerable()
                 .Select(value => new TesteOptico
@@ -171,6 +172,7 @@ namespace ControleGestaoFtth.Repository
         {
             return _context.TesteOpticos
                .AsNoTracking()
+               .Include(p => p.Estacao)
                .Where(p => p.Estacao.NomeEstacao == estacao)
                .AsEnumerable()
                .Select(value => new TesteOptico
@@ -187,6 +189,7 @@ namespace ControleGestaoFtth.Repository
         {
             return _context.TesteOpticos
                 .AsNoTracking()
+                .Include(p => p.Estacao)
                 .Where(p => p.Estacao.NomeEstacao == estacao)
                 .AsEnumerable()
                 .Select(value => new TesteOptico

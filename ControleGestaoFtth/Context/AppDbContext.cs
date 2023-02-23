@@ -10,7 +10,6 @@ namespace ControleGestaoFtth.Context
         }
 
         public DbSet<Construtora> Construtoras => Set<Construtora>();
-        public DbSet<Cdo> Cdos => Set<Cdo>();
         public DbSet<TesteOptico> TesteOpticos => Set<TesteOptico>();
         public DbSet<Estacoe> Estacoes => Set<Estacoe>();
         public DbSet<EstadoCampo> EstadoCampos => Set<EstadoCampo>();
@@ -22,31 +21,15 @@ namespace ControleGestaoFtth.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Construtora>()
+            modelBuilder.Entity<TesteOptico>()
                 .HasOne(p => p.Estacao)
                 .WithMany()
                 .HasForeignKey(p => p.EstacoesId);
 
-            modelBuilder.Entity<Construtora>()
+            modelBuilder.Entity<TesteOptico>()
                 .HasOne(p => p.TipoObra)
                 .WithMany()
                 .HasForeignKey(p => p.TipoObraId);
-
-            modelBuilder.Entity<Construtora>()
-                .HasOne(p => p.EstadoCampo)
-                .WithMany()
-                .HasForeignKey(p => p.EstadoCamposId);
-
-            modelBuilder.Entity<Construtora>()
-                .HasOne(p => p.State)
-                .WithMany()
-                .HasForeignKey(p => p.StatesId);
-
-            modelBuilder.Entity<Construtora>()
-                .HasOne(p => p.Netwin)
-                .WithMany()
-                .HasForeignKey(p => p.NetwinId);
-            //-----------------------------------------------------------------------------
 
             modelBuilder.Entity<TesteOptico>()
                 .HasOne(p => p.EstadoCampo)
@@ -64,19 +47,9 @@ namespace ControleGestaoFtth.Context
                 .HasForeignKey(p => p.NetwinId);
 
             modelBuilder.Entity<TesteOptico>()
-               .HasOne(p => p.Cdo)
-               .WithMany()
-               .HasForeignKey(p => p.CdosId);
-
-            modelBuilder.Entity<Cdo>()
-                .HasOne(p => p.Estacao)
-                .WithMany()
-                .HasForeignKey(p => p.EstacoesId);
-
-            modelBuilder.Entity<Cdo>()
-                .HasOne(p => p.TipoObra)
-                .WithMany()
-                .HasForeignKey(p => p.TipoObraId);
+             .HasOne(p => p.Construtora)
+             .WithMany()
+             .HasForeignKey(p => p.ConstrutorasId);
 
             modelBuilder.Entity<Tecnico>()
                 .HasOne(p => p.usuario)

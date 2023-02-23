@@ -19,7 +19,6 @@ namespace ControleGestaoFtth.Repository
 
             if (db == null) throw new Exception("Houve um erro na atualização");
 
-            db.Responsavel = estacao.Responsavel;
             db.NomeEstacao = estacao.NomeEstacao;
             db.Sigla = estacao.Sigla;
 
@@ -77,27 +76,12 @@ namespace ControleGestaoFtth.Repository
             if (nomeEstacao != null || responsavel != null)
             {
                 return resultado.
-                    Where(p => p.NomeEstacao.Equals(nomeEstacao) || p.Responsavel.Equals(responsavel))
+                    Where(p => p.NomeEstacao.Equals(nomeEstacao))
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
             
             return resultado
                 .ToList().ToPagedList(paginaNumero, paginaTamanho); 
-        }
-
-        public IEnumerable<Estacoe> Responsavel()
-        {
-            return _context.Estacoes
-                .AsNoTracking()
-                .AsEnumerable()
-                .Select(value => new Estacoe
-                {
-                    Id = value.Id,
-                    Responsavel = value.Responsavel
-
-                }).DistinctBy(p => p.Responsavel)
-                .OrderBy(p => p.Responsavel)
-                .ToList();
         }
 
         public IEnumerable<TesteOptico> UniqueFk()
