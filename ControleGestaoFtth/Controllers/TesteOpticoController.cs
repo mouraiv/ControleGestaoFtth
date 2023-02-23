@@ -7,62 +7,62 @@ namespace ControleGestaoFtth.Controllers
 {
     public class TesteOpticoController : Controller
     {
-        private readonly ITesteOpticoRepository _testeOpticoRepository;
+        private readonly ITesteOpticoRepository _TesteOpticoRepository;
 
-        public TesteOpticoController(ITesteOpticoRepository testeOpticoRepository)
+        public TesteOpticoController(ITesteOpticoRepository TesteOpticoRepository)
         {
-            _testeOpticoRepository = testeOpticoRepository;
+            _TesteOpticoRepository = TesteOpticoRepository;
         }
         public IActionResult Index()
         {
-            ViewData["selectEstacao"] = _testeOpticoRepository.Estacoes();
+            ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
 
             return View();
         }
         public IActionResult Inserir()
         {
-            ViewData["selectViabilidade"] = _testeOpticoRepository.Netwins();
-            ViewData["selectEstacao"] = _testeOpticoRepository.Estacoes();
-            ViewData["selectObras"] = _testeOpticoRepository.TipoObras();
-            ViewData["selectEstadoCampo"] = _testeOpticoRepository.EstadoCampos();
+            ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
+            ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
+            ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
+            ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();
 
             return View();
         }
         public IActionResult Editar(int id)
         {
-            TesteOptico testeOptico = _testeOpticoRepository.CarregarId(id);
-            ViewData["selectViabilidade"] = _testeOpticoRepository.Netwins();
-            ViewData["selectEstacao"] = _testeOpticoRepository.Estacoes();
-            ViewData["selectObras"] = _testeOpticoRepository.TipoObras();
-            ViewData["selectEstadoCampo"] = _testeOpticoRepository.EstadoCampos();
+            TesteOptico TesteOptico = _TesteOpticoRepository.CarregarId(id);
+            ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
+            ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
+            ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
+            ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();
 
-            return View(testeOptico);
+            return View(TesteOptico);
         }
         public IActionResult Confirmacao(int id)
         {
-            TesteOptico testeOptico = _testeOpticoRepository.CarregarId(id);
+            TesteOptico TesteOptico = _TesteOpticoRepository.CarregarId(id);
 
-            return View(testeOptico);
+            return View(TesteOptico);
         }
         [HttpGet]
         public IActionResult Listar(int? pagina, string estacao, string cdo, int? cabo, int? celula)
         {
             if (estacao != null)
             {
-                ViewData["selectCdoFilter"] = _testeOpticoRepository.FilterCdo(estacao);
-                ViewData["selectCaboFilter"] = _testeOpticoRepository.FilterCabo(estacao);
-                ViewData["selectCelulaFilter"] = _testeOpticoRepository.FilterCelula(estacao);
+                ViewData["selectCdoFilter"] = _TesteOpticoRepository.FilterCdo(estacao);
+                ViewData["selectCaboFilter"] = _TesteOpticoRepository.FilterCabo(estacao);
+                ViewData["selectCelulaFilter"] = _TesteOpticoRepository.FilterCelula(estacao);
             }
             else
             {
-                ViewData["selectCdoFilter"] = _testeOpticoRepository.FilterCdo("");
-                ViewData["selectCaboFilter"] = _testeOpticoRepository.FilterCabo("");
-                ViewData["selectCelulaFilter"] = _testeOpticoRepository.FilterCelula("");
+                ViewData["selectCdoFilter"] = _TesteOpticoRepository.FilterCdo("");
+                ViewData["selectCaboFilter"] = _TesteOpticoRepository.FilterCabo("");
+                ViewData["selectCelulaFilter"] = _TesteOpticoRepository.FilterCelula("");
             }
 
             try
             {
-                IEnumerable<TesteOptico> listar = _testeOpticoRepository.Listar(pagina, estacao ?? "", cdo, cabo, celula);
+                IEnumerable<TesteOptico> listar = _TesteOpticoRepository.Listar(pagina, estacao ?? "", cdo, cabo, celula);
 
                 return PartialView(listar);
             }
@@ -78,9 +78,9 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                TesteOptico testeOptico = _testeOpticoRepository.CarregarId(id);
+                TesteOptico TesteOptico = _TesteOpticoRepository.CarregarId(id);
 
-                return View(testeOptico);
+                return View(TesteOptico);
             }
             catch (Exception error)
             {
@@ -90,42 +90,52 @@ namespace ControleGestaoFtth.Controllers
 
         }
         [HttpPost]
-        public IActionResult Inserir(TesteOptico testeOptico)
+        public IActionResult Inserir(TesteOptico TesteOptico)
         {
-            ViewData["selectViabilidade"] = _testeOpticoRepository.Netwins();
-            ViewData["selectEstacao"] = _testeOpticoRepository.Estacoes();
-            ViewData["selectObras"] = _testeOpticoRepository.TipoObras();
-            ViewData["selectEstadoCampo"] = _testeOpticoRepository.EstadoCampos();
+            ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
+            ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
+            ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
+            ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();
 
             try
             {
-               
-               _testeOpticoRepository.Cadastrar(testeOptico);
-               TempData["Sucesso"] = "Inserido com sucesso.";
-               return RedirectToAction("Inserir");
-                   
-               
+                if (ModelState.IsValid)
+                {
+                    if (_TesteOpticoRepository.UniqueCdo().Any(p => p.CDO.Equals(TesteOptico.CDO.ToUpper())))
+                    {
+                        TempData["Falha"] = $"CDO {TesteOptico.CDO} já existe.";
+
+                        return View(TesteOptico);
+                    }
+                    else
+                    {
+                        _TesteOpticoRepository.Cadastrar(TesteOptico);
+                        TempData["Sucesso"] = "Inserido com sucesso.";
+                        return RedirectToAction("Inserir");
+                    }
+                }
+                return View(TesteOptico);
             }
             catch (Exception error)
             {
                 TempData["Falha"] = $"Erro ao inserir - {error.Message}.";
-                return View(testeOptico);
+                return View(TesteOptico);
             }
         }
         [HttpPost]
-        public IActionResult Editar(TesteOptico testeOptico)
+        public IActionResult Editar(TesteOptico TesteOptico)
         {
             try
             {
-                _testeOpticoRepository.Atualizar(testeOptico);
+                _TesteOpticoRepository.Atualizar(TesteOptico);
                 TempData["Sucesso"] = "Editado com sucesso.";
-                return RedirectToAction("Editar", new { id = testeOptico.Id });
+                return RedirectToAction("Editar", new { id = TesteOptico.Id });
 
             }
             catch (Exception error)
             {
                 TempData["Falha"] = $"Erro ao editar - {error.Message}.";
-                return View(testeOptico);
+                return View(TesteOptico);
             }
         }
         [HttpGet]
@@ -133,8 +143,8 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                _testeOpticoRepository.Deletar(id);
-                TempData["Sucesso"] = "CDO Excluída com sucesso.";
+                _TesteOpticoRepository.Deletar(id);
+                TempData["Sucesso"] = "Teste óptico Excluído com sucesso.";
                 return RedirectToAction("Index");
             }
             catch (Exception error)

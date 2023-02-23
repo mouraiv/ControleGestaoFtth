@@ -10,7 +10,7 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<Netwin> Listar();
         IEnumerable<Netwin> Listar(int? pagina, string descricao);
         IEnumerable<Netwin> Descricao();
-        IEnumerable<Construtora> UniqueFk();
+        IEnumerable<TesteOptico> UniqueFk();
         Netwin CarregarId(int id);
     }
 }

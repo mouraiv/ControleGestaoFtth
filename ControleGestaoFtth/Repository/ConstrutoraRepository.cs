@@ -13,34 +13,13 @@ namespace ControleGestaoFtth.Repository
         {
             _context = context;
         }
-
-        public Construtora Atualizar(Construtora construtora)
+        public Construtora Atualizar(Construtora Construtora)
         {
-            Construtora db = CarregarId(construtora.Id);
+            Construtora db = CarregarId(Construtora.Id);
 
             if (db == null) throw new Exception("Houve um erro na atualização");
 
-            db.EstacoesId = construtora.EstacoesId;
-            db.TipoObraId = construtora.TipoObraId;
-            db.NetwinId= construtora.NetwinId;
-            db.Cabo = construtora.Cabo;
-            db.Celula = construtora.Celula;
-            db.Capacidade = construtora.Capacidade;
-            db.Tecnico = construtora.Tecnico;
-            db.TotalUms = construtora.TotalUms;
-            db.EquipedeConstrucao = construtora.EquipedeConstrucao;
-            db.EstadoCamposId = construtora.EstadoCamposId;
-            db.DatadoTeste = construtora.DatadoTeste;
-            db.DatadeConstrucao = construtora.DatadeConstrucao;
-            db.DatadeRecebimento = construtora.DatadeRecebimento;
-            db.Endereco = construtora.Endereco;
-            db.BobinadeLancamento = construtora.BobinadeLancamento;
-            db.PosicaoICX_DGO = construtora.PosicaoICX_DGO;
-            db.BobinadeRecepcao = construtora.BobinadeRecepcao;
-            db.SplitterCEOS = construtora.SplitterCEOS;
-            db.QuantidadeDeTeste = construtora.QuantidadeDeTeste;
-            db.FibraDGO = construtora.FibraDGO;
-            db.Observacoes = construtora.Observacoes;
+            db.Nome = Construtora.Nome;
 
             _context.Construtoras.Update(db);
             _context.SaveChanges();
@@ -48,20 +27,16 @@ namespace ControleGestaoFtth.Repository
             return db;
         }
 
-        public Construtora Cadastrar(Construtora construtora)
+        public Construtora Cadastrar(Construtora Construtora)
         {
-            _context.Construtoras.Add(construtora);
+            _context.Construtoras.Add(Construtora);
             _context.SaveChanges();
-            return construtora;
+            return Construtora;
         }
 
         public Construtora CarregarId(int id)
         {
-          return _context.Construtoras
-                    .Include(p => p.Estacao)
-                    .Include(p => p.TipoObra)
-                    .Include(p => p.Netwin)
-                    .Include(p => p.EstadoCampo)
+            return _context.Construtoras
                     .Where(p => p.Id == id)
                     .First();
         }
@@ -77,167 +52,61 @@ namespace ControleGestaoFtth.Repository
             return true;
         }
 
-        public IEnumerable<Construtora> Listar(int? pagina, string estacao, string cdo, int? cabo, int? celula)
+        public IEnumerable<Construtora> Listar()
+        {
+            return _context.Construtoras
+                .AsNoTracking()
+                .Select(value => new Construtora
+                {
+                    Id = value.Id,
+                    Nome = value.Nome,
+
+                }).OrderBy(p => p.Nome)
+                .ToList();
+        }
+
+        public IEnumerable<Construtora> Listar(int? pagina, string nome)
         {
             int paginaTamanho = 10;
             int paginaNumero = (pagina ?? 1);
 
-            IQueryable<Construtora> resultado = _context.Construtoras
-                .AsNoTracking()
-                .Include(p => p.Estacao)
-                .Include(p => p.Netwin)
-                .Select(value => new Construtora
-                {
-                    Id = value.Id,
-                    Estacao = value.Estacao,
-                    CDO = value.CDO,
-                    Cabo = value.Cabo,
-                    Celula = value.Celula,
-                    TotalUms = value.TotalUms,
-                    Netwin = value.Netwin,
-                    DatadeRecebimento = value.DatadeRecebimento,
-                    State = value.State,
-                    DatadoTeste = value.DatadoTeste,
-                    DatadeConstrucao = value.DatadeConstrucao,
-                    EquipedeConstrucao = value.EquipedeConstrucao,
-                    Tecnico = value.Tecnico,
-                });
+            IQueryable<Construtora> resultado = _context.Construtoras.AsNoTracking();
 
-            if (!string.IsNullOrEmpty(estacao) && cdo == null && cabo == null && celula == null)
+            if (nome != null)
             {
-                return resultado
-                    .Where(p => p.Estacao.NomeEstacao.Equals(estacao))
-                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
-            }
-            else if (cdo != null)
-            {
-                return resultado
-                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.CDO.Equals(cdo))
-                   .ToList().ToPagedList(paginaNumero, paginaTamanho);
-            }
-            else if (cabo != null && celula == null)
-            {
-                return resultado
-                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Cabo == cabo)
-                   .ToList().ToPagedList(paginaNumero, paginaTamanho);
-            }
-            else if (celula != null && cabo == null)
-            {
-                return resultado
-                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Celula == celula)
-                   .ToList().ToPagedList(paginaNumero, paginaTamanho);
-            }
-            else if (cabo != null && celula != null)
-            {
-                return resultado
-                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Cabo == cabo && p.Celula == celula)
+                return resultado.
+                    Where(p => p.Nome.Equals(nome))
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
 
             return resultado
                 .ToList().ToPagedList(paginaNumero, paginaTamanho);
-
         }
-        public IEnumerable<Estacoe> Estacoes()
+
+        public IEnumerable<Construtora> Obras()
         {
-            return _context.Estacoes
+            return _context.Construtoras
                 .AsNoTracking()
-                .Select(value => new Estacoe
+                .AsEnumerable()
+                .Select(value => new Construtora
                 {
                     Id = value.Id,
-                    Responsavel = value.Responsavel,
-                    NomeEstacao = value.NomeEstacao,
+                    Nome = value.Nome
 
-                }).OrderBy(p => p.NomeEstacao)
+                }).DistinctBy(p => p.Nome)
+                .OrderBy(p => p.Nome)
                 .ToList();
         }
 
-        public IEnumerable<Construtora> FilterCdo(string estacao)
+        public IEnumerable<TesteOptico> UniqueFk()
         {
-            return _context.Construtoras
-                .AsNoTracking()
-                .Where(p => p.Estacao.NomeEstacao == estacao)
-                .AsEnumerable()
-                .Select(value => new Construtora
-                {
-                    CDO = value.CDO,
-
-                }).DistinctBy(p => p.CDO)
-                .OrderBy(p => p.CDO)
-                .ToList();
-        }
-
-        public IEnumerable<Construtora> FilterCabo(string estacao)
-        {
-            return _context.Construtoras
+            return _context.TesteOpticos
                .AsNoTracking()
-               .Where(p => p.Estacao.NomeEstacao == estacao)
-               .AsEnumerable()
-               .Select(value => new Construtora
+               .Select(value => new TesteOptico
                {
-                   Cabo = value.Cabo,
+                   ConstrutorasId = value.ConstrutorasId
 
-               }).DistinctBy(p => p.Cabo)
-               .OrderBy(p => p.Cabo)
-               .ToList();
-
-        }
-
-        public IEnumerable<Construtora> FilterCelula(string estacao)
-        {
-            return _context.Construtoras
-                .AsNoTracking()
-                .Where(p => p.Estacao.NomeEstacao == estacao)
-                .AsEnumerable()
-                .Select(value => new Construtora
-                {
-                    Celula = value.Celula
-
-                }).DistinctBy(p => p.Celula)
-                .OrderBy(p => p.Celula)
-                .ToList();
-        }
-
-        public IEnumerable<Netwin> Netwins()
-        {
-            return _context.Netwins
-                .AsNoTracking()
-                .ToList();
-        }
-
-        public IEnumerable<TipoObra> TipoObras()
-        {
-            return _context.TipoObras
-                .AsNoTracking()
-                .AsEnumerable()
-                .DistinctBy(p => p.Nome)
-                .OrderBy(p => p.Nome)
-                .ToList();
-        }
-
-        public IEnumerable<EstadoCampo> EstadoCampos()
-        {
-            return _context.EstadoCampos
-                .AsNoTracking()
-                .Select(value => new EstadoCampo
-                {
-                   Id = value.Id,
-                   Nome = value.Nome
-
-                })
-                .OrderBy(p => p.Nome)
-                .ToList();
-        }
-
-        public IEnumerable<Construtora> UniqueCdo()
-        {
-            return _context.Construtoras
-                .AsNoTracking()
-                .Select(value => new Construtora
-                {
-                    CDO = value.CDO,
-
-                }).ToList();
+               }).ToList();
         }
     }
 }

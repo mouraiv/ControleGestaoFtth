@@ -6,7 +6,19 @@ namespace ControleGestaoFtth.Models
     {
         [Key]
         public int Id { get; set; }
-        public EstadoCampo? EstadoCampo { get; set; }
+        public Estacoe Estacao { get; set; } = null!;
+        public int? EstacoesId { get; set; }
+        public TipoObra TipoObra { get; set; } = null!;
+        public int? TipoObraId { get; set; }
+        public Construtora Construtora { get; set; } = null!;
+        public int? ConstrutorasId { get; set; }
+        public string CDO { get; set; } = null!;
+        public int Cabo { get; set; }
+        public int? Celula { get; set; }
+        public int? Capacidade { get; set; }
+        public int? TotalUms { get; set; }
+        public string? Endereco { get; set; }
+        public EstadoCampo EstadoCampo { get; set; } = null!;
         public int? EstadoCamposId { get; set; }
         public State State { get; set; } = null!;
         public int? StatesId { get; set; }
@@ -27,7 +39,5 @@ namespace ControleGestaoFtth.Models
         public string? PosicaoICX_DGO { get; set; }
         public string? SplitterCEOS { get; set; }
         public string? FibraDGO { get; set; }
-        public Cdo Cdo { get; set; } = null!;
-        public int? CdosId { get; set; }
     }
 }

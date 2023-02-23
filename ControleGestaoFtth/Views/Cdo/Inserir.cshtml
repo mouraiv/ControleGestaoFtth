@@ -173,7 +173,7 @@
         }
 
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW EDITAR CONSTRUTORA
-        function ConstrutoraEditar() {
+        function CdoInserir() {
             //VARIAVEIS GLOBAIS DE ACESSO JSON MODAL SERIALIZE
             var jsonEstacaoSelect = @Html.Raw(Json.Serialize(ViewBag.selectEstacao));
 
@@ -189,7 +189,7 @@
                 $('form').find('#DescricaoResponsavel').text(textResponsavel);
             });
 
-        } (ConstrutoraEditar());
+        } (CdoInserir());
 
         //AÇÃO INSERT ICON ADD SHOW ESTAÇÃO ME MODAL
         $('#formEditar').on('click', '.btn-plus-estacao', function () {

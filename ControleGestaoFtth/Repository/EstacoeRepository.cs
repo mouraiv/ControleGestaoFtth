@@ -100,11 +100,11 @@ namespace ControleGestaoFtth.Repository
                 .ToList();
         }
 
-        public IEnumerable<Construtora> UniqueFk()
+        public IEnumerable<TesteOptico> UniqueFk()
         {
-            return _context.Construtoras
+            return _context.TesteOpticos
                .AsNoTracking()
-               .Select(value => new Construtora
+               .Select(value => new TesteOptico
                {
                    EstacoesId = value.EstacoesId
 

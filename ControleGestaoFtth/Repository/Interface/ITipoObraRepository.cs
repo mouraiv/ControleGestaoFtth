@@ -10,7 +10,7 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<TipoObra> Listar();
         IEnumerable<TipoObra> Listar(int? pagina, string nome);
         IEnumerable<TipoObra> Obras();
-        IEnumerable<Construtora> UniqueFk();
+        IEnumerable<TesteOptico> UniqueFk();
         TipoObra CarregarId(int id);
     }
 }

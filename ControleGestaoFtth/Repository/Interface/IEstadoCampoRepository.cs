@@ -10,7 +10,7 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<EstadoCampo> Listar();
         IEnumerable<EstadoCampo> Listar(int? pagina, string nome);
         IEnumerable<EstadoCampo> Campo();
-        IEnumerable<Construtora> UniqueFk();
+        IEnumerable<TesteOptico> UniqueFk();
         EstadoCampo CarregarId(int id);
     }
 }

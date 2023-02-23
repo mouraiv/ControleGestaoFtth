@@ -46,6 +46,27 @@ namespace ControleGestaoFtth.Context
                 .HasOne(p => p.Netwin)
                 .WithMany()
                 .HasForeignKey(p => p.NetwinId);
+            //-----------------------------------------------------------------------------
+
+            modelBuilder.Entity<TesteOptico>()
+                .HasOne(p => p.EstadoCampo)
+                .WithMany()
+                .HasForeignKey(p => p.EstadoCamposId);
+
+            modelBuilder.Entity<TesteOptico>()
+                .HasOne(p => p.State)
+                .WithMany()
+                .HasForeignKey(p => p.StatesId);
+
+            modelBuilder.Entity<TesteOptico>()
+                .HasOne(p => p.Netwin)
+                .WithMany()
+                .HasForeignKey(p => p.NetwinId);
+
+            modelBuilder.Entity<TesteOptico>()
+               .HasOne(p => p.Cdo)
+               .WithMany()
+               .HasForeignKey(p => p.CdosId);
 
             modelBuilder.Entity<Cdo>()
                 .HasOne(p => p.Estacao)

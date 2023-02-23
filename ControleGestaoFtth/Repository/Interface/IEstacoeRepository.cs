@@ -10,7 +10,7 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<Estacoe> Listar();
         IEnumerable<Estacoe> Listar(int? pagina, string nomeEstacao, string responsavel);
         IEnumerable<Estacoe> Responsavel();
-        IEnumerable<Construtora> UniqueFk();
+        IEnumerable<TesteOptico> UniqueFk();
         Estacoe CarregarId(int id);
     }
 }

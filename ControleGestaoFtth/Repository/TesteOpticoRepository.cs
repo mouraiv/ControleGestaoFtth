@@ -14,27 +14,33 @@ namespace ControleGestaoFtth.Repository
             _context = context;
         }
 
-        public TesteOptico Atualizar(TesteOptico testeOptico)
+        public TesteOptico Atualizar(TesteOptico TesteOptico)
         {
-            TesteOptico db = CarregarId(testeOptico.Id);
+            TesteOptico db = CarregarId(TesteOptico.Id);
 
             if (db == null) throw new Exception("Houve um erro na atualização");
 
-            db.NetwinId = testeOptico.NetwinId;
-            db.Tecnico = testeOptico.Tecnico;
-            db.EquipedeConstrucao = testeOptico.EquipedeConstrucao;
-            db.EstadoCamposId = testeOptico.EstadoCamposId;
-            db.DatadoTeste = testeOptico.DatadoTeste;
-            db.DatadeConstrucao = testeOptico.DatadeConstrucao;
-            db.DatadeRecebimento = testeOptico.DatadeRecebimento;
-            db.BobinadeLancamento = testeOptico.BobinadeLancamento;
-            db.PosicaoICX_DGO = testeOptico.PosicaoICX_DGO;
-            db.BobinadeRecepcao = testeOptico.BobinadeRecepcao;
-            db.SplitterCEOS = testeOptico.SplitterCEOS;
-            db.QuantidadeDeTeste = testeOptico.QuantidadeDeTeste;
-            db.FibraDGO = testeOptico.FibraDGO;
-            db.Observacoes = testeOptico.Observacoes;
-            db.CdosId = testeOptico.CdosId;
+            db.EstacoesId = TesteOptico.EstacoesId;
+            db.TipoObraId = TesteOptico.TipoObraId;
+            db.NetwinId = TesteOptico.NetwinId;
+            db.Cabo = TesteOptico.Cabo;
+            db.Celula = TesteOptico.Celula;
+            db.Capacidade = TesteOptico.Capacidade;
+            db.Tecnico = TesteOptico.Tecnico;
+            db.TotalUms = TesteOptico.TotalUms;
+            db.EquipedeConstrucao = TesteOptico.EquipedeConstrucao;
+            db.EstadoCamposId = TesteOptico.EstadoCamposId;
+            db.DatadoTeste = TesteOptico.DatadoTeste;
+            db.DatadeConstrucao = TesteOptico.DatadeConstrucao;
+            db.DatadeRecebimento = TesteOptico.DatadeRecebimento;
+            db.Endereco = TesteOptico.Endereco;
+            db.BobinadeLancamento = TesteOptico.BobinadeLancamento;
+            db.PosicaoICX_DGO = TesteOptico.PosicaoICX_DGO;
+            db.BobinadeRecepcao = TesteOptico.BobinadeRecepcao;
+            db.SplitterCEOS = TesteOptico.SplitterCEOS;
+            db.QuantidadeDeTeste = TesteOptico.QuantidadeDeTeste;
+            db.FibraDGO = TesteOptico.FibraDGO;
+            db.Observacoes = TesteOptico.Observacoes;
 
             _context.TesteOpticos.Update(db);
             _context.SaveChanges();
@@ -42,16 +48,18 @@ namespace ControleGestaoFtth.Repository
             return db;
         }
 
-        public TesteOptico Cadastrar(TesteOptico testeOptico)
+        public TesteOptico Cadastrar(TesteOptico TesteOptico)
         {
-            _context.TesteOpticos.Add(testeOptico);
+            _context.TesteOpticos.Add(TesteOptico);
             _context.SaveChanges();
-            return testeOptico;
+            return TesteOptico;
         }
 
         public TesteOptico CarregarId(int id)
         {
             return _context.TesteOpticos
+                      .Include(p => p.Estacao)
+                      .Include(p => p.TipoObra)
                       .Include(p => p.Netwin)
                       .Include(p => p.EstadoCampo)
                       .Where(p => p.Id == id)
@@ -76,12 +84,16 @@ namespace ControleGestaoFtth.Repository
 
             IQueryable<TesteOptico> resultado = _context.TesteOpticos
                 .AsNoTracking()
-                .Include(p => p.Cdo)
+                .Include(p => p.Estacao)
                 .Include(p => p.Netwin)
                 .Select(value => new TesteOptico
                 {
                     Id = value.Id,
-                    Cdo = value.Cdo,
+                    Estacao = value.Estacao,
+                    CDO = value.CDO,
+                    Cabo = value.Cabo,
+                    Celula = value.Celula,
+                    TotalUms = value.TotalUms,
                     Netwin = value.Netwin,
                     DatadeRecebimento = value.DatadeRecebimento,
                     State = value.State,
@@ -94,31 +106,31 @@ namespace ControleGestaoFtth.Repository
             if (!string.IsNullOrEmpty(estacao) && cdo == null && cabo == null && celula == null)
             {
                 return resultado
-                    .Where(p => p.Cdo.Estacao.NomeEstacao.Equals(estacao))
+                    .Where(p => p.Estacao.NomeEstacao.Equals(estacao))
                     .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
             else if (cdo != null)
             {
                 return resultado
-                   .Where(p => p.Cdo.Estacao.NomeEstacao.Equals(estacao) && p.Cdo.CDO.Equals(cdo))
+                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.CDO.Equals(cdo))
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
             else if (cabo != null && celula == null)
             {
                 return resultado
-                   .Where(p => p.Cdo.Estacao.NomeEstacao.Equals(estacao) && p.Cdo.Cabo == cabo)
+                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Cabo == cabo)
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
             else if (celula != null && cabo == null)
             {
                 return resultado
-                   .Where(p => p.Cdo.Estacao.NomeEstacao.Equals(estacao) && p.Cdo.Celula == celula)
+                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Celula == celula)
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
             else if (cabo != null && celula != null)
             {
                 return resultado
-                   .Where(p => p.Cdo.Estacao.NomeEstacao.Equals(estacao) && p.Cdo.Cabo == cabo && p.Cdo.Celula == celula)
+                   .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Cabo == cabo && p.Celula == celula)
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
 
@@ -140,13 +152,13 @@ namespace ControleGestaoFtth.Repository
                 .ToList();
         }
 
-        public IEnumerable<Cdo> FilterCdo(string estacao)
+        public IEnumerable<TesteOptico> FilterCdo(string estacao)
         {
-            return _context.Cdos
+            return _context.TesteOpticos
                 .AsNoTracking()
                 .Where(p => p.Estacao.NomeEstacao == estacao)
                 .AsEnumerable()
-                .Select(value => new Cdo
+                .Select(value => new TesteOptico
                 {
                     CDO = value.CDO,
 
@@ -155,13 +167,13 @@ namespace ControleGestaoFtth.Repository
                 .ToList();
         }
 
-        public IEnumerable<Cdo> FilterCabo(string estacao)
+        public IEnumerable<TesteOptico> FilterCabo(string estacao)
         {
-            return _context.Cdos
+            return _context.TesteOpticos
                .AsNoTracking()
                .Where(p => p.Estacao.NomeEstacao == estacao)
                .AsEnumerable()
-               .Select(value => new Cdo
+               .Select(value => new TesteOptico
                {
                    Cabo = value.Cabo,
 
@@ -171,13 +183,13 @@ namespace ControleGestaoFtth.Repository
 
         }
 
-        public IEnumerable<Cdo> FilterCelula(string estacao)
+        public IEnumerable<TesteOptico> FilterCelula(string estacao)
         {
-            return _context.Cdos
+            return _context.TesteOpticos
                 .AsNoTracking()
                 .Where(p => p.Estacao.NomeEstacao == estacao)
                 .AsEnumerable()
-                .Select(value => new Cdo
+                .Select(value => new TesteOptico
                 {
                     Celula = value.Celula
 
@@ -217,11 +229,15 @@ namespace ControleGestaoFtth.Repository
                 .ToList();
         }
 
-        public IEnumerable<TesteOptico> Listar()
+        public IEnumerable<TesteOptico> UniqueCdo()
         {
             return _context.TesteOpticos
-               .AsNoTracking()
-               .ToList();
+                .AsNoTracking()
+                .Select(value => new TesteOptico
+                {
+                    CDO = value.CDO,
+
+                }).ToList();
         }
     }
 }

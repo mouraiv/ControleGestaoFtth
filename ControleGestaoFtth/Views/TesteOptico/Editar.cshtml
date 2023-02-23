@@ -1,5 +1,462 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model TesteOptico
+
+<div class="d-flex flex-row justify-content-center">
+    <!-- Formulário para edição -->
+    <form asp-controller="Construtora" asp-action="Editar" method="post" class="needs-validation" novalidate>
+        <input type="hidden" asp-for="Id">
+        <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- EDITAR --</a></div>
+        <div id="formEditar" class="row">
+            <div>
+                <!-- Alert para tratamento de exceções -->
+                @if (TempData["Sucesso"] != null)
+                {
+                    <div id="alertForm" class="alert alert-success" role="alert">
+                        <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <a>@TempData["Sucesso"]</a>
+                    </div>
+                }
+                @if (TempData["Falha"] != null)
+                {
+                    <div id="alertForm" class="alert alert-danger" role="alert">
+                        <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <a>@TempData["Falha"]</a>
+                    </div>
+                }
+                <!-- End  Alert-->
+            </div>
+            <div class="form-group" id="titleEditForm">
+                <a id="DescricaoResponsavel">@Model.Estacao.Responsavel</a>
+            </div>
+            <div class="selectEstacaoClass form-group col">
+                <label>Estação:</label>
+                <div class="row">
+                    <div class="col">
+                        @Html.DropDownListFor(model => model.EstacoesId, new SelectList(ViewBag.selectEstacao,"Id","NomeEstacao"), new {@id="#dropEditEstacao", @class="custom-select w-100"})
+                    </div>
+                    <div class="col-auto">
+                        <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" id="iconBtn" class="btn-plus-estacao" title="Adicionar"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col">
+                <label>Tipo Obra:</label>
+                <div class="row">
+                    <div class="col">
+                        @Html.DropDownListFor(model => model.TipoObraId, new SelectList(ViewBag.selectObras,"Id","Nome"), new {@id="#dropEditTipoObras", @class="custom-select w-100"})
+                    </div>
+                    <div class="col-auto">
+                        <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" class="btn-plus-tipoObra" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div id="cdoInput" class="form-group position-relative col">
+                <label>CDO:</label>
+                <input type="text" asp-for="CDO" class="form-control" disabled>
+                <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" id="btnIconExcluir" title="Excluir"><i class="fa fa-trash"></i></button>
+            </div>
+            <div id="vlrow" class="form-group col">
+                <label>Viabilidade:</label>
+                <div class="row">
+                    <div id="vldrop" class="col">
+                        @Html.DropDownListFor(model => model.NetwinId, new SelectList(ViewBag.selectViabilidade,"Id","Codigo"), new { @id="dropViabilidade", @class="custom-select", @data_bs_target="#vldesc"})
+                    </div>
+                    <div id="vldesc" class="collapse in width col">
+                        <a id="DescricaoViabilidade">[ @Model.Netwin?.Tipo ] - @Model.Netwin?.Descricao</a>
+                    </div>
+                    <div id="vlicon" class="col">
+                        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn-plus-viabilidade" type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+                <div id="vlmdesc" class="collapse in width">
+                    <a id="DescricaoViabilidade">[ @Model.Netwin?.Tipo ] - @Model.Netwin?.Descricao</a>
+                </div>
+            </div>
+            <div class="w-100"></div>
+            <div class="form-group col">
+                <label class="form-label">Cabo:</label>
+                <input type="number" asp-for="Cabo" class="form-control" min="0" max="1000" required>
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="form-group col">
+                <label>Celula:</label>
+                <input type="number" asp-for="Celula" class="form-control" min="0" max="1000" required>
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="w-100"></div>
+            <div class="form-group col">
+                <label>Capacidade:</label>
+                <input type="number" asp-for="Capacidade" class="form-control" min="0" max="1000" required>
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="form-group col">
+                <label>Técnico:</label>
+                <input type="text" asp-for="Tecnico" class="form-control" maxlength="50">
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="w-100"></div>
+            <div class="form-group col">
+                <label>Total Ums</label>
+                <input type="number" asp-for="TotalUms" class="form-control" min="0" max="1000" required>
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="form-group col">
+                <label>Equipe Construção:</label>
+                <textarea type="text" asp-for="EquipedeConstrucao" class="form-control" maxlength="250"></textarea>
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="w-100"></div>
+            <div class="form-group col">
+                <label>Estado Campo:</label>
+                <div class="row">
+                    <div class="col">
+                        @Html.DropDownListFor(model => model.EstadoCamposId, new SelectList(ViewBag.selectEstadoCampo,"Id","Nome"), new {@id="dropEditEstadoCampo", @class="custom-select w-100"})
+                    </div>
+                    <div class="col-auto">
+                        <button data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn-plus-estadoCampo" type="button" id="iconBtn" title="Adicionar"><i class="fa fa-plus"></i></button>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group col">
+                <label>Data teste:</label>
+                <input type="date" asp-for="DatadoTeste" class="form-control">
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="w-100"></div>
+            <div class="form-group col">
+                <label>Data Construção:</label>
+                <input type="date" asp-for="DatadeConstrucao" class="form-control">
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="form-group col">
+                <label>Data Recebimento:</label>
+                <input type="date" asp-for="DatadeRecebimento" class="form-control">
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="form-group">
+                <label>Localidade:</label>
+                <textarea type="text" asp-for="Endereco" class="form-control" maxlength="250" id="inputArea"></textarea>
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="form-group col">
+                <label>Bobina Lançamento:</label>
+                <input type="number" asp-for="BobinadeLancamento" class="form-control" min="0" max="10000000">
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="form-group col">
+                <label>Posição ICX/DGO:</label>
+                <input type="text" asp-for="PosicaoICX_DGO" class="form-control" maxlength="50">
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="w-100"></div>
+            <div class="form-group col">
+                <label>Bobina de Recepção:</label>
+                <input type="text" asp-for="BobinadeRecepcao" class="form-control" min="0" max="10000000">
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="form-group col">
+                <label>Splitter CEOS:</label>
+                <input type="text" asp-for="SplitterCEOS" class="form-control" maxlength="50">
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="w-100"></div>
+            <div class="form-group col">
+                <label>Quantidade Teste:</label>
+                <input type="number" asp-for="QuantidadeDeTeste" class="form-control" min="0" max="10000000">
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="form-group col">
+                <label>Fibra DGO:</label>
+                <input type="text" asp-for="FibraDGO" class="form-control" maxlength="50">
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="form-group">
+                <label>Observação:</label>
+                <textarea type="text" asp-for="Observacoes" class="form-control" maxlength="500" id="inputArea"></textarea>
+                <div class="invalid-feedback">Campo Obrigatório.</div>
+            </div>
+            <div class="modal-footer p-0 m-0 mt-4">
+                <button type="submit" id="btn" class="btn btn-primary mt-4 ms-2">Editar</button>
+                <a role="button" asp-action="Index" asp-controller="TesteOptico" id="btnRoles" class="btn btn-secondary mt-4 me-2">Voltar</a>
+            </div>
+        </div>
+    </form>
+    <!-- End Formulário-->
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!--Conteudo Display-->
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-secondary m-5" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <!-- End -->
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+@section Scripts
+    {
+    <script>
+        //SPINNER LOADER
+        function spinnerFtth(display) {
+            $(display).html(`
+                                                <div class= "d-flex justify-content-center">
+                                                    <div class="spinner-border text-secondary m-5" role="status">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            `)
+        }
+
+        //FUNÇÃO GET CARREGAR ADD INSERT VIEW E CHAMAR O COLLAPSE MODAL
+        function AddInsertModal(url) {
+            $.get(url,
+                {}, function (resposta) {
+                    //ATUALIZAR
+                    AtualizarModalInsert(resposta);
+                    return false;
+                });
+        }
+
+        //ATUALIZAR MODAL INSERT
+        function AtualizarModalInsert(resposta) {
+            //CARREGAR SPINNER LOADER
+            spinnerFtth('modal-content');
+
+            //EDITAR MODAL HEADER
+            $('.modal-content').html(`
+                                <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden="true""></i>
+                                <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
+                                   -- INSERIR --
+                                </a>
+                             `);
+
+            //CARREGAR PARTIAL VIEW
+            $('.modal-content').html($(resposta).find('#formInsert').html());
+
+            //REMOVER ATRIBUTOS
+            $('.modal-content form').removeAttr('action');
+            $('.modal-content form').removeAttr('method');
+            $('.modal-content form').removeAttr('asp-controlle');
+            $('.modal-content form').removeAttr('asp-action');
+
+            //EDITAR MODAL FOOTER
+            $('.modal-content .modal-footer').html(`
+                                <button type="button" id="submit" class="btn btn-primary mt-2">Inserir</button>
+                                <button type="button" onclick="location.href='@Url.Action("Editar", "TesteOptico", new {id = Model.Id})'" class= "btn btn-secondary mt-2 me-2">Fechar</button>
+                            `);
+
+            //CASO O BOTÃO NÃO SEJA ACIONADO, FECHAR A ALERT 10S
+            setTimeout(function () {
+                $('.modal-content .alert').hide('hide');
+            }, 10000);
+
+            //BOTÃO FECHAR ALERTA
+            $('.modal-content .close-alert').click(function () {
+                $('.alert').hide('hide');
+            });
+
+            //CARREGAR EVENTO
+            EventInsertModel();
+
+        }
+
+        //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW EDITAR CONSTRUTORA
+        function ConstrutoraEditar() {
+            //VARIAVEIS GLOBAIS DE ACESSO JSON MODAL SERIALIZE
+            var jsonViabilidadeSelect = @Html.Raw(Json.Serialize(ViewBag.selectViabilidade));
+            var jsonEstacaoSelect = @Html.Raw(Json.Serialize(ViewBag.selectEstacao));
+            var id = @Model.Id;
+
+            //CARREGAR ESTADO DO SELECT NA PAGINA EDITAR
+            $('#dropEditEstacao option[value = "' + @Model.Estacao?.Id + '"]').prop('selected', 'selected');
+            $('#dropEditTipoObras option[value = "' + @Model.TipoObra?.Id + '"]').prop('selected', 'selected');
+            $('#dropViabilidade option[value = "' + @Model.Netwin?.Id + '"]').prop('selected', 'selected');
+            $('#dropEditEstadoCampo option[value = "' + @Model.EstadoCampo.Id + '"]').prop('selected', 'selected');
+
+            //CARREGAR DESCRIÇÃO DO SELECT TAG ESTAÇÃO
+            $('#formEditar').on('change', '.selectEstacaoClass select', function () {
+                //FILTRAR ID E ARMAZENAR
+                let _JsonEstacaoSelect = jsonEstacaoSelect.find(p => p.id === parseInt($(this).val()));
+
+                //GET OBJECT CORRESPONDENTE A ID E ARMAZENAR
+                let textResponsavel = _JsonEstacaoSelect.responsavel;
+
+                //MOSTRAR OBJECT CORRESPONDENTE NA TAG
+                $('form').find('#DescricaoResponsavel').text(textResponsavel);
+            });
+
+            //CARREGAR DESCRIÇÃO DO SELECT TAG VIABILIDADE
+            $('#formEditar').on('change', '#dropViabilidade', function () {
+                //FILTRAR ID E ARMAZENAR
+                let _JsonViabilidadeSelect = jsonViabilidadeSelect.find(p => p.id === parseInt($('#dropViabilidade').val()));
+
+                //GET OBJECT CORRESPONDENTE A ID E ARMAZENAR
+                let textViabilidade = '[ ' + _JsonViabilidadeSelect.tipo + ' ] - ' + _JsonViabilidadeSelect.descricao;
+
+                //MOSTRAR OBJECT CORRESPONDENTE NA TAG
+                $('form').find('#DescricaoViabilidade').text(textViabilidade);
+
+                //MOSTRAR OBJECT CORRESPONDENTE NA TAG SE A LARGURA FOR < 768
+                $('form #vlmdesc').find('#DescricaoViabilidade').text(textViabilidade);
+
+                //CONDIÇÃO RESPONSIVA PARA EXECUÇÃO DA TAG DESCRIÇÃO DO COLLAPSE
+                if ($(window).width() < 768) {
+                    $('form #vlmdesc').collapse('show');
+                } else {
+                    $('#vldesc').collapse('show');
+                }
+
+                setTimeout(function () {
+                    //CONDIÇÃO RESPONSIVA PARA EXECUÇÃO HIDE ME COLLAPSE
+                    if ($(window).width() < 768) {
+                        $('form #vlmdesc').collapse('hide');
+                    } else {
+                        $('#vldesc').collapse('hide');
+                    }
+                }, 10000);
+            });
+
+            //AÇÃO BUTTON ICON EXCLUIR SHOW ME MODAL
+            $('#formEditar').on('click', '#btnIconExcluir', function () {
+                //CARREGAR DETAHLE VIEW E CHAMAR O COLLAPSE MODAL
+                $.get('../../TesteOptico/Confirmacao?id=' + @Model.Id,
+                    {}, function (resposta) {
+                        //CARREGAR SPINNER LOADER
+                        spinnerFtth('modal-content');
+
+                        //CARREGAR PARTIAL VIEW
+                        $('.modal-content').html($(resposta).find('.modal-content').html());
+
+                        //EDITAR MODAL HEADER
+                        $('.modal-content .modal-header').html(`
+                                     <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden="true""></i>
+                                        <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
+                                            -- ATENÇÃO --
+                                        </a>
+                                 `);
+
+                        //EDITAR MODAL FOOTER
+                        $('.modal-content .modal-footer').html(`
+                                    <button onclick="location.href='@Url.Action("Apagar", "TesteOptico", new {id = Model.Id})'" class="btn btn-primary mt-2">Confirmar</button>
+                                    <button type="button" data-bs-dismiss="modal" class= "btn btn-secondary mt-2">Cancelar</button>
+                                `);
+
+                        return false;
+                    });
+            });
+
+        } (ConstrutoraEditar());
+
+        //AÇÃO INSERT ICON ADD SHOW ESTAÇÃO ME MODAL
+        $('#formEditar').on('click', '.btn-plus-estacao', function () {
+            //CARREGAR FUNÇÃO INSERT ADD MODAL
+            AddInsertModal('../../Estacao/Inserir');
+            return false;
+        });
+
+        //AÇÃO INSERT ICON ADD SHOW TIPO OBRA ME MODAL
+        $('#formEditar').on('click', '.btn-plus-tipoObra', function () {
+            //CARREGAR FUNÇÃO INSERT ADD MODAL
+            AddInsertModal('../../TipoObra/Inserir');
+            return false;
+        });
+
+        //AÇÃO INSERT ICON ADD SHOW VIABILIDADE ME MODAL
+        $('#formEditar').on('click', '.btn-plus-viabilidade', function () {
+            //CARREGAR FUNÇÃO INSERT ADD MODAL
+            AddInsertModal('../../Netwin/Inserir');
+            return false;
+        });
+
+        //AÇÃO INSERT ICON ADD SHOW ESTACAO CAMPO ME MODAL
+        $('#formEditar').on('click', '.btn-plus-estadoCampo', function () {
+            //CARREGAR FUNÇÃO INSERT ADD MODAL
+            AddInsertModal('../../EstadoCampo/Inserir');
+            return false;
+        });
+
+        //FUNÇÃO DE TRATAMENTO JSON FORMULÁRIO RESPONSE PARA POST CONTROLLER
+        function JsonFormPost() {
+            //VARIAVEL RECEBE E SERIALIZA OS DADOS DO FORMULÁRIO
+            let json = $('.modal-content #formEditar input').serializeArray();
+
+            //VARIAVEL DE TRATAMENTO
+            var obj = {};
+
+            //PERCORRER VARIAVEL JSON
+            $.each(json, function () {
+                //INTERRAR E ARMAZENAR VALORES
+                obj[this.name] = this.value || '';
+            });
+            return obj;
+        }
+
+        //FUNÇÃO VALIDAR E INSERIR DADOS DO FORMULÁRIO VIA POST JQUERY
+        function InsertValidarModal(url, model, ativar) {
+            //VALIDAÇÃO DE FORMULÁRIO MODAL
+            'use strict'
+
+            //PEGAR DOM DO FORMULARIO BOOTSTRAP PARA VALIDAÇÃO
+            var forms = document.querySelectorAll('.modal-content form');
+
+            //PERCORRER PROPS IMPUT EVENT
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                    } else {
+                        if (ativar == true) {
+                            //EFETUAR REQUISIÇÃO POST
+                            $.post(url,
+                                {
+                                    [model]: JsonFormPost()
+                                }, function (resposta) {
+                                    //ATUALIZAR MODAL INSERT
+                                    AtualizarModalInsert(resposta);
+                                    return false;
+                                });
+                        }
+                    }
+                    //CARREGAR VALIDAÇÃO
+                    form.classList.add('was-validated');
+                    return false;
+                });
+        }
+
+        function EventInsertModel() {
+            $('.modal-content form').on('click', '#submit', function () {
+                //FILTRA ENTRADA MODEL DA REQUISIÇÃO
+                switch ($('.modal-content #formEditar').attr('name')) {
+                    case "estacao":
+                        //INSERIR ESTACAO
+                        InsertValidarModal('../../Estacao/Inserir', 'estacao', true);
+                        break;
+                    case "tipoObra":
+                        //INSERIR TIPO OBRA
+                        InsertValidarModal('../../TipoObra/Inserir', 'tipoObra', true);
+                        break;
+                    case "viabilidade":
+                        //INSERIR VIABILIDADE
+                        InsertValidarModal('../../Netwin/Inserir', 'netwin', true);
+                        break;
+                    case "estadoCampo":
+                        //INSERIR VIABILIDADE
+                        InsertValidarModal('../../EstadoCampo/Inserir', 'estadoCampo', true);
+                        break;
+                    default:
+                        return false;
+                }
+            });
+        }
+
+    </script>
 }

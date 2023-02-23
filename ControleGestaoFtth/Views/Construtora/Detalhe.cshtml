@@ -1,64 +1,16 @@
 ﻿@model Construtora
 
 <div id="displayDetalheFtth">
-     <!-- Condição Nula do Modal -->
-     @if (Model != null)
+    <!-- Condição Nula do Modal -->
+    @if (Model != null)
     {
         <table id="ftthDetalhe">
             <tr>
-            <td colspan="2">Construtora: <a>@Model.Estacao?.Responsavel</a></td>
-        </tr>
-        <tr>
-            <td>Estação: <a>@Model.Estacao?.NomeEstacao</a></td>
-            <td>Tipo Obra: <a>@Model.TipoObra?.Nome</a></td>
-        </tr>
-        <tr data-bs-toggle="collapse" href="#collapseFtthDetalhe" role="button">
-            <td colspan="2">CDO: <a>@Model.CDO - @Model.Netwin?.Tipo</a><i class="fa fa-exclamation-circle"></i></td>
-        </tr>
-        <tr class="collapse" id="collapseFtthDetalhe">
-            <td colspan="2" align="center" valign="baseline"><a>-- @Model.Netwin?.Descricao --</a></td>
-        </tr>
-        <tr>
-            <td>Cabo: <a>@Model.Cabo</a></td>
-            <td>Celula: <a>@Model.Celula</a></td>
-        </tr>
-        <tr>
-            <td>Capacinade: <a>@Model.Capacidade</a></td>
-            <td>Técnico: <a>@Model.Tecnico</a></td>
-        </tr>
-        <tr>
-            <td>Total UMs: <a>@Model.TotalUms</a></td>
-            <td>Equipe Construção: <a>@Model.EquipedeConstrucao</a></td>
-        </tr>
-        <tr>
-            <td>Estado Campo: <a>@Model.EstadoCampo?.Nome</a></td>
-            <td>Data Teste: <a>@Model.DatadoTeste?.ToString("dd/MM/yyyy")</a></td>
-        </tr>
-        <tr>
-            <td>Data Construção: <a>@Model.DatadeConstrucao?.ToString("dd/MM/yyyy")</a></td>
-            <td>Data Recebimento: <a>@Model.DatadeRecebimento?.ToString("dd/MM/yyyy")</a></td>
-        </tr>
-        <tr>
-            <td colspan="2">Localização: <a>@Model.Endereco</a></td>
-        </tr>
-        <tr>
-            <td>Bobina Lançamento: <a>@Model.BobinadeLancamento</a></td>
-            <td>Posição ICX/DGO: <a>@Model.PosicaoICX_DGO</a></td>
-        </tr>
-        <tr>
-            <td>Bobina de Recepção: <a>@Model.BobinadeRecepcao</a></td>
-            <td>Splitter CEOS: <a>@Model.SplitterCEOS</a></td>
-        </tr>
-        <tr>
-            <td>Quantidade Teste: <a>@Model.QuantidadeDeTeste</a></td>
-            <td>Fibra DGO: <a>@Model.FibraDGO</a></td>
-        </tr>
-        <tr>
-            <td colspan="2">Observação: <a>@Model.Observacoes</a></td>
-        </tr>
-    </table>
+                <td colspan="2">Tipo de Obra: <a>@Model.Nome</a></td>
+            </tr>
+        </table>
 
-        <div class="modal-footer">
+        <div class="modal-footer mt-4">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
             <a role="button" id="btnRoles" asp-controller="Construtora" asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
             <a role="button" id="btnRoles" asp-controller="Construtora" asp-action="Confirmacao" asp-route-id="@Model.Id" class="btn btn-danger">Excluir</a>

@@ -1,35 +1,6 @@
 ﻿@using X.PagedList.Mvc.Core
 @model X.PagedList.PagedList<Construtora>
 
-<div id="panelUpdate">
-
-    <!-- Condição Nula do Modal -->
-    @if (Model != null && Model.Any())
-    {
-
-        <div class="form-group" id="plCdo">
-            <label>CDO</label>
-            @Html.DropDownList("selectCdoFilter", new SelectList(ViewBag.selectCdoFilter,"CDO","CDO"), "--Todos--",new { @id="dropCdo", @class="custom-select"})
-        </div>
-
-        <div class="form-group" id="plCabo">
-            <label>Cabo</label>
-            @Html.DropDownList("selectCaboFilter", new SelectList(ViewBag.selectCaboFilter,"Cabo","Cabo"), "--Todos--",new { @id="dropCabo", @class="custom-select"})
-        </div>
-
-        <div class="form-group" id="plCelula">
-            <label>Celula</label>
-            @Html.DropDownList("selectCelulaFilter", new SelectList(ViewBag.selectCelulaFilter,"Celula","Celula"), "--Todos--",new { @id="dropCelula", @class="custom-select"})
-        </div>
-
-        <div id="metricaFtth">
-            <a></a>
-        </div>
-    }
-    <!-- End condição -->
-
-</div>
-
 <div id="tableUpdate">
 
     <table class="table">
@@ -39,44 +10,15 @@
             @if (Model != null && Model.Any())
             {
                 <!-- Interar valores e preencher grid -->
-                foreach (var construtora in Model)
+                foreach (var Construtora in Model)
                 {
+
                     <tr id="effectTableFtth">
                         <td>
-                            <table class="tableFtth" data-bs-toggle="modal" data-id="@construtora.Id" data-bs-target="#exampleModal" style="cursor: pointer;">
+                            <table class="tableFtth" data-bs-toggle="modal" data-id="@Construtora.Id" data-bs-target="#exampleModal" style="cursor: pointer;">
                                 <tr>
-                                    <td id="rowTitle" colspan="1" align="center" style="width: 20%;">
-                                        <a>@construtora.Estacao.NomeEstacao</a>
-                                    </td>
-                                    <td width="20%" colspan="2">
-                                        <a>Cabo: @construtora.Cabo</a>
-                                    </td>
-                                    <td width="20%" align="center" valign="baseline">
-                                        <a>Data Recebimento: @construtora.DatadeRecebimento?.ToString("dd/MM/yyyy")</a>
-                                    </td>
-                                    <td width="20%">
-                                        <a>Data Teste: @construtora.DatadoTeste?.ToString("dd/MM/yyyy")</a>
-                                    </td>
-                                    <td width="20%">
-                                        <a>Técnico: @construtora.Tecnico</a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a>CDO: @construtora.CDO</a>
-                                    </td>
-                                    <td width="5%">
-                                        <a>Celula: @construtora.Celula</a>
-                                    </td>
-                                    <td width="5%">
-                                        <a>UMs: @construtora.TotalUms</a>
-                                    </td>
-                                    <td align="center" valign="baseline"><a>@construtora.Netwin?.Tipo</a></td>
-                                    <td>
-                                        <a>Data Construções: @construtora.DatadeConstrucao?.ToString("dd/MM/yyyy")</a>
-                                    </td>
-                                    <td>
-                                        <a>Equipe: @construtora.EquipedeConstrucao</a>
+                                    <td id="rowTitle">
+                                        <a>Tipo de Obra: @Construtora.Nome</a>
                                     </td>
                                 </tr>
                             </table>
@@ -91,7 +33,7 @@
                     <td>Nenhum resultado.</td>
                 </tr>
             }
-            <!-- End condição -->
+            <!-- End Condição -->
         </tbody>
     </table>
 
@@ -100,17 +42,14 @@
     {
         <div id="paged" class="d-flex justify-content-center">
             <!-- Exibir paginação -->
-            @Html.PagedListPager(
-            Model, pagina => Url.Action(null , new {pagina}),
-            new X.PagedList.Web.Common.PagedListRenderOptions(){
-            LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm btnPaged"}
-            })
-            <!-- End Paginação -->
+        @Html.PagedListPager(
+        Model, pagina => Url.Action(null , new {pagina}),
+        new X.PagedList.Web.Common.PagedListRenderOptions(){
+        LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm btnPaged"}
+        })
+            <!-- End paginação -->
         </div>
     }
     <!-- End Condição -->
 </div>
-
-
-
 
