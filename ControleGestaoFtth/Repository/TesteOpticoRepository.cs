@@ -60,6 +60,7 @@ namespace ControleGestaoFtth.Repository
         {
             return _context.TesteOpticos
                       .Include(p => p.Estacao)
+                      .Include(p => p.Construtora)
                       .Include(p => p.TipoObra)
                       .Include(p => p.Netwin)
                       .Include(p => p.EstadoCampo)
@@ -86,11 +87,13 @@ namespace ControleGestaoFtth.Repository
             IQueryable<TesteOptico> resultado = _context.TesteOpticos
                 .AsNoTracking()
                 .Include(p => p.Estacao)
+                .Include(p => p.Construtora)
                 .Include(p => p.Netwin)
                 .Select(value => new TesteOptico
                 {
                     Id = value.Id,
                     Estacao = value.Estacao,
+                    Construtora = value.Construtora,
                     CDO = value.CDO,
                     Cabo = value.Cabo,
                     Celula = value.Celula,
@@ -241,6 +244,19 @@ namespace ControleGestaoFtth.Repository
                     CDO = value.CDO,
 
                 }).ToList();
+        }
+
+        public IEnumerable<Construtora> Construtoras()
+        {
+            return _context.Construtoras
+                .AsNoTracking()
+                .Select(value => new Construtora
+                {
+                    Id = value.Id,
+                    Nome = value.Nome
+
+                }).OrderBy(p => p.Nome)
+                .ToList();
         }
     }
 }

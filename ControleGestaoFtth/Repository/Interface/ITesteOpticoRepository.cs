@@ -11,6 +11,7 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<TesteOptico> Listar(int? pagina, string estacao, string cdo, int? cabo, int? celula);
         IEnumerable<TesteOptico> UniqueCdo();
         IEnumerable<Estacoe> Estacoes();
+        IEnumerable<Construtora> Construtoras();
         IEnumerable<Netwin> Netwins();
         IEnumerable<TipoObra> TipoObras();
         IEnumerable<EstadoCampo> EstadoCampos();

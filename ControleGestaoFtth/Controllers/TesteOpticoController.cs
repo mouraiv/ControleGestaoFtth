@@ -22,6 +22,7 @@ namespace ControleGestaoFtth.Controllers
         public IActionResult Inserir()
         {
             ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
+            ViewData["selectConstrutora"] = _TesteOpticoRepository.Construtoras();
             ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
             ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
             ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();
@@ -32,6 +33,7 @@ namespace ControleGestaoFtth.Controllers
         {
             TesteOptico TesteOptico = _TesteOpticoRepository.CarregarId(id);
             ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
+            ViewData["selectConstrutora"] = _TesteOpticoRepository.Construtoras();
             ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
             ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
             ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();
@@ -93,6 +95,7 @@ namespace ControleGestaoFtth.Controllers
         public IActionResult Inserir(TesteOptico TesteOptico)
         {
             ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
+            ViewData["selectConstrutora"] = _TesteOpticoRepository.Construtoras();
             ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
             ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
             ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();

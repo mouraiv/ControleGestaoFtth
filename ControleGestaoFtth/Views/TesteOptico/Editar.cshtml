@@ -25,7 +25,7 @@
                 <!-- End  Alert-->
             </div>
             <div class="form-group" id="titleEditForm">
-                <a id="DescricaoResponsavel">Responsavél</a>
+                @Html.DropDownListFor(model => model.ConstrutorasId, new SelectList(ViewBag.selectConstrutora,"Id","Nome"), new {@id="#dropConstrutora", @class="custom-select w-100"})
             </div>
             <div class="selectEstacaoClass form-group col">
                 <label>Estação:</label>
@@ -276,6 +276,7 @@
 
             //CARREGAR ESTADO DO SELECT NA PAGINA EDITAR
             $('#dropEditEstacao option[value = "' + @Model.Estacao?.Id + '"]').prop('selected', 'selected');
+            $('#dropConstrutora option[value = "' + @Model.Construtora?.Id + '"]').prop('selected', 'selected');
             $('#dropEditTipoObras option[value = "' + @Model.TipoObra?.Id + '"]').prop('selected', 'selected');
             $('#dropViabilidade option[value = "' + @Model.Netwin?.Id + '"]').prop('selected', 'selected');
             $('#dropEditEstadoCampo option[value = "' + @Model.EstadoCampo.Id + '"]').prop('selected', 'selected');
