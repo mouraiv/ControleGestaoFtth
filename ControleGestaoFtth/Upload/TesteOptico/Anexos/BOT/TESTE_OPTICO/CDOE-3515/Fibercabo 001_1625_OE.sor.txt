@@ -1,0 +1,75 @@
+[Header]
+Txt File Release 	1.6
+Date             	05/05/2020
+Time             	13:53:42
+File Name        	Fibercabo 001_1625_OE
+Software Version 	16.52
+Base Name        	SmartOTDR
+Base SN          	15263
+Module Name      	E136FB
+Module SN        	15263
+Status           	NO TEST
+Technician Id    	
+Job Id           	
+Comment          	
+
+[Fiber]
+Fiber Number          	1
+Location A            	CDOE_BOT_3515
+Location B            	gpon
+Direction             	CDOE_BOT_3515 -> gpon
+Cable Id Location A   	cabo 
+Fiber Id Location A   	Fiber
+
+
+
+
+
+[Launch Cable]
+Include Link Start Connector	No
+Include Link End Connector	No
+Launch  Cable End    	     0.00 m
+Receive Cable Start  	     0.00 m
+
+[Setup]
+Laser        	1625nm
+Pulse        	500ns
+Range        	10km
+Avr_Time     	60.0s
+Resolution   	2.5m
+Scatter_Coef 	-81.0 dB
+IOR          	 1.46500
+
+[Summary]
+Fiber Length(m)      	   598.56
+Link Loss (dB)       	0.044
+Link ORL (dB)        	45.91
+Nb Of Events         	1
+Max Splice (dB)      	---
+Max Connector (dB)   	---
+Max Reflectance (dB) 	---
+
+[Results]
+Event	      Distance	    Loss	  Reflec	   Slope	        Length	   TLoss	    Type Event	  Status
+     	             m	      dB	      dB	   dB/km	             m	      dB	              	        
+    1	        598.56	        	  -64.55	   0.076	        598.56	   0.044	     Fiber End	     N/A
+
+
+
+
+<Metadata>
+    <Verdict>None</Verdict>
+    <Workorder></Workorder>
+    <TestLocation>CDOE_BOT_3515</TestLocation>
+    <TestLocationB>gpon</TestLocationB>
+    <TestDirection>A-B</TestDirection>
+    <Comments></Comments>
+    <AcqDate>05/05/2020 13:53:42</AcqDate>
+    <FiberNumber>1</FiberNumber>
+    <Wavelengths>1625nm</Wavelengths>
+    <LinkOrl>45.91</LinkOrl>
+    <TotalLoss>0.044</TotalLoss>
+    <TotalLength>598.56m</TotalLength>
+    <FiberId>Fiber</FiberId>
+    <CableId>cabo </CableId>
+</Metadata>

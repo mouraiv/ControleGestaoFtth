@@ -3,6 +3,8 @@ using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
 
+using Microsoft.Extensions.FileProviders;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -30,6 +32,14 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(
+           Path.Combine(builder.Environment.ContentRootPath, "Upload")),
+   
+    RequestPath = "/StaticUpload"
+});
 
 app.UseAuthorization();
 

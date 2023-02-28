@@ -247,6 +247,28 @@
         padding-right: 6.4rem;
     }
 
+    #iconWidget {
+       padding: 0.3rem;
+       font-size: 1.3rem;
+    }
+
+    #widgetbox {
+        border-top: 1px solid #0d6efd;
+        border-left: 1px solid #0d6efd;
+        border-bottom: 1px solid #0d6efd;
+        border-right: 0;
+        padding-top: 0.3rem;
+        padding-left: 0.1rem;
+        align-items: center;
+        margin-top: 3.5rem;
+        background-color: #F2F2F2;
+        width: 30px;
+        max-height: 72px;
+        background-color: #ffffff;
+        border-end-end-radius: 0rem !important;
+        border-start-end-radius: 0rem !important;
+    }
+
     #formEditar {
         background-color: #ECF0F1;
         padding-top: 0.5rem;

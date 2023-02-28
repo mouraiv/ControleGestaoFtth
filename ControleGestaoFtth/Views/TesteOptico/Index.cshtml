@@ -55,20 +55,28 @@
 <!-- Modal -->
 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a class="modal-title" id="exampleModalLabel">-- Ficha Técnica --</a>
+        <div class="d-flex m-0">
+            <div id="widgetbox" class="modal-content">
+                <i style="cursor: pointer;" class="fa fa-picture-o" title="IMG" id="iconWidget" aria-hidden="true"></i>
+                <img style="cursor: pointer;" src="../images/29472.png" alt="DWG" id="iconDwg"  href="#" width="25" height="25">
             </div>
-            <div class="modal-body">
 
-                <!--Conteudo Display-->
-                <div class="d-flex justify-content-center">
-                    <div class="spinner-border text-secondary m-5" role="status">
-                        <span class="sr-only">Loading...</span>
-                    </div>
+            <div class="modal-content m-0">
+
+                <div class="modal-header">
+                    <a class="modal-title" id="exampleModalLabel">-- Ficha Técnica --</a>
                 </div>
-                <!-- End -->
 
+                <div class="modal-body">
+                    <!--Conteudo Display-->
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border text-secondary m-5" role="status">
+                            <span class="sr-only">Loading...</span>
+                        </div>
+                    </div>
+            
+                    <!-- End -->
+                </div>
             </div>
         </div>
     </div>
@@ -132,6 +140,29 @@
                     show: false,
 
                 });
+                return false;
+            });
+
+            //BAIXAR MODELO BASE
+            $('').on('click', function () {
+                console.log($('.modal-body table a').get(3).innerText);
+                
+                //CARREGAR SPINNER LOADER
+                //spinnerFtth('modal-body');
+
+                //REMOVER MODAL HEADER
+                //$('.modal-header').remove();
+
+                //CARREGAR MODEL DE DOWNLOAD MODELO BASE
+                //$('.modal-body').html("<h1>DOWNLOAD</h1>");
+
+                //CARREGAR ATRIBUTOS MODAL
+                /*$(this).find('#exampleModal').modal({
+                    keyboard: true,
+                    backdrop: "static",
+                    show: false,
+
+                });*/
                 return false;
             });
 
@@ -228,24 +259,7 @@
                 //VARIAVEL PEGA ID DE REGISTRO DA GRID VIEW
                 let carregarId = $(this).attr("data-id");
 
-                //CARREGAR DETAHLE VIEW E CHAMAR O COLLAPSE MODAL
-                $.get('TesteOptico/Detalhe?id=' + carregarId,
-                    {}, function (resposta) {
-                        //CARREGAR SPINNER LOADER
-                        spinnerFtth('modal-body');
-
-                        //CARREGAR PARTIAL VIEW
-                        $('.modal-body').html($(resposta).find('#displayDetalheFtth').html());
-                        return false;
-                    });
-
-                //CARREGAR ATRIBUTOS MODAL
-                $(this).find('#exampleModal').modal({
-                    keyboard: true,
-                    backdrop: "static",
-                    show: false,
-
-                });
+                location.href = "@Url.Action("Detalhe", "TesteOptico")" +"/"+ carregarId;
             });
 
         } (TesteOpticoIndex());

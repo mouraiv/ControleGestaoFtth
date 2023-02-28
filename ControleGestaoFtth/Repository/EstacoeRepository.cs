@@ -56,7 +56,6 @@ namespace ControleGestaoFtth.Repository
         public IEnumerable<Estacoe> Listar()
         {
             return _context.Estacoes
-                .AsNoTracking()
                 .Select(value => new Estacoe
                 {
                     Id = value.Id,

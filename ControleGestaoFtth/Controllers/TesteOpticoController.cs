@@ -2,16 +2,19 @@
 using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
+using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
 
 namespace ControleGestaoFtth.Controllers
 {
     public class TesteOpticoController : Controller
     {
         private readonly ITesteOpticoRepository _TesteOpticoRepository;
+        private IWebHostEnvironment _env;
 
-        public TesteOpticoController(ITesteOpticoRepository TesteOpticoRepository)
+        public TesteOpticoController(ITesteOpticoRepository TesteOpticoRepository, IWebHostEnvironment env)
         {
             _TesteOpticoRepository = TesteOpticoRepository;
+            _env = env;
         }
         public IActionResult Index()
         {
@@ -78,6 +81,7 @@ namespace ControleGestaoFtth.Controllers
         [HttpGet]
         public IActionResult Detalhe(int id)
         {
+          
             try
             {
                 TesteOptico TesteOptico = _TesteOpticoRepository.CarregarId(id);
