@@ -15,6 +15,8 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<Netwin> Netwins();
         IEnumerable<TipoObra> TipoObras();
         IEnumerable<EstadoCampo> EstadoCampos();
+        List<string> ImgOptico(string sgl, string cdo);
+        string DwgOptico(string sgl, string cdo);
         IEnumerable<TesteOptico> FilterCdo(string estacao);
         IEnumerable<TesteOptico> FilterCabo(string estacao);
         IEnumerable<TesteOptico> FilterCelula(string estacao);

@@ -2,6 +2,9 @@
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
+using System.IO;
+using System.Security.Policy;
 using X.PagedList;
 
 namespace ControleGestaoFtth.Repository
@@ -257,6 +260,33 @@ namespace ControleGestaoFtth.Repository
 
                 }).OrderBy(p => p.Nome)
                 .ToList();
+        }
+
+        public List<string> ImgOptico(string sgl, string cdo)
+        {
+
+            string pasta = "Upload\\TesteOptico\\Anexos\\"+sgl+"\\TESTE_OPTICO\\"+cdo+"\\";
+
+            string[] extensoes = { ".jpg", ".png", ".jfif", ".bmp" };
+
+            var imagens = Directory.GetFiles(pasta, "*", SearchOption.AllDirectories)
+                         .Where(file => extensoes.Contains(Path.GetExtension(file)))
+                         .ToList();
+
+            return imagens;
+        }
+
+        public string DwgOptico(string sgl, string cdo)
+        {
+            string pasta = "Upload\\TesteOptico\\Anexos\\"+sgl+"\\TESTE_OPTICO\\"+cdo+"\\";
+
+            string[] extensoes = { ".dwg" };
+
+            var dwg = Directory.GetFiles(pasta, "*", SearchOption.AllDirectories)
+                         .Where(file => extensoes.Contains(Path.GetExtension(file)))
+                         .ToList();
+
+            return dwg[0];
         }
     }
 }

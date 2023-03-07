@@ -57,6 +57,23 @@
         text-transform: uppercase;
     }
 
+    #container-detalhe{
+        margin-right: 3rem;
+    }
+
+    #largeModal .modal-content{
+        width: 800px !important;
+        height: 500px !important;
+        background-color: #000000
+    }
+
+    .img-size {
+        display:flex;
+        height: 498px;
+        margin: auto;
+        object-fit: cover;
+    }
+
     .modal{
         overflow-y:scroll;
     }

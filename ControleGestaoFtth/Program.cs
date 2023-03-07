@@ -38,7 +38,7 @@ app.UseStaticFiles(new StaticFileOptions
     FileProvider = new PhysicalFileProvider(
            Path.Combine(builder.Environment.ContentRootPath, "Upload")),
    
-    RequestPath = "/StaticUpload"
+    RequestPath = "/Upload"
 });
 
 app.UseAuthorization();

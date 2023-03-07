@@ -91,6 +91,50 @@ namespace ControleGestaoFtth.Controllers
             catch (Exception error)
             {
                 TempData["Falha"] = $"Erro ao listar - {error.Message}.";
+
+                return RedirectToAction("Index");
+            }
+
+        }
+        [HttpGet]
+        public IActionResult ImgOptico(string sgl, string cdo)
+        {
+
+            try
+            {
+                var imagem = _TesteOpticoRepository.ImgOptico(sgl, cdo);
+
+                return PartialView(imagem);
+            }
+            catch (Exception error)
+            {
+                TempData["Falha"] = $"Erro ao Carregar Imagem Optica - {error.Message}.";
+
+                return RedirectToAction("Index");
+            }
+
+        }
+        [HttpGet]
+        public IActionResult DwgOptico(string sgl, string cdo)
+        {
+
+            try
+            {
+                var dwg = _TesteOpticoRepository.DwgOptico(sgl, cdo);
+
+                MemoryStream output = new MemoryStream();
+
+                var converter = new GroupDocs.Conversion.Converter(dwg);
+
+                var convertOPtions = converter.GetPossibleConversions()["pdf"].ConvertOptions;
+
+                converter.Convert(() => output, convertOPtions);
+
+                return File(output.ToArray(),"application/pdf");
+            }
+            catch (Exception error)
+            {
+                TempData["Falha"] = $"Erro ao Carregar DWG - {error.Message}.";
                 return RedirectToAction("Index");
             }
 
