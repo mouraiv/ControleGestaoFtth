@@ -1,6 +1,8 @@
+using ControleGestaoFtth.ComponentModel;
 using ControleGestaoFtth.Context;
 using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 
 using Microsoft.Extensions.FileProviders;
@@ -21,6 +23,7 @@ builder.Services.AddScoped<ITipoObraRepository, TipoObraRepository>();
 builder.Services.AddScoped<INetwinRepository, NetwinRepository>();
 builder.Services.AddScoped<IEstadoCampoRepository, EstadoCampoRepository>();
 builder.Services.AddScoped<ITesteOpticoRepository, TesteOpticoRepository>();
+builder.Services.AddSingleton<ConversionViewModel>();
 
 var app = builder.Build();
 

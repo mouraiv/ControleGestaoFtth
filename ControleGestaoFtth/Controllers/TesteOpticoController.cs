@@ -1,20 +1,35 @@
-﻿using ControleGestaoFtth.Models;
+﻿using Aspose.Pdf;
+using Aspose.Pdf.Annotations;
+using Aspose.Pdf.Operators;
+using ControleGestaoFtth.ComponentModel;
+using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
+using GroupDocs.Conversion;
+using GroupDocs.Conversion.Options.Convert;
+using GroupDocs.Conversion.Reporting;
 using Microsoft.AspNetCore.Mvc;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IWebHostEnvironment;
+using Newtonsoft.Json;
+using NuGet.Packaging;
+using Org.BouncyCastle.Utilities;
+using System.Collections;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.Net;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 
 namespace ControleGestaoFtth.Controllers
 {
     public class TesteOpticoController : Controller
     {
         private readonly ITesteOpticoRepository _TesteOpticoRepository;
-        private IWebHostEnvironment _env;
-
-        public TesteOpticoController(ITesteOpticoRepository TesteOpticoRepository, IWebHostEnvironment env)
+        private readonly ConversionViewModel _conversionViewModel;
+        public TesteOpticoController(ITesteOpticoRepository TesteOpticoRepository, ConversionViewModel conversionViewModel)
         {
             _TesteOpticoRepository = TesteOpticoRepository;
-            _env = env;
+            _conversionViewModel = conversionViewModel;
         }
         public IActionResult Index()
         {
@@ -81,7 +96,7 @@ namespace ControleGestaoFtth.Controllers
         [HttpGet]
         public IActionResult Detalhe(int id)
         {
-          
+
             try
             {
                 TesteOptico TesteOptico = _TesteOpticoRepository.CarregarId(id);
@@ -96,6 +111,7 @@ namespace ControleGestaoFtth.Controllers
             }
 
         }
+
         [HttpGet]
         public IActionResult ImgOptico(string sgl, string cdo)
         {
@@ -117,20 +133,30 @@ namespace ControleGestaoFtth.Controllers
         [HttpGet]
         public IActionResult DwgOptico(string sgl, string cdo)
         {
-
             try
             {
                 var dwg = _TesteOpticoRepository.DwgOptico(sgl, cdo);
 
-                MemoryStream output = new MemoryStream();
+                _conversionViewModel.InputFilePath = dwg;
 
-                var converter = new GroupDocs.Conversion.Converter(dwg);
+                _conversionViewModel.ConvertFileInBackground();
 
-                var convertOPtions = converter.GetPossibleConversions()["pdf"].ConvertOptions;
+                return RedirectToAction("DwgView");
 
-                converter.Convert(() => output, convertOPtions);
+            }
+            catch (Exception error)
+            {
+                TempData["Falha"] = $"Erro ao Carregar DWG - {error.Message}.";
+                return RedirectToAction("Index");
+            }
 
-                return File(output.ToArray(),"application/pdf");
+        }
+        [HttpGet]
+        public IActionResult DwgView()
+        {
+            try
+            {
+                return File(_conversionViewModel.OutputFilePath, "application/pdf");
             }
             catch (Exception error)
             {

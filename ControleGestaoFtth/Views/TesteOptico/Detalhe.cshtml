@@ -4,7 +4,7 @@
 
     <div id="widgetbox" class="modal-content">
         <i style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#largeModal" class="fa fa-picture-o" title="IMG" id="iconWidget" aria-hidden="true"></i>
-        <img style="cursor: pointer;" src="/images/29472.png" alt="DWG" id="iconDwg" href="#" width="25" height="25">
+        <img style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalProgress" src="/images/29472.png" alt="DWG" id="iconDwg" href="#" width="25" height="25">
     </div>
 
     <div class="modal-content">
@@ -91,12 +91,36 @@
 
              <div class="modal-body-img">
                  <!--Conteudo Display-->
-                        
+
                     <!-- End -->
                     </div>
               </div>
         </div>
     </div>
+<!-- End Modal -->
+
+<!-- Modal Progress -->
+<div class="modal fade" id="modalProgress" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <!--Conteudo Display-->
+                <div id="progressModel" role="alert">
+                    <h5 class="alert-heading">DWG -> PDF</h5>
+                    <p>O sistema está preparando a visualização no formato PDF.</p>
+                    <hr>
+                    <div class="progress mb-0">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated active" id="progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                            <span class="sr-only">0% Complete</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- End -->
+            </div>
+        </div>
+    </div>
+</div>
 <!-- End Modal -->
 
 @section Scripts
@@ -120,12 +144,43 @@
                 return false;
             });
 
+            function task(i) {
+                setTimeout(function () {
+                    $("#progressbar").width(i+"%");
+                }, 100 * i);
+            }
+
             //CARREGAR DWG NO MODAL
             $('#iconDwg').on('click', function () {
-                let dir = '@Url.Action("DwgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
+                //$("#progressbar").width("0%");
 
-                location.href = dir;
-               
+                let i = 0;
+                while (i < 65) {
+                    task(i)
+                    i++;
+                };
+
+                let dirFile = '@Url.Action("DwgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
+                let dirFileMemory = '@Url.Action("DwgView", "TesteOptico")';
+
+                $.ajax({
+                    type: "GET",
+                    url: dirFile,
+                    xhrFields: {
+                        onprogress: function (e) {
+                            if (e.lengthComputable) {
+                                var percentComplete = (e.loaded / e.total) * 100;
+                                if (percentComplete > 65) {
+                                    console.log(percentComplete);
+                                    $("#progressbar").width(percentComplete + "%");
+                                }
+                            }
+                        }
+                    },
+                    success : function (resposta){
+                        location.href = dirFileMemory;
+                    }
+                });
             });
         }(TesteOpticoDetalhe())
     </script>
