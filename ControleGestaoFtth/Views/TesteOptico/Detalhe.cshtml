@@ -132,6 +132,18 @@
             var sgl = "@Model?.Estacao?.Sigla";
             var cdo = "@Model?.CDO";
 
+            $.get('@Url.Action("FileResultImg", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo,
+                {}, function (data) {
+                    console.log(data.imagemOptica);
+                    return false;
+            });
+
+            $.get('@Url.Action("FileResultDwg", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo,
+                {}, function (data) {
+                    console.log(data.dwgToPdf);
+                    return false;
+                });
+
             //CARREGAR IMAGEM NO MODAL
             $('#iconWidget').on('click', function () {
                 let dir = '@Url.Action("ImgOptico", "TesteOptico")?sgl='+sgl+'&cdo='+cdo;
@@ -152,7 +164,6 @@
 
             //CARREGAR DWG NO MODAL
             $('#iconDwg').on('click', function () {
-                //$("#progressbar").width("0%");
 
                 let i = 0;
                 while (i < 65) {

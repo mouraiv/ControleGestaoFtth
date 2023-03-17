@@ -23,9 +23,9 @@ $(document).ready(function () {
     } (validarForm());
 
     //CASO O BOTÃO NÃO SEJA ACIONADO, FECHAR A ALERT 10S
-    /*setTimeout(function () {
+    setTimeout(function () {
         $('.alert').hide('hide');
-    }, 10000);*/
+    }, 10000);
 
     //BOTÃO FECHAR ALERTA
     $('.close-alert').click(function () {

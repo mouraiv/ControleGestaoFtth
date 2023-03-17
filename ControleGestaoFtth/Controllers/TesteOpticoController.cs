@@ -1,24 +1,8 @@
-﻿using Aspose.Pdf;
-using Aspose.Pdf.Annotations;
-using Aspose.Pdf.Operators;
-using ControleGestaoFtth.ComponentModel;
+﻿using ControleGestaoFtth.ComponentModel;
 using ControleGestaoFtth.Models;
-using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
-using GroupDocs.Conversion;
-using GroupDocs.Conversion.Options.Convert;
-using GroupDocs.Conversion.Reporting;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using NuGet.Packaging;
-using Org.BouncyCastle.Utilities;
-using System.Collections;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Diagnostics.Contracts;
-using System.Net;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Threading.Tasks;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -111,14 +95,53 @@ namespace ControleGestaoFtth.Controllers
             }
 
         }
+        [HttpGet]
+        public IActionResult FileResultImg(string sgl, string cdo)
+        {
+            try
+            {
+                var imagem = _TesteOpticoRepository.ArquivoOptico(sgl, cdo, new string[] { ".jpg", ".png", ".jfif", ".bmp" });
+                ViewData["imagemOptica"] = true;
+               
+                return Json(new
+                {
+                    imagemOptica = ViewData["imagemOptica"]
+                });
+            }
+            catch (Exception)
+            {
+                return new EmptyResult();
+            }
+        }
+        [HttpGet]
+        public IActionResult FileResultDwg(string sgl, string cdo)
+        {
+            try
+            {
+                var dwg = _TesteOpticoRepository.ArquivoOptico(sgl, cdo, new string[] { ".dwg" });
 
+                if (dwg[0].Length > 0) 
+                {
+                    ViewData["dwgToPdf"] = true;
+                }
+          
+                return Json(new {
+                    dwgToPdf = ViewData["dwgToPdf"]
+                });
+            }
+            catch (Exception)
+            {
+                return new EmptyResult();
+            }
+
+        }
         [HttpGet]
         public IActionResult ImgOptico(string sgl, string cdo)
         {
 
             try
             {
-                var imagem = _TesteOpticoRepository.ImgOptico(sgl, cdo);
+                var imagem = _TesteOpticoRepository.ArquivoOptico(sgl, cdo, new string[] { ".jpg", ".png", ".jfif", ".bmp" });
 
                 return PartialView(imagem);
             }
@@ -135,9 +158,9 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                var dwg = _TesteOpticoRepository.DwgOptico(sgl, cdo);
+                var dwg = _TesteOpticoRepository.ArquivoOptico(sgl, cdo, new string[] { ".dwg" });
 
-                _conversionViewModel.InputFilePath = dwg;
+                _conversionViewModel.InputFilePath = dwg[0];
 
                 _conversionViewModel.ConvertFileInBackground();
 
