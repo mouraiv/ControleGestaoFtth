@@ -3,7 +3,7 @@
 <div class="d-flex flex-row justify-content-center" id="container-detalhe">
 
     <div id="widgetbox" class="modal-content">
-        <i style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#largeModal" class="fa fa-picture-o" title="IMG" id="iconWidget" aria-hidden="true"></i>
+        <i style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#largeModal" class="fa fa-picture-o" id="iconWidget" aria-hidden="true"></i>
         <img style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalProgress" src="/images/29472.png" alt="DWG" id="iconDwg" href="#" width="25" height="25">
     </div>
 
@@ -132,67 +132,78 @@
             var sgl = "@Model?.Estacao?.Sigla";
             var cdo = "@Model?.CDO";
 
+            function task(i) {
+                setTimeout(function () {
+                    $("#progressbar").width(i + "%");
+                }, 100 * i);
+            }
+
             $.get('@Url.Action("FileResultImg", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo,
                 {}, function (data) {
-                    console.log(data.imagemOptica);
+                    if (data.imagemOptica != true) {
+                        $("#iconWidget").removeAttr("data-bs-target");
+                        $("#iconWidget").removeAttr("data-bs-toggle");
+                        $("#iconWidget").removeAttr("style")
+                        $("#iconWidget").css({ "color": "#ced4da" });
+                    }else{
+                        //CARREGAR IMAGEM NO MODAL
+                        $('#iconWidget').on('click', function () {
+                            let dir = '@Url.Action("ImgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
+
+                            $.get(dir,
+                                {}, function (resposta) {
+                                    $('.modal-body-img').html(resposta);
+                                    return false;
+                                });
+                            return false;
+                        });
+                    }
                     return false;
             });
 
             $.get('@Url.Action("FileResultDwg", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo,
                 {}, function (data) {
-                    console.log(data.dwgToPdf);
+                    if (data.dwgToPdf != true) {
+                        $("#iconDwg").removeAttr("data-bs-target");
+                        $("#iconDwg").removeAttr("data-bs-toggle");
+                        $("#iconDwg").removeAttr("style")
+                        $("#iconDwg").css({ "opacity": "0.2" });
+                    }else{
+                        //CARREGAR DWG NO MODAL
+                        $('#iconDwg').on('click', function () {
+
+                            let i = 0;
+                            while (i < 65) {
+                                task(i)
+                                i++;
+                            };
+
+                            let dirFile = '@Url.Action("DwgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
+                            let dirFileMemory = '@Url.Action("DwgView", "TesteOptico")';
+
+                            $.ajax({
+                                type: "GET",
+                                url: dirFile,
+                                xhrFields: {
+                                    onprogress: function (e) {
+                                        if (e.lengthComputable) {
+                                            var percentComplete = (e.loaded / e.total) * 100;
+                                            if (percentComplete > 65) {
+                                                console.log(percentComplete);
+                                                $("#progressbar").width(percentComplete + "%");
+                                            }
+                                        }
+                                    }
+                                },
+                                success: function (resposta) {
+                                    location.href = dirFileMemory;
+                                }
+                            });
+                        });
+                    }
                     return false;
                 });
 
-            //CARREGAR IMAGEM NO MODAL
-            $('#iconWidget').on('click', function () {
-                let dir = '@Url.Action("ImgOptico", "TesteOptico")?sgl='+sgl+'&cdo='+cdo;
-
-                $.get(dir,
-                    {}, function (resposta) {
-                        $('.modal-body-img').html(resposta);
-                        return false;
-                 });
-                return false;
-            });
-
-            function task(i) {
-                setTimeout(function () {
-                    $("#progressbar").width(i+"%");
-                }, 100 * i);
-            }
-
-            //CARREGAR DWG NO MODAL
-            $('#iconDwg').on('click', function () {
-
-                let i = 0;
-                while (i < 65) {
-                    task(i)
-                    i++;
-                };
-
-                let dirFile = '@Url.Action("DwgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
-                let dirFileMemory = '@Url.Action("DwgView", "TesteOptico")';
-
-                $.ajax({
-                    type: "GET",
-                    url: dirFile,
-                    xhrFields: {
-                        onprogress: function (e) {
-                            if (e.lengthComputable) {
-                                var percentComplete = (e.loaded / e.total) * 100;
-                                if (percentComplete > 65) {
-                                    console.log(percentComplete);
-                                    $("#progressbar").width(percentComplete + "%");
-                                }
-                            }
-                        }
-                    },
-                    success : function (resposta){
-                        location.href = dirFileMemory;
-                    }
-                });
-            });
         }(TesteOpticoDetalhe())
     </script>
     }
