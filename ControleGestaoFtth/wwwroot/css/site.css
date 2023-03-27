@@ -279,6 +279,40 @@
         font-style: italic;
     }
 
+    #modelDown tbody {
+        font-size: 0.7rem;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+    }
+
+    #modelDown tbody td{
+        padding: 0.2rem;
+        border-bottom: 1px solid #2A2A33;
+        min-width: 100px;
+        font-weight: 600;
+        padding-top: 0.5rem !important;
+
+    }
+    
+    #modelDown a{
+        font-size: 0.9rem;
+    }
+
+     #modelDown a .fa-download{
+        color: #000000;
+    }
+
+    #modelDown a .fa-download:hover{
+        color: #0d6efd;
+    }
+
+    #modelDown tbody th {
+        padding: 0.2rem;
+        border: 1px solid #2A2A33;
+        background-color: #2A2A33;
+        color: #ffffff;
+    }
+
     .modal-content {
         width: 600px;
         background-color: #ECF0F1;

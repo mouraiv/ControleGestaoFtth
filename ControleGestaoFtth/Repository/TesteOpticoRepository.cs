@@ -272,5 +272,11 @@ namespace ControleGestaoFtth.Repository
 
             return arquivo;
         }
+        public string GetArquivo(string? caminho)
+        {
+            string? arquivo = Path.GetDirectoryName(caminho);
+                
+            return arquivo ?? "";
+        }
     }
 }

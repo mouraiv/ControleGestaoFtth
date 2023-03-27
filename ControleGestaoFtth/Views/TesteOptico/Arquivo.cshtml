@@ -1,0 +1,31 @@
+﻿@using ControleGestaoFtth.ComponentModel;
+@model List<ArquivoModel>
+
+@if (Model != null && Model.Any())
+{
+    <table id="tableDown">
+        <tr>
+            <th style="text-align:center" width="5%"><a>#</a></th>
+            <th width="75%"><a>Arquivo</a></th>
+            <th style="text-align:center" width="20%"><a>Download</a></th>
+        </tr>
+           
+        @foreach (var download in Model.Select((value, index) => new { value, index }))
+        {
+            <tr>
+                <td align="center"><a>@download.index</a></td>
+                <td><a>@download.value.Nome</a></td>
+                <td align="center">
+                    <a href='@Url.Action("Download", "TesteOptico", new { caminho = download.value.Caminho })'>
+                        <i class="fa fa-download" aria-hidden="true"></i></a>
+                </td>
+            </tr>
+        }
+                   
+    </table>
+
+}
+else
+{
+    <h4>NENHUM DOWNLOAD</h4>
+}

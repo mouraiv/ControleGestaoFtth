@@ -16,6 +16,7 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<TipoObra> TipoObras();
         IEnumerable<EstadoCampo> EstadoCampos();
         List<string> ArquivoOptico(string sgl, string cdo, string[] extensoes);
+        string GetArquivo(string caminho);
         IEnumerable<TesteOptico> FilterCdo(string estacao);
         IEnumerable<TesteOptico> FilterCabo(string estacao);
         IEnumerable<TesteOptico> FilterCelula(string estacao);

@@ -2,6 +2,7 @@
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Diagnostics;
 
 namespace ControleGestaoFtth.Controllers
@@ -10,16 +11,49 @@ namespace ControleGestaoFtth.Controllers
     {
         private readonly ITesteOpticoRepository _TesteOpticoRepository;
         private readonly ConversionViewModel _conversionViewModel;
-        public TesteOpticoController(ITesteOpticoRepository TesteOpticoRepository, ConversionViewModel conversionViewModel)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public TesteOpticoController(ITesteOpticoRepository TesteOpticoRepository, ConversionViewModel conversionViewModel, IWebHostEnvironment webHostEnvironment)
         {
             _TesteOpticoRepository = TesteOpticoRepository;
             _conversionViewModel = conversionViewModel;
+            _webHostEnvironment = webHostEnvironment;
         }
         public IActionResult Index()
         {
             ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
 
             return View();
+        }
+        public ActionResult Arquivo()
+        {
+            //ArquivoModel arquivos = new ();
+
+            var listarArquivos = new List<ArquivoModel>();
+
+            string diretorios = _TesteOpticoRepository.GetArquivo("~\\..\\Download\\");
+         
+            foreach (string arq in Directory.GetFiles(diretorios))
+            {
+                listarArquivos.Add(new ArquivoModel
+                {
+                    Nome = Path.GetFileName(arq),
+                    Caminho = arq
+                });
+            }
+
+            return PartialView(listarArquivos);
+        }
+        public ActionResult Download(string caminho)
+        {
+            string file = Path.Combine(_webHostEnvironment.ContentRootPath, caminho.Replace("~\\..\\", ""));
+            
+            MemoryStream output = new();
+            
+            using (var stream = new FileStream(file, FileMode.Open))
+            {
+                stream.CopyTo(output);
+            }
+            return File(output.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Path.GetFileName(caminho));
         }
         public IActionResult Inserir()
         {

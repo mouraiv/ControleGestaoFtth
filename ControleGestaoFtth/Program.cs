@@ -2,7 +2,6 @@ using ControleGestaoFtth.ComponentModel;
 using ControleGestaoFtth.Context;
 using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
-using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
 
 using Microsoft.Extensions.FileProviders;

@@ -100,7 +100,7 @@
 <!-- End Modal -->
 
 <!-- Modal Progress -->
-<div class="modal fade" id="modalProgress" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
+<div class="modal fade" id="modalProgress" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="basicModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
 
@@ -195,8 +195,10 @@
                                         }
                                     }
                                 },
-                                success: function (resposta) {
-                                    location.href = dirFileMemory;
+                                success: function () {
+                                    setTimeout(function () {
+                                        location.href = dirFileMemory;
+                                    }, 2000);
                                 }
                             });
                         });
