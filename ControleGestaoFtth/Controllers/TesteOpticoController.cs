@@ -2,8 +2,7 @@
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using System.Diagnostics;
+using MySqlX.XDevAPI;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -26,12 +25,11 @@ namespace ControleGestaoFtth.Controllers
         }
         public ActionResult Arquivo()
         {
-            //ArquivoModel arquivos = new ();
 
             var listarArquivos = new List<ArquivoModel>();
 
             string diretorios = _TesteOpticoRepository.GetArquivo("~\\..\\Download\\");
-         
+
             foreach (string arq in Directory.GetFiles(diretorios))
             {
                 listarArquivos.Add(new ArquivoModel
@@ -46,15 +44,119 @@ namespace ControleGestaoFtth.Controllers
         public ActionResult Download(string caminho)
         {
             string file = Path.Combine(_webHostEnvironment.ContentRootPath, caminho.Replace("~\\..\\", ""));
-            
+
             MemoryStream output = new();
-            
+
             using (var stream = new FileStream(file, FileMode.Open))
             {
                 stream.CopyTo(output);
             }
             return File(output.ToArray(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", Path.GetFileName(caminho));
         }
+        public IActionResult Importar()
+        {
+            return PartialView();
+        }
+        private int GetForeignKeyConstrutora(string value)
+        {
+            int id = 0;
+            foreach (var construtora in _TesteOpticoRepository.Construtoras())
+            {
+                if (construtora.Nome.Equals(value))
+                {
+                    id = construtora.Id;
+                    break;
+                }
+            }
+            return id;
+        }
+        private int GetForeignKeyEstacao(string value)
+        {
+            int id = 0;
+            foreach (var estacao in _TesteOpticoRepository.Estacoes())
+            {
+                if (estacao.NomeEstacao.Equals(value))
+                {
+                    id = estacao.Id; 
+                    break;
+                }
+            }
+            return id;
+        }
+        private int GetForeignKeyTipoObra(string value)
+        {
+            int id = 0;
+            foreach (var tipoObra in _TesteOpticoRepository.TipoObras())
+            {
+                if (tipoObra.Nome.Equals(value))
+                {
+                    id = tipoObra.Id;
+                    break;
+                }
+            }
+            return id;
+        }
+        private int GetForeignKeyEstadoCampo(string value)
+        {
+            int id = 0;
+            foreach (var estadoCampo in _TesteOpticoRepository.EstadoCampos())
+            {
+                if (estadoCampo.Nome.Equals(value))
+                {
+                    id = estadoCampo.Id;
+                    break;
+                }
+            }
+            return id;
+        }
+        [HttpPost]
+        public IActionResult Importar(IFormFile file)
+        {
+            // Ler os dados do arquivo XLSX
+            var dados = new List<TesteOptico>();
+
+            using (var pacote = new OfficeOpenXml.ExcelPackage(file.OpenReadStream()))
+            {
+                var planilha = pacote.Workbook.Worksheets[1];
+
+                for (int i = planilha.Dimension.Start.Row + 1; i <= planilha.Dimension.End.Row; i++)
+                {
+                    var testeOptico = new TesteOptico();
+                  
+                    testeOptico.ConstrutorasId = GetForeignKeyConstrutora(planilha.Cells[i, 2].Value.ToString() ?? ""); ;
+                    testeOptico.EstacoesId = GetForeignKeyEstacao(planilha.Cells[i, 2].Value.ToString() ?? ""); 
+                    testeOptico.TipoObraId = GetForeignKeyTipoObra(planilha.Cells[i, 3].Value.ToString() ?? ""); 
+                    testeOptico.Cabo = (int)planilha.Cells[i, 4].Value;
+                    testeOptico.Celula = (int)planilha.Cells[i, 5].Value;
+                    testeOptico.CDO = planilha.Cells[i, 6].Value.ToString() ?? "";
+                    testeOptico.Capacidade = (int)planilha.Cells[i, 7].Value;
+                    testeOptico.TotalUms = (int)planilha.Cells[i, 8].Value;
+                    testeOptico.EstadoCamposId = GetForeignKeyEstadoCampo(planilha.Cells[i, 9].Value.ToString() ?? "");
+                    testeOptico.DatadeConstrucao = DateTime.Parse(planilha.Cells[i, 10].Value.ToString() ?? "");
+                    testeOptico.EquipedeConstrucao = planilha.Cells[i, 11].Value.ToString();
+                    testeOptico.DatadoTeste = DateTime.Parse(planilha.Cells[i, 12].Value.ToString() ?? "");
+                    //DatadeEnvio = 13 (implementar no modelo)
+                    testeOptico.Tecnico = planilha.Cells[i, 14].Value.ToString();
+                    testeOptico.PosicaoICX_DGO = planilha.Cells[i, 15].Value.ToString();
+                    testeOptico.FibraDGO = planilha.Cells[i, 16].Value.ToString();
+                    testeOptico.SplitterCEOS = planilha.Cells[i, 17].Value.ToString();
+                    testeOptico.BobinadeLancamento = (int)planilha.Cells[i, 18].Value;
+                    testeOptico.BobinadeRecepcao = (int)planilha.Cells[i, 19].Value;
+                    testeOptico.QuantidadeDeTeste = (int)planilha.Cells[i, 20].Value;
+                    dados.Add(testeOptico);
+                }
+            }
+
+            // Salvar os dados no banco de dados
+            foreach (var optico in dados)
+            {
+                _TesteOpticoRepository.Cadastrar(optico);
+            }
+            
+            // Redirecionar o usuário de volta para a página inicial
+            return RedirectToAction("Index");
+        }
+
         public IActionResult Inserir()
         {
             ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();

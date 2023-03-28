@@ -27,7 +27,7 @@
     <a role="button" id="btnRoles" class="btn btn-primary btn-sm">Adicionar</a>
     <hr class="divisorMenu m-0 p-0 ms-3">
     <button type="button" id="modeloBase" data-bs-toggle="modal" data-bs-target="#modelDown" class="btn btn-primary btn-sm ms-3">Modelo Base</button>
-    <button type="button" class="btn btn-warning btn-sm ms-2">Importar Base</button>
+    <button data-bs-toggle="modal" id="baseImport" data-bs-target="#modelImport" class="btn btn-warning btn-sm ms-2">Importar Base</button>
 </div>
 <!-- End -->
 <!-- Menu dropdown -->
@@ -62,15 +62,29 @@
                     <a class="modal-title" id="exampleModalLabel">-- Modelo Base de Importação --</a>
                 </div>
 
-                <div class="row modal-body">
-                    <a href="seu_arquivo.pdf" download>Download</a>
+                <div class="modal-body">
                     <!--Conteudo Display-->
-                    <div class="d-flex justify-content-center">
-                        <div class="spinner-border text-secondary m-5" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                    </div>
-            
+           
+                    <!-- End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+<!-- Modal -->
+<div class="modal fade" id="modelImport" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="d-flex m-0">
+            <div class="modal-content m-0">
+
+                <div class="modal-header">
+                    <a class="modal-title" id="exampleModalLabel">-- Importação Base de Dados --</a>
+                </div>
+
+                <div class="modal-body">
+                    <!--Conteudo Display-->
+
                     <!-- End -->
                 </div>
             </div>
@@ -121,14 +135,29 @@
             //BAIXAR MODELO BASE
             $('#modeloBase').on('click', function () {
                 //CARREGAR SPINNER LOADER
-                spinnerFtth('modal-body');
+                spinnerFtth('.modal-body');
 
                 //CARREGAR MODEL DE DOWNLOAD MODELO BASE
                 $.get('TesteOptico/Arquivo',
                     {}, function (resposta) {
-                        $('.modal-body').html($(resposta).html());
+                        $('.modal-body').html(resposta);
                         return false;
                 });
+                return false;
+            });
+
+            //IMPORTAR MODELO BASE
+            $('#baseImport').on('click', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('.modal-body');
+
+                //CARREGAR MODEL DE IMPORTAÇÃO MODELO BASE
+                $.get('TesteOptico/Importar',
+                    {}, function (resposta) {
+                        console.log(resposta);
+                        $('.modal-body').html(resposta);
+                        return false;
+                    });
                 return false;
             });
 

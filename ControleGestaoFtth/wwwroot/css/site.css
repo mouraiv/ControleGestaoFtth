@@ -57,7 +57,20 @@
         text-transform: uppercase;
     }
 
-    #container-detalhe{
+    #btnUpload {
+        border: 1px solid #6c757d;
+        border-radius: 0.2rem;
+        font-size: 0.9rem;
+        font-weight: 400;
+        margin-left: 0.5rem;
+    }
+
+    input[type="file"] {
+        font-size: 0.9rem;
+        font-weight: 400;
+    }
+
+    #container-detalhe {
         margin-right: 3rem;
     }
 
