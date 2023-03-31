@@ -1,13 +1,15 @@
-﻿<div class="d-flex justify-content-between">
-<input type="file" id="fileInput" name="fileInput" />
-    <form method="post" enctype="multipart/form-data" asp-controller="TesteOptico" asp-action="Importar">
-        <input type="file" id="fileInput" name="file" style="display:none" />
-        <button id="btnUpload" type="submit">Upload</button>
-    </form>
-</div>
-<hr>
-    <div class="progress mb-0">
-        <div class="progress-bar progress-bar-striped progress-bar-animated active" id="progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
-            <span class="sr-only">0% Complete</span>
+﻿<form method="post" enctype="multipart/form-data" asp-controller="TesteOptico" asp-action="Importar">
+    <div class="d-flex justify-content-between">
+        <div class="form-group">
+            <input type="file" name="file" id="file" class="form-control-file">
         </div>
-    </div>                    
+        <button id="btnUpload" type="submit">Upload</button>
+    </div>
+</form>
+
+<hr>
+<div class="progress mb-0">
+    <div class="progress-bar progress-bar-striped progress-bar-animated active" id="progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+        <span class="sr-only">0% Complete</span>
+     </div>
+</div>                    

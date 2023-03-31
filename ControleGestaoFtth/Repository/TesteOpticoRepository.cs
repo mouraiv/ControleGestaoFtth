@@ -2,9 +2,6 @@
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
-using System.IO;
-using System.Security.Policy;
 using X.PagedList;
 
 namespace ControleGestaoFtth.Repository

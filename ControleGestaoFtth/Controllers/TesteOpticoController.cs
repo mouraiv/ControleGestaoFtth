@@ -2,7 +2,10 @@
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using MySqlX.XDevAPI;
+using OfficeOpenXml;
+using System.Diagnostics;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -57,8 +60,9 @@ namespace ControleGestaoFtth.Controllers
         {
             return PartialView();
         }
-        private int GetForeignKeyConstrutora(string value)
+        public int GetForeignKeyConstrutora(string value)
         {
+
             int id = 0;
             foreach (var construtora in _TesteOpticoRepository.Construtoras())
             {
@@ -70,7 +74,7 @@ namespace ControleGestaoFtth.Controllers
             }
             return id;
         }
-        private int GetForeignKeyEstacao(string value)
+        public int GetForeignKeyEstacao(string value)
         {
             int id = 0;
             foreach (var estacao in _TesteOpticoRepository.Estacoes())
@@ -83,7 +87,7 @@ namespace ControleGestaoFtth.Controllers
             }
             return id;
         }
-        private int GetForeignKeyTipoObra(string value)
+        public int GetForeignKeyTipoObra(string value)
         {
             int id = 0;
             foreach (var tipoObra in _TesteOpticoRepository.TipoObras())
@@ -96,7 +100,7 @@ namespace ControleGestaoFtth.Controllers
             }
             return id;
         }
-        private int GetForeignKeyEstadoCampo(string value)
+        public int GetForeignKeyEstadoCampo(string value)
         {
             int id = 0;
             foreach (var estadoCampo in _TesteOpticoRepository.EstadoCampos())
@@ -111,39 +115,99 @@ namespace ControleGestaoFtth.Controllers
         }
         [HttpPost]
         public IActionResult Importar(IFormFile file)
-        {
+        { 
             // Ler os dados do arquivo XLSX
             var dados = new List<TesteOptico>();
 
-            using (var pacote = new OfficeOpenXml.ExcelPackage(file.OpenReadStream()))
+            using (var pacote = new ExcelPackage(file.OpenReadStream()))
             {
-                var planilha = pacote.Workbook.Worksheets[1];
+                ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-                for (int i = planilha.Dimension.Start.Row + 1; i <= planilha.Dimension.End.Row; i++)
+                var planilha = pacote.Workbook.Worksheets[0];
+
+                for (int rows = planilha.Dimension.Start.Row + 7; rows <= planilha.Dimension.End.Row; rows++)
                 {
                     var testeOptico = new TesteOptico();
-                  
-                    testeOptico.ConstrutorasId = GetForeignKeyConstrutora(planilha.Cells[i, 2].Value.ToString() ?? ""); ;
-                    testeOptico.EstacoesId = GetForeignKeyEstacao(planilha.Cells[i, 2].Value.ToString() ?? ""); 
-                    testeOptico.TipoObraId = GetForeignKeyTipoObra(planilha.Cells[i, 3].Value.ToString() ?? ""); 
-                    testeOptico.Cabo = (int)planilha.Cells[i, 4].Value;
-                    testeOptico.Celula = (int)planilha.Cells[i, 5].Value;
-                    testeOptico.CDO = planilha.Cells[i, 6].Value.ToString() ?? "";
-                    testeOptico.Capacidade = (int)planilha.Cells[i, 7].Value;
-                    testeOptico.TotalUms = (int)planilha.Cells[i, 8].Value;
-                    testeOptico.EstadoCamposId = GetForeignKeyEstadoCampo(planilha.Cells[i, 9].Value.ToString() ?? "");
-                    testeOptico.DatadeConstrucao = DateTime.Parse(planilha.Cells[i, 10].Value.ToString() ?? "");
-                    testeOptico.EquipedeConstrucao = planilha.Cells[i, 11].Value.ToString();
-                    testeOptico.DatadoTeste = DateTime.Parse(planilha.Cells[i, 12].Value.ToString() ?? "");
-                    //DatadeEnvio = 13 (implementar no modelo)
-                    testeOptico.Tecnico = planilha.Cells[i, 14].Value.ToString();
-                    testeOptico.PosicaoICX_DGO = planilha.Cells[i, 15].Value.ToString();
-                    testeOptico.FibraDGO = planilha.Cells[i, 16].Value.ToString();
-                    testeOptico.SplitterCEOS = planilha.Cells[i, 17].Value.ToString();
-                    testeOptico.BobinadeLancamento = (int)planilha.Cells[i, 18].Value;
-                    testeOptico.BobinadeRecepcao = (int)planilha.Cells[i, 19].Value;
-                    testeOptico.QuantidadeDeTeste = (int)planilha.Cells[i, 20].Value;
+
+                    if (planilha.Cells[rows, 2].Value != null)
+                    {
+                        testeOptico.ConstrutorasId = GetForeignKeyConstrutora(planilha.Cells[rows, 2].Value.ToString()?.ToUpper() ?? "");
+                    }
+                    if (planilha.Cells[rows, 3].Value != null)
+                    {
+                        testeOptico.EstacoesId = GetForeignKeyEstacao(planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "");
+                    }
+                    if (planilha.Cells[rows, 4].Value != null)
+                    {
+                        testeOptico.TipoObraId = GetForeignKeyTipoObra(planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "");
+                    }
+                    if (planilha.Cells[rows, 5].Value != null)
+                    {
+                        testeOptico.Cabo = int.Parse(planilha.Cells[rows, 5].Value.ToString() ?? "");
+                    }
+                    if (planilha.Cells[rows, 6].Value != null)
+                    {
+                        testeOptico.Celula = int.Parse(planilha.Cells[rows, 6].Value.ToString() ?? "");
+                    }
+                    if (planilha.Cells[rows, 7].Value != null)
+                    {
+                        testeOptico.CDO = planilha.Cells[rows, 7].Value.ToString() ?? "";
+                    }
+                    if (planilha.Cells[rows, 8].Value != null)
+                    {
+                        testeOptico.Capacidade = int.Parse(planilha.Cells[rows, 8].Value.ToString() ?? "");
+                    }
+                    if (planilha.Cells[rows, 9].Value != null)
+                    {
+                        testeOptico.TotalUms = int.Parse(planilha.Cells[rows, 9].Value.ToString() ?? "");
+                    }
+                    if (planilha.Cells[rows, 10].Value != null)
+                    {
+                        testeOptico.EstadoCamposId = GetForeignKeyEstadoCampo(planilha.Cells[rows, 10].Value.ToString()?.ToUpper() ?? "");
+                    }
+                    if (planilha.Cells[rows, 11].Value != null)
+                    {
+                        testeOptico.DatadeConstrucao = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 11].Value.ToString() ?? ""));
+                    }
+                    if (planilha.Cells[rows, 13].Value != null)
+                    {
+                        testeOptico.EquipedeConstrucao = planilha.Cells[rows+1, 13].Value.ToString() ?? "";
+                    }
+                    if (planilha.Cells[rows, 14].Value != null)
+                    {
+                        testeOptico.DatadoTeste = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 14].Value.ToString() ?? ""));
+                    }
+                    //DatadeEnvio = 15 (implementar no modelo)
+                    if (planilha.Cells[rows, 17].Value != null)
+                    {
+                        testeOptico.Tecnico = planilha.Cells[rows+1, 17].Value.ToString();
+                    }
+                    if (planilha.Cells[rows, 18].Value != null)
+                    {
+                        testeOptico.PosicaoICX_DGO = planilha.Cells[rows, 18].Value.ToString();
+                    }
+                    if (planilha.Cells[rows, 19].Value != null)
+                    {
+                        testeOptico.FibraDGO = planilha.Cells[rows, 19].Value.ToString();
+                    }
+                    if (planilha.Cells[rows, 20].Value != null)
+                    {
+                        testeOptico.SplitterCEOS = planilha.Cells[rows, 20].Value.ToString();
+                    }
+                    if (planilha.Cells[rows, 21].Value != null)
+                    {
+                        testeOptico.BobinadeLancamento = int.Parse(planilha.Cells[rows, 21].Value.ToString() ?? "");
+                    }
+                    if (planilha.Cells[rows, 22].Value != null)
+                    {
+                        testeOptico.BobinadeRecepcao = int.Parse(planilha.Cells[rows, 22].Value.ToString() ?? "");
+                    }
+                    if (planilha.Cells[rows, 23].Value != null)
+                    {
+                        testeOptico.QuantidadeDeTeste = int.Parse(planilha.Cells[rows, 23].Value.ToString() ?? "");
+                    }
                     dados.Add(testeOptico);
+
                 }
             }
 
