@@ -97,7 +97,6 @@
     <script>
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW INDEX CONSTRUTORA
         function TesteOpticoIndex() {
-
             //VARIAVEIS GLOBAIS LOCAL
             var estacao = "";
             var cdo = "";
@@ -150,15 +149,25 @@
             $('#baseImport').on('click', function () {
                 //CARREGAR SPINNER LOADER
                 spinnerFtth('.modal-body');
-
                 //CARREGAR MODEL DE IMPORTAÇÃO MODELO BASE
                 $.get('TesteOptico/Importar',
                     {}, function (resposta) {
-                        console.log(resposta);
                         $('.modal-body').html(resposta);
                         return false;
                     });
                 return false;
+            });
+
+            //UPLOAD MODELO IMPORTAÇÃO BASE
+            $('.modal-body').on('click', '#btnUpload', function () {
+                var updateOprogressBar = setInterval(function () {
+                    $.get('/ProgressBar',
+                        {}, function (resposta) {
+                            console.log("-")
+                            $('.modal-body #display-view').html(resposta);
+                            return false;
+                        });
+                }, 100);
             });
 
             //FILTRO DROPDOWNLIST ESTACAO
@@ -256,7 +265,6 @@
 
                 location.href = "@Url.Action("Detalhe", "TesteOptico")" +"/"+ carregarId;
             });
-
         } (TesteOpticoIndex());
     </script>
         }

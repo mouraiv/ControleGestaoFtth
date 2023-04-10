@@ -18,6 +18,7 @@ namespace ControleGestaoFtth.Context
         public DbSet<Tecnico> Tecnicos => Set<Tecnico>();
         public DbSet<TipoObra> TipoObras => Set<TipoObra>();
         public DbSet<Usuario> Usuarios => Set<Usuario>();
+        public DbSet<Enderecostotais> Enderecostotais => Set<Enderecostotais>();
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,9 +48,9 @@ namespace ControleGestaoFtth.Context
                 .HasForeignKey(p => p.NetwinId);
 
             modelBuilder.Entity<TesteOptico>()
-             .HasOne(p => p.Construtora)
-             .WithMany()
-             .HasForeignKey(p => p.ConstrutorasId);
+                .HasOne(p => p.Construtora)
+                .WithMany()
+                .HasForeignKey(p => p.ConstrutorasId);
 
             modelBuilder.Entity<Tecnico>()
                 .HasOne(p => p.usuario)

@@ -23,6 +23,8 @@ builder.Services.AddScoped<INetwinRepository, NetwinRepository>();
 builder.Services.AddScoped<IEstadoCampoRepository, EstadoCampoRepository>();
 builder.Services.AddScoped<ITesteOpticoRepository, TesteOpticoRepository>();
 builder.Services.AddSingleton<ConversionViewModel>();
+builder.Services.AddSingleton<ProgressBar>();
+builder.Services.AddSingleton<ArquivoModel>();
 
 var app = builder.Build();
 

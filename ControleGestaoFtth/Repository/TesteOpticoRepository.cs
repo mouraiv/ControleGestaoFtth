@@ -275,5 +275,18 @@ namespace ControleGestaoFtth.Repository
                 
             return arquivo ?? "";
         }
+
+        public IEnumerable<Enderecostotais> Enderecototais(string cdo, string municipio)
+        {
+            return _context.Enderecostotais
+               .AsNoTracking()
+               .Where(p => p.NOME_CDO == cdo && p.MUNICIPIO == municipio)
+               .AsEnumerable()
+               .Select(value => new Enderecostotais
+               {
+                   COD_VIABILIDADE = value.COD_VIABILIDADE
+
+               }).ToList();
+        }
     }
 }
