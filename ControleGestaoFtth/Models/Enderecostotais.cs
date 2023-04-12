@@ -19,7 +19,7 @@ namespace ControleGestaoFtth.Models
         public string? COMPLEMENTO { get; set; }
         public string? COMPLEMENTO2 { get; set; }
         public string? COMPLEMENTO3 { get; set; }
-        public int? CEP { get; set; }
+        public string? CEP { get; set; }
         public string? BAIRRO { get; set; }
         public string? COD_SURVEY { get; set; }
         public int? QUANTIDADE_UMS { get; set; }
@@ -28,7 +28,7 @@ namespace ControleGestaoFtth.Models
         public string? TIPO_REDE { get; set; }
         public string? UCS_RESIDENCIAIS { get; set; }
         public string? UCS_COMERCIAIS { get; set; }
-        public string? NOME_CDO { get; set; }
+        public string NOME_CDO { get; set; } = null!;
         public int? ID_ENDERECO { get; set; }
         public string? LATITUDE { get; set; }
         public string? LONGITUDE { get; set; }

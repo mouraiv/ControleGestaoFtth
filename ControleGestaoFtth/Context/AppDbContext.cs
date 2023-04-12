@@ -6,7 +6,8 @@ namespace ControleGestaoFtth.Context
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-        { 
+        {
+            Database.SetCommandTimeout(1800);
         }
 
         public DbSet<Construtora> Construtoras => Set<Construtora>();

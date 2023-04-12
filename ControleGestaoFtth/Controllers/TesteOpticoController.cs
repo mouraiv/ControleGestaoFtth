@@ -1,4 +1,5 @@
-﻿using ControleGestaoFtth.ComponentModel;
+﻿using Aspose.Pdf.Operators;
+using ControleGestaoFtth.ComponentModel;
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Google.Protobuf.WellKnownTypes;
@@ -120,36 +121,38 @@ namespace ControleGestaoFtth.Controllers
 
         public int GetCodViabilidadeEnderecosTotais(string cdo, string municipio)
         {
-            var viabilidade = _TesteOpticoRepository.Enderecototais(cdo, municipio);
-
-            int? codViabilidade = -1;
-            int id = -1;
-
-            foreach (var codigo in viabilidade)
+            try
             {
-                codViabilidade = codigo.COD_VIABILIDADE;
-                break;
-            }
-            foreach (var netwin in _TesteOpticoRepository.Netwins())
-            {
-                if (netwin.Codigo == codViabilidade) {
-                    id = netwin.Id;
-                    break;
+                int? codViabilidade = _TesteOpticoRepository.Enderecototais(cdo, municipio).COD_VIABILIDADE;
+                int id = 0;
+
+                foreach (var netwin in _TesteOpticoRepository.Netwins())
+                {
+                    if (netwin.Codigo == codViabilidade)
+                    {
+                        id = netwin.Id;
+                        break;
+                    }
                 }
+                return id;
             }
-            return id;
+            catch (Exception)
+            {
+                return 1;
+            }
         }
 
         [HttpPost]
         public IActionResult Importar(IFormFile file)
         {
-            try
-            {
-                if (file != null) {
+            
                     // Ler os dados do arquivo XLSX
                     var dados = new List<TesteOptico>();
 
                     _arquivoModel.ImportarXlsx(file.OpenReadStream());
+
+                if (_arquivoModel.TamanhoTotalXlsx > 0)
+                {
 
                     using (var pacote = new ExcelPackage(file.OpenReadStream()))
                     {
@@ -157,12 +160,14 @@ namespace ControleGestaoFtth.Controllers
 
                         var planilha = pacote.Workbook.Worksheets[0];
 
-                        for (int rows = planilha.Dimension.Start.Row + 7; rows <= planilha.Dimension.End.Row; rows++)
+                        int totalRows = _arquivoModel.TamanhoTotalXlsx + 7;
+
+                        for (int rows = 8; rows <= totalRows; rows++)
                         {
                             var testeOptico = new TesteOptico();
 
                             //CONTADOR DE PROGRESSO IMPORTAÇÃO
-                            _progressBar.Progresso = rows * 100 / _arquivoModel.TamanhoTotalXlsx;
+                            _progressBar.Progresso = rows * 100 / totalRows;
 
                             if (planilha.Cells[rows, 2].Value != null)
                             {
@@ -253,7 +258,7 @@ namespace ControleGestaoFtth.Controllers
                     // Salvar os dados no banco de dados
                     foreach (var optico in dados)
                     {
-                       _TesteOpticoRepository.Cadastrar(optico);
+                        _TesteOpticoRepository.Cadastrar(optico);
                     }
                     TempData["Sucesso"] = "Inportação concluída.";
                     // Redirecionar o usuário de volta para a página inicial
@@ -261,18 +266,10 @@ namespace ControleGestaoFtth.Controllers
                 }
                 else
                 {
-                    TempData["Falha"] = $"Arquivo de importação vazio";
+                    TempData["Falha"] = $"Arquivo modelo base não contém dados para importação.";
                     // Redirecionar o usuário de volta para a página inicial
                     return RedirectToAction("Index");
                 }
-
-            }
-            catch (Exception ex)
-            {
-                TempData["Falha"] = $"Erro na importação {ex.Message}";
-                // Redirecionar o usuário de volta para a página inicial
-                return RedirectToAction("Index");
-            }
         }
 
         public IActionResult Inserir()

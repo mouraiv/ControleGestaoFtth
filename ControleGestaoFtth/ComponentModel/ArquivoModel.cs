@@ -18,13 +18,13 @@ namespace ControleGestaoFtth.ComponentModel
 
                     var planilha = pacote.Workbook.Worksheets[0];
                     var totalRows = planilha.Dimension.End.Row;
-                    var totalColumns = planilha.Dimension.End.Column;
+                    var totalColumns = 2;
                     var totalCells = totalRows * totalColumns;
 
                     int nonEmptyCells = 0;
-                    for (int row = 1; row <= totalRows; row++)
+                    for (int row = 7; row <= totalRows; row++)
                     {
-                        for (int col = 1; col <= totalColumns; col++)
+                        for (int col = 2; col <= totalColumns; col++)
                         {
                             var cellValue = planilha.Cells[row, col].Value;
                             if (cellValue != null && !string.IsNullOrWhiteSpace(cellValue.ToString()))
