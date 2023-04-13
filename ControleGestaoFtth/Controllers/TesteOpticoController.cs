@@ -145,131 +145,132 @@ namespace ControleGestaoFtth.Controllers
         [HttpPost]
         public IActionResult Importar(IFormFile file)
         {
-            
-                    // Ler os dados do arquivo XLSX
-                    var dados = new List<TesteOptico>();
+            // Ler os dados do arquivo XLSX
+            var dados = new List<TesteOptico>();
 
-                    _arquivoModel.ImportarXlsx(file.OpenReadStream());
+            _arquivoModel.ImportarXlsx(file.OpenReadStream());
 
-                if (_arquivoModel.TamanhoTotalXlsx > 0)
+            if (_arquivoModel.TamanhoTotalXlsx > 0)
+            {
+
+                using (var pacote = new ExcelPackage(file.OpenReadStream()))
                 {
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
 
-                    using (var pacote = new ExcelPackage(file.OpenReadStream()))
+                    var planilha = pacote.Workbook.Worksheets[0];
+
+                    int totalRows = _arquivoModel.TamanhoTotalXlsx + 7;
+
+                    for (int rows = 8; rows <= totalRows; rows++)
                     {
-                        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                        var testeOptico = new TesteOptico();
 
-                        var planilha = pacote.Workbook.Worksheets[0];
+                        //CONTADOR DE PROGRESSO IMPORTAÇÃO
+                        _progressBar.Progresso = rows * 100 / totalRows;
 
-                        int totalRows = _arquivoModel.TamanhoTotalXlsx + 7;
+                        testeOptico.Id = _TesteOpticoRepository.LastId() + (rows - 7);
 
-                        for (int rows = 8; rows <= totalRows; rows++)
+                        if (planilha.Cells[rows, 2].Value != null)
                         {
-                            var testeOptico = new TesteOptico();
-
-                            //CONTADOR DE PROGRESSO IMPORTAÇÃO
-                            _progressBar.Progresso = rows * 100 / totalRows;
-
-                            if (planilha.Cells[rows, 2].Value != null)
-                            {
-                                testeOptico.ConstrutorasId = GetForeignKeyConstrutora(planilha.Cells[rows, 2].Value.ToString()?.ToUpper() ?? "");
-                            }
-                            if (planilha.Cells[rows, 3].Value != null)
-                            {
-                                testeOptico.EstacoesId = GetForeignKeyEstacao(planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "");
-                            }
-                            if (planilha.Cells[rows, 4].Value != null)
-                            {
-                                testeOptico.TipoObraId = GetForeignKeyTipoObra(planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "");
-                            }
-                            if (planilha.Cells[rows, 5].Value != null)
-                            {
-                                testeOptico.Cabo = int.Parse(planilha.Cells[rows, 5].Value.ToString() ?? "");
-                            }
-                            if (planilha.Cells[rows, 6].Value != null)
-                            {
-                                testeOptico.Celula = int.Parse(planilha.Cells[rows, 6].Value.ToString() ?? "");
-                            }
-                            if (planilha.Cells[rows, 7].Value != null)
-                            {
-                                testeOptico.CDO = planilha.Cells[rows, 7].Value.ToString() ?? "";
-                                testeOptico.NetwinId = GetCodViabilidadeEnderecosTotais(planilha.Cells[rows, 7].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "");
-                            }
-                            if (planilha.Cells[rows, 8].Value != null)
-                            {
-                                testeOptico.Capacidade = int.Parse(planilha.Cells[rows, 8].Value.ToString() ?? "");
-                            }
-                            if (planilha.Cells[rows, 9].Value != null)
-                            {
-                                testeOptico.TotalUms = int.Parse(planilha.Cells[rows, 9].Value.ToString() ?? "");
-                            }
-                            if (planilha.Cells[rows, 10].Value != null)
-                            {
-                                testeOptico.EstadoCamposId = GetForeignKeyEstadoCampo(planilha.Cells[rows, 10].Value.ToString()?.ToUpper() ?? "");
-                            }
-                            if (planilha.Cells[rows, 11].Value != null)
-                            {
-                                testeOptico.DatadeConstrucao = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 11].Value.ToString() ?? ""));
-                            }
-                            if (planilha.Cells[rows, 13].Value != null)
-                            {
-                                testeOptico.EquipedeConstrucao = planilha.Cells[rows, 13].Value.ToString() ?? "";
-                            }
-                            if (planilha.Cells[rows, 14].Value != null)
-                            {
-                                testeOptico.DatadoTeste = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 14].Value.ToString() ?? ""));
-                            }
-                            if (planilha.Cells[rows, 15].Value != null)
-                            {
-                                testeOptico.DatadeRecebimento = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 15].Value.ToString() ?? ""));
-                            }
-                            if (planilha.Cells[rows, 17].Value != null)
-                            {
-                                testeOptico.Tecnico = planilha.Cells[rows, 17].Value.ToString();
-                            }
-                            if (planilha.Cells[rows, 18].Value != null)
-                            {
-                                testeOptico.PosicaoICX_DGO = planilha.Cells[rows, 18].Value.ToString();
-                            }
-                            if (planilha.Cells[rows, 19].Value != null)
-                            {
-                                testeOptico.FibraDGO = planilha.Cells[rows, 19].Value.ToString();
-                            }
-                            if (planilha.Cells[rows, 20].Value != null)
-                            {
-                                testeOptico.SplitterCEOS = planilha.Cells[rows, 20].Value.ToString();
-                            }
-                            if (planilha.Cells[rows, 21].Value != null)
-                            {
-                                testeOptico.BobinadeLancamento = int.Parse(planilha.Cells[rows, 21].Value.ToString() ?? "");
-                            }
-                            if (planilha.Cells[rows, 22].Value != null)
-                            {
-                                testeOptico.BobinadeRecepcao = int.Parse(planilha.Cells[rows, 22].Value.ToString() ?? "");
-                            }
-                            if (planilha.Cells[rows, 23].Value != null)
-                            {
-                                testeOptico.QuantidadeDeTeste = int.Parse(planilha.Cells[rows, 23].Value.ToString() ?? "");
-                            }
-                            dados.Add(testeOptico);
-
+                            testeOptico.ConstrutorasId = GetForeignKeyConstrutora(planilha.Cells[rows, 2].Value.ToString() ?? "");
                         }
-                    }
+                        if (planilha.Cells[rows, 3].Value != null)
+                        {
+                            testeOptico.EstacoesId = GetForeignKeyEstacao(planilha.Cells[rows, 3].Value.ToString() ?? "");
+                        }
+                        if (planilha.Cells[rows, 4].Value != null)
+                        {
+                            testeOptico.TipoObraId = GetForeignKeyTipoObra(planilha.Cells[rows, 4].Value.ToString() ?? "");
+                        }
+                        if (planilha.Cells[rows, 5].Value != null)
+                        {
+                            testeOptico.Cabo = int.Parse(planilha.Cells[rows, 5].Value.ToString() ?? "");
+                        }
+                        if (planilha.Cells[rows, 6].Value != null)
+                        {
+                            testeOptico.Celula = int.Parse(planilha.Cells[rows, 6].Value.ToString() ?? "");
+                        }
+                        if (planilha.Cells[rows, 7].Value != null)
+                        {
+                            testeOptico.CDO = planilha.Cells[rows, 7].Value.ToString() ?? "";
+                            testeOptico.NetwinId = GetCodViabilidadeEnderecosTotais(planilha.Cells[rows, 7].Value.ToString() ?? "", planilha.Cells[rows, 3].Value.ToString() ?? "");
+                        }
+                        if (planilha.Cells[rows, 8].Value != null)
+                        {
+                            testeOptico.Capacidade = int.Parse(planilha.Cells[rows, 8].Value.ToString() ?? "");
+                        }
+                        if (planilha.Cells[rows, 9].Value != null)
+                        {
+                            testeOptico.TotalUms = int.Parse(planilha.Cells[rows, 9].Value.ToString() ?? "");
+                        }
+                        if (planilha.Cells[rows, 10].Value != null)
+                        {
+                            testeOptico.EstadoCamposId = GetForeignKeyEstadoCampo(planilha.Cells[rows, 10].Value.ToString()?.ToUpper() ?? "");
+                        }
+                        if (planilha.Cells[rows, 11].Value != null)
+                        {
+                            testeOptico.DatadeConstrucao = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 11].Value.ToString() ?? ""));
+                        }
+                        if (planilha.Cells[rows, 13].Value != null)
+                        {
+                            testeOptico.EquipedeConstrucao = planilha.Cells[rows, 13].Value.ToString() ?? "";
+                        }
+                        if (planilha.Cells[rows, 14].Value != null)
+                        {
+                            testeOptico.DatadoTeste = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 14].Value.ToString() ?? ""));
+                        }
+                        if (planilha.Cells[rows, 15].Value != null)
+                        {
+                            testeOptico.DatadeRecebimento = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 15].Value.ToString() ?? ""));
+                        }
+                        if (planilha.Cells[rows, 17].Value != null)
+                        {
+                            testeOptico.Tecnico = planilha.Cells[rows, 17].Value.ToString();
+                        }
+                        if (planilha.Cells[rows, 18].Value != null)
+                        {
+                            testeOptico.PosicaoICX_DGO = planilha.Cells[rows, 18].Value.ToString();
+                        }
+                        if (planilha.Cells[rows, 19].Value != null)
+                        {
+                            testeOptico.FibraDGO = planilha.Cells[rows, 19].Value.ToString();
+                        }
+                        if (planilha.Cells[rows, 20].Value != null)
+                        {
+                            testeOptico.SplitterCEOS = planilha.Cells[rows, 20].Value.ToString();
+                        }
+                        if (planilha.Cells[rows, 21].Value != null)
+                        {
+                            testeOptico.BobinadeLancamento = int.Parse(planilha.Cells[rows, 21].Value.ToString() ?? "");
+                        }
+                        if (planilha.Cells[rows, 22].Value != null)
+                        {
+                            testeOptico.BobinadeRecepcao = int.Parse(planilha.Cells[rows, 22].Value.ToString() ?? "");
+                        }
+                        if (planilha.Cells[rows, 23].Value != null)
+                        {
+                            testeOptico.QuantidadeDeTeste = int.Parse(planilha.Cells[rows, 23].Value.ToString() ?? "");
+                        }
+                        dados.Add(testeOptico);
 
-                    // Salvar os dados no banco de dados
-                    foreach (var optico in dados)
-                    {
-                        _TesteOpticoRepository.Cadastrar(optico);
                     }
-                    TempData["Sucesso"] = "Inportação concluída.";
-                    // Redirecionar o usuário de volta para a página inicial
-                    return RedirectToAction("Index");
                 }
-                else
+
+                // Salvar os dados no banco de dados
+                foreach (var optico in dados)
                 {
-                    TempData["Falha"] = $"Arquivo modelo base não contém dados para importação.";
-                    // Redirecionar o usuário de volta para a página inicial
-                    return RedirectToAction("Index");
+                    _TesteOpticoRepository.Cadastrar(optico);
                 }
+                TempData["Sucesso"] = "Inportação concluída.";
+                // Redirecionar o usuário de volta para a página inicial
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                TempData["Falha"] = $"Arquivo modelo base não contém dados para importação.";
+                // Redirecionar o usuário de volta para a página inicial
+                return RedirectToAction("Index");
+            }
         }
 
         public IActionResult Inserir()

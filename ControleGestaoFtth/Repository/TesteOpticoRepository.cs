@@ -279,12 +279,18 @@ namespace ControleGestaoFtth.Repository
         public Enderecostotais Enderecototais(string cdo, string municipio)
         {
             return _context.Enderecostotais
-               .Where(p => p.NOME_CDO != "" && p.NOME_CDO == cdo && p.MUNICIPIO == municipio)
+               .AsNoTracking()
+               .Where(p => !string.IsNullOrWhiteSpace(p.NOME_CDO) && p.NOME_CDO == cdo && p.MUNICIPIO == municipio)
                .Select(value => new Enderecostotais
                {
                    COD_VIABILIDADE = value.COD_VIABILIDADE
 
                }).First();
+        }
+
+        public int LastId()
+        {
+            return _context.TesteOpticos.Max(c => c.Id);
         }
     }
 }

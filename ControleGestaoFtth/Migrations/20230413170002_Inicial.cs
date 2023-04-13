@@ -14,6 +14,104 @@ namespace ControleGestaoFtth.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Construtoras",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nome = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Construtoras", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Enderecostotais",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    CELULA = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ESTACAO_ABASTECEDORA = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UF = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MUNICIPIO = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LOCALIDADE = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    COD_LOCALIDADE = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LOCALIDADE_ABREV = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LOGRADOURO = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    COD_LOGRADOURO = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NUM_FACHADA = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    COMPLEMENTO = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    COMPLEMENTO2 = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    COMPLEMENTO3 = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    CEP = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    BAIRRO = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    COD_SURVEY = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    QUANTIDADE_UMS = table.Column<int>(type: "int", nullable: true),
+                    COD_VIABILIDADE = table.Column<int>(type: "int", nullable: true),
+                    TIPO_VIABILIDADE = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TIPO_REDE = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UCS_RESIDENCIAIS = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UCS_COMERCIAIS = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NOME_CDO = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ID_ENDERECO = table.Column<int>(type: "int", nullable: true),
+                    LATITUDE = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    LONGITUDE = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    TIPO_SURVEY = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    REDE_INTERNA = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UMS_CERTIFICADAS = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    REDE_EDIF_CERT = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    NUM_PISOS = table.Column<int>(type: "int", nullable: true),
+                    DISP_COMERCIAL = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ESTADO_CONTROLE = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    DATA_ESTADO_CONTROLE = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    ID_CELULA = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    QUANTIDADE_HCS = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    PROJETO = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Enderecostotais", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Estacoes",
                 columns: table => new
                 {
@@ -22,8 +120,6 @@ namespace ControleGestaoFtth.Migrations
                     Sigla = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     NomeEstacao = table.Column<string>(type: "longtext", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Responsavel = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -56,7 +152,7 @@ namespace ControleGestaoFtth.Migrations
                     Codigo = table.Column<int>(type: "int", nullable: true),
                     Tipo = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Descricao = table.Column<string>(type: "longtext", nullable: true)
+                    Descricao = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -90,7 +186,7 @@ namespace ControleGestaoFtth.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nome = table.Column<string>(type: "longtext", nullable: true)
+                    Nome = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -120,18 +216,17 @@ namespace ControleGestaoFtth.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Construtoras",
+                name: "TesteOpticos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    CHAVE = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
                     EstacoesId = table.Column<int>(type: "int", nullable: true),
-                    TipoObraId = table.Column<int>(type: "int", nullable: true),
+                    TipoObraId = table.Column<int>(type: "int", nullable: false),
+                    ConstrutorasId = table.Column<int>(type: "int", nullable: true),
                     CDO = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cabo = table.Column<int>(type: "int", nullable: true),
+                    Cabo = table.Column<int>(type: "int", nullable: false),
                     Celula = table.Column<int>(type: "int", nullable: true),
                     Capacidade = table.Column<int>(type: "int", nullable: true),
                     TotalUms = table.Column<int>(type: "int", nullable: true),
@@ -144,7 +239,7 @@ namespace ControleGestaoFtth.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Observacoes = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    NetwinId = table.Column<int>(type: "int", nullable: true),
+                    NetwinId = table.Column<int>(type: "int", nullable: false),
                     Meta = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     DatadeConstrucao = table.Column<DateTime>(type: "datetime(6)", nullable: true),
@@ -166,32 +261,39 @@ namespace ControleGestaoFtth.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Construtoras", x => x.Id);
+                    table.PrimaryKey("PK_TesteOpticos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Construtoras_Estacoes_EstacoesId",
+                        name: "FK_TesteOpticos_Construtoras_ConstrutorasId",
+                        column: x => x.ConstrutorasId,
+                        principalTable: "Construtoras",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_TesteOpticos_Estacoes_EstacoesId",
                         column: x => x.EstacoesId,
                         principalTable: "Estacoes",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Construtoras_EstadoCampos_EstadoCamposId",
+                        name: "FK_TesteOpticos_EstadoCampos_EstadoCamposId",
                         column: x => x.EstadoCamposId,
                         principalTable: "EstadoCampos",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Construtoras_Netwins_NetwinId",
+                        name: "FK_TesteOpticos_Netwins_NetwinId",
                         column: x => x.NetwinId,
                         principalTable: "Netwins",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Construtoras_States_StatesId",
+                        name: "FK_TesteOpticos_States_StatesId",
                         column: x => x.StatesId,
                         principalTable: "States",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_Construtoras_TipoObras_TipoObraId",
+                        name: "FK_TesteOpticos_TipoObras_TipoObraId",
                         column: x => x.TipoObraId,
                         principalTable: "TipoObras",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -221,43 +323,57 @@ namespace ControleGestaoFtth.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Construtoras_EstacoesId",
-                table: "Construtoras",
+                name: "IX_Tecnicos_UsuarioId",
+                table: "Tecnicos",
+                column: "UsuarioId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TesteOpticos_ConstrutorasId",
+                table: "TesteOpticos",
+                column: "ConstrutorasId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TesteOpticos_EstacoesId",
+                table: "TesteOpticos",
                 column: "EstacoesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Construtoras_EstadoCamposId",
-                table: "Construtoras",
+                name: "IX_TesteOpticos_EstadoCamposId",
+                table: "TesteOpticos",
                 column: "EstadoCamposId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Construtoras_NetwinId",
-                table: "Construtoras",
+                name: "IX_TesteOpticos_NetwinId",
+                table: "TesteOpticos",
                 column: "NetwinId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Construtoras_StatesId",
-                table: "Construtoras",
+                name: "IX_TesteOpticos_StatesId",
+                table: "TesteOpticos",
                 column: "StatesId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Construtoras_TipoObraId",
-                table: "Construtoras",
-                column: "TipoObraId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tecnicos_UsuarioId",
-                table: "Tecnicos",
-                column: "UsuarioId");*/
+                name: "IX_TesteOpticos_TipoObraId",
+                table: "TesteOpticos",
+                column: "TipoObraId");*/
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             /*migrationBuilder.DropTable(
-                name: "Construtoras");
+                name: "Enderecostotais");
 
             migrationBuilder.DropTable(
                 name: "Tecnicos");
+
+            migrationBuilder.DropTable(
+                name: "TesteOpticos");
+
+            migrationBuilder.DropTable(
+                name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Construtoras");
 
             migrationBuilder.DropTable(
                 name: "Estacoes");
@@ -272,10 +388,7 @@ namespace ControleGestaoFtth.Migrations
                 name: "States");
 
             migrationBuilder.DropTable(
-                name: "TipoObras");
-
-            migrationBuilder.DropTable(
-                name: "Usuarios");*/
+                name: "TipoObras");*/
         }
     }
 }

@@ -36,6 +36,7 @@
 
   <ItemGroup>
     <Folder Include="Download\" />
+    <Folder Include="Migrations\" />
     <Folder Include="Upload\" />
   </ItemGroup>
 

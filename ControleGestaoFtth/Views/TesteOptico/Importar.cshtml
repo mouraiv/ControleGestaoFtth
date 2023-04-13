@@ -1,4 +1,4 @@
-﻿<form method="post" enctype="multipart/form-data" asp-action="Importar" asp-controller="TesteOptico">
+﻿<form method="post" enctype="multipart/form-data" asp-controller="TesteOptico" asp-action="Importar">
     <div class="d-flex justify-content-between">
         <div class="form-group">
             <input type="file" name="file" id="file" class="form-control-file">
@@ -9,5 +9,4 @@
 
 <hr>
 <div id="display-view">
-    @await Html.PartialAsync("~/Views/ProgressBar/Index.cshtml")
 </div>

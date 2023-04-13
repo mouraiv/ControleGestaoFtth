@@ -4,6 +4,7 @@ namespace ControleGestaoFtth.Repository.Interface
 {
     public interface ITesteOpticoRepository
     {
+        int LastId();
         TesteOptico Cadastrar(TesteOptico testeOptico);
         TesteOptico Atualizar(TesteOptico testeOptico);
         bool Deletar(int id);
