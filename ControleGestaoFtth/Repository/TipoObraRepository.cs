@@ -98,6 +98,11 @@ namespace ControleGestaoFtth.Repository
                 .ToList();
         }
 
+        public bool TipoObraExiste(string nome)
+        {
+            return _context.TipoObras.Any(p => p.Nome == nome);
+        }
+
         public IEnumerable<TesteOptico> UniqueFk()
         {
             return _context.TesteOpticos

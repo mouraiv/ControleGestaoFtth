@@ -93,5 +93,9 @@ namespace ControleGestaoFtth.Repository
 
                }).ToList();
         }
+        public bool EstacaoExiste(string estacao, string sgl)
+        {
+            return _context.Estacoes.Any(p => p.NomeEstacao == estacao || p.Sigla == sgl);
+        }
     }
 }

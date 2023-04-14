@@ -40,7 +40,7 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                if (_construtoraRepository.Listar().Any(p => p.Nome.Equals(Construtora.Nome.ToUpper())))
+                if (_construtoraRepository.ContrutoraExiste(Construtora.Nome))
                 {
                     TempData["Falha"] = $"Tipo obra {Construtora.Nome} já existe.";
 

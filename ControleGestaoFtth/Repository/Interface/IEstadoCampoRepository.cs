@@ -7,6 +7,7 @@ namespace ControleGestaoFtth.Repository.Interface
         EstadoCampo Cadastrar(EstadoCampo estadoCampo);
         EstadoCampo Atualizar(EstadoCampo estadoCampo);
         bool Deletar(int id);
+        bool EstadoCampoExiste(string nome);
         IEnumerable<EstadoCampo> Listar();
         IEnumerable<EstadoCampo> Listar(int? pagina, string nome);
         IEnumerable<EstadoCampo> Campo();

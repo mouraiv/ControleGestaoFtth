@@ -41,11 +41,12 @@ namespace ControleGestaoFtth.Controllers
             try
             {
 
-                if (_estacaoRepository.Listar().Any(p => p.NomeEstacao.Equals(estacao.NomeEstacao.ToUpper())))
+                if (_estacaoRepository.EstacaoExiste(estacao.NomeEstacao, estacao.Sigla))
                 {
-                    TempData["Falha"] = $"Estação {estacao.NomeEstacao} já existe.";
+                    TempData["Falha"] = $"Estação {estacao.NomeEstacao} ou {estacao.Sigla} já existe, verificar.";
 
                     return View(estacao);
+
                 }
                 else
                 {

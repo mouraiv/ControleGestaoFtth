@@ -39,9 +39,9 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                if (_netwinRepository.Listar().Any(p => p.Codigo.Equals(netwin.Codigo)))
+                if (_netwinRepository.NetwinExiste(netwin.Codigo, netwin.Tipo, netwin.Descricao))
                 {
-                    TempData["Falha"] = $"Codigo {netwin.Codigo} já existe.";
+                    TempData["Falha"] = $"O Formulário possuí valores existes no banco de dados e não podem ser repetidos, Verificar: Codigo = {netwin.Codigo}, Tipo = {netwin.Tipo} e Descrição = {netwin.Descricao}";
 
                     return View(netwin);
                 }

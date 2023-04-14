@@ -41,6 +41,11 @@ namespace ControleGestaoFtth.Repository
                     .First();
         }
 
+        public bool ContrutoraExiste(string nome)
+        {
+            return _context.Construtoras.Any(p => p.Nome == nome);
+        }
+
         public bool Deletar(int id)
         {
             Construtora db = CarregarId(id);

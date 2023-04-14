@@ -7,6 +7,7 @@ namespace ControleGestaoFtth.Repository.Interface
         Netwin Cadastrar(Netwin netwin);
         Netwin Atualizar(Netwin netwin);
         bool Deletar(int id);
+        bool NetwinExiste(int? codigo, string? tipo, string? descricao);
         IEnumerable<Netwin> Listar();
         IEnumerable<Netwin> Listar(int? pagina, string descricao);
         IEnumerable<Netwin> Descricao();

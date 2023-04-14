@@ -108,5 +108,10 @@ namespace ControleGestaoFtth.Repository
 
                }).ToList();
         }
+
+        public bool EstadoCampoExiste(string nome)
+        {
+            return _context.EstadoCampos.Any(p => p.Nome == nome);
+        }
     }
 }

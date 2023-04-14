@@ -112,5 +112,10 @@ namespace ControleGestaoFtth.Repository
 
                }).ToList();
         }
+
+        public bool NetwinExiste(int? codigo, string? tipo, string? descricao)
+        {
+            return _context.Netwins.Any(p => p.Codigo == codigo || p.Tipo == tipo || p.Descricao == descricao);
+        }
     }
 }

@@ -39,7 +39,7 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                if (_estadoCampoRepository.Listar().Any(p => p.Nome.Equals(estadoCampo.Nome.ToUpper())))
+                if (_estadoCampoRepository.EstadoCampoExiste(estadoCampo.Nome))
                 {
                     TempData["Falha"] = $"Estado Campo {estadoCampo.Nome} já existe.";
 

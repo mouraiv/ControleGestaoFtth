@@ -21,6 +21,24 @@ namespace ControleGestaoFtth.Context
         public DbSet<Usuario> Usuarios => Set<Usuario>();
         public DbSet<Enderecostotais> Enderecostotais => Set<Enderecostotais>();
 
+        public override int SaveChanges()
+        {
+            // converte todas as propriedades de string em caixa alta antes de salvar
+            foreach (var entry in ChangeTracker.Entries().Where(e => e.State == EntityState.Added || e.State == EntityState.Modified))
+            {
+                foreach (var property in entry.CurrentValues.Properties.Where(p => p.ClrType == typeof(string)))
+                {
+                    var currentValue = (string?)entry.CurrentValues[property];
+                    if (!string.IsNullOrEmpty(currentValue))
+                    {
+                        entry.CurrentValues[property] = currentValue.ToUpperInvariant();
+                    }
+                }
+            }
+
+            return base.SaveChanges();
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<TesteOptico>()
