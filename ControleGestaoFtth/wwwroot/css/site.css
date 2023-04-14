@@ -119,14 +119,15 @@
         border-bottom: 0.1rem solid #0d6efd;
         justify-content: center;
         background-color: #0d6efd;
+        height: 30px !important;
     }
 
     .modal-title {
         margin-bottom: 0;
         line-height: 0.2rem;
         text-decoration: none;
-        font-size:0.8rem;
-        font-weight: 600;
+        font-size:0.8rem !important;
+        font-weight: 600 !important;
         color: #ffffff;
     }
 
@@ -333,6 +334,14 @@
 
     .modal {
         padding-right: 6.4rem;
+    }
+
+    #close-model {
+        width: 30px;
+        background-color: transparent;
+        color: white;
+        font-weight: 600;
+        border: 0;
     }
 
     #iconWidget {

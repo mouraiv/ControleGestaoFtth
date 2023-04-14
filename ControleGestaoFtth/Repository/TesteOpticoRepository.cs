@@ -111,34 +111,40 @@ namespace ControleGestaoFtth.Repository
             {
                 return resultado
                     .Where(p => p.Estacao.NomeEstacao.Equals(estacao))
+                    .OrderByDescending(x => x.Id)
                     .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
             else if (cdo != null)
             {
                 return resultado
                    .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.CDO.Equals(cdo))
+                   .OrderByDescending(x => x.Id)
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
             else if (cabo != null && celula == null)
             {
                 return resultado
                    .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Cabo == cabo)
+                   .OrderByDescending(x => x.Id)
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
             else if (celula != null && cabo == null)
             {
                 return resultado
                    .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Celula == celula)
+                   .OrderByDescending(x => x.Id)
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
             else if (cabo != null && celula != null)
             {
                 return resultado
                    .Where(p => p.Estacao.NomeEstacao.Equals(estacao) && p.Cabo == cabo && p.Celula == celula)
+                   .OrderByDescending(x => x.Id)
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
             }
 
             return resultado
+                .OrderByDescending(x => x.Id)
                 .ToList().ToPagedList(paginaNumero, paginaTamanho);
 
         }

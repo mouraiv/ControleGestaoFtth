@@ -53,16 +53,15 @@
 </div>
 <!-- End display -->
 <!-- Modal -->
-<div class="modal fade" id="modelDown" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="modelDown" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="d-flex m-0">
             <div class="modal-content m-0">
-
-                <div class="modal-header">
-                    <a class="modal-title" id="exampleModalLabel">-- Modelo Base de Importação --</a>
+                <div class="modal-header m-0 p-0">
+                <a class="modal-title w-100 text-center">-- Modelo Base de Importação --</a>
+                <button type="button" id="close-model" class="close m-0 p-0" data-bs-dismiss="modal" aria-label="Close">x</button>
                 </div>
-
-                <div class="modal-body">
+               <div class="modal-body">
                     <!--Conteudo Display-->
            
                     <!-- End -->
@@ -77,11 +76,10 @@
     <div class="modal-dialog" role="document">
         <div class="d-flex m-0">
             <div class="modal-content m-0">
-
-                <div class="modal-header">
-                    <a class="modal-title" id="exampleModalLabel">-- Importação Base de Dados --</a>
+                <div class="modal-header m-0 p-0">
+                    <a class="modal-title w-100 text-center">-- Importação Base de Dados --</a>
+                    <button type="button" id="close-model" class="close m-0 p-0" data-bs-dismiss="modal" aria-label="Close">x</button>
                 </div>
-
                 <div class="modal-body">
                     <!--Conteudo Display-->
 
@@ -163,7 +161,6 @@
                 var updateOprogressBar = setInterval(function () {
                     $.get('/ProgressBar',
                         {}, function (resposta) {
-                            console.log("-")
                             $('.modal-body #display-view').html(resposta);
                             return false;
                         });
