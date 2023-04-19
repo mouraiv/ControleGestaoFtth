@@ -3,6 +3,7 @@ using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
+using System.Diagnostics;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -189,21 +190,46 @@ namespace ControleGestaoFtth.Controllers
                                 {
                                     testeOptico.ConstrutorasId = GetForeignKeyConstrutora(planilha.Cells[rows, 2].Value.ToString() ?? "");
                                 }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Construtora- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
+                                }
                                 if (planilha.Cells[rows, 3].Value != null)
                                 {
                                     testeOptico.EstacoesId = GetForeignKeyEstacao(planilha.Cells[rows, 3].Value.ToString() ?? "");
+                                }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Estação- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
                                 }
                                 if (planilha.Cells[rows, 4].Value != null)
                                 {
                                     testeOptico.TipoObraId = GetForeignKeyTipoObra(planilha.Cells[rows, 4].Value.ToString() ?? "");
                                 }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Tipo de Obra- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
+                                }
                                 if (planilha.Cells[rows, 5].Value != null)
                                 {
                                     testeOptico.Cabo = int.Parse(planilha.Cells[rows, 5].Value.ToString() ?? "");
                                 }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Cabo- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
+                                }
                                 if (planilha.Cells[rows, 6].Value != null)
                                 {
                                     testeOptico.Celula = int.Parse(planilha.Cells[rows, 6].Value.ToString() ?? "");
+                                }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Célula- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
                                 }
                                 if (planilha.Cells[rows, 7].Value != null)
                                 {
@@ -212,41 +238,91 @@ namespace ControleGestaoFtth.Controllers
                                     //CONTADOR DE PROGRESSO IMPORTAÇÃO
                                     _progressBar.Progresso = rows * 100 / totalRows;
                                 }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -CDO- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
+                                }
                                 if (planilha.Cells[rows, 8].Value != null)
                                 {
                                     testeOptico.Capacidade = int.Parse(planilha.Cells[rows, 8].Value.ToString() ?? "");
+                                }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Capacidade- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
                                 }
                                 if (planilha.Cells[rows, 9].Value != null)
                                 {
                                     testeOptico.TotalUms = int.Parse(planilha.Cells[rows, 9].Value.ToString() ?? "");
                                 }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Total UMs- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
+                                }
                                 if (planilha.Cells[rows, 10].Value != null)
                                 {
                                     testeOptico.EstadoCamposId = GetForeignKeyEstadoCampo(planilha.Cells[rows, 10].Value.ToString()?.ToUpper() ?? "");
+                                }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Estado de Campo- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
                                 }
                                 if (planilha.Cells[rows, 11].Value != null)
                                 {
                                     testeOptico.DatadeConstrucao = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 11].Value.ToString() ?? ""));
                                 }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Data de Construção- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
+                                }
                                 if (planilha.Cells[rows, 13].Value != null)
                                 {
                                     testeOptico.EquipedeConstrucao = planilha.Cells[rows, 13].Value.ToString() ?? "";
+                                }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Equipe de Contrução- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
                                 }
                                 if (planilha.Cells[rows, 14].Value != null)
                                 {
                                     testeOptico.DatadoTeste = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 14].Value.ToString() ?? ""));
                                 }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -Data do Teste- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
+                                }
                                 if (planilha.Cells[rows, 15].Value != null)
                                 {
                                     testeOptico.DatadeRecebimento = DateTime.FromOADate(double.Parse(planilha.Cells[rows, 15].Value.ToString() ?? ""));
+                                }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -DATA DE ENVIO DO TESTE- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
                                 }
                                 if (planilha.Cells[rows, 17].Value != null)
                                 {
                                     testeOptico.Tecnico = planilha.Cells[rows, 17].Value.ToString();
                                 }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -TÉCNICO DO TESTE- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
+                                }
                                 if (planilha.Cells[rows, 18].Value != null)
                                 {
                                     testeOptico.PosicaoICX_DGO = planilha.Cells[rows, 18].Value.ToString();
+                                }
+                                else
+                                {
+                                    //ALERTA DE FALHA
+                                    throw new Exception("A coluna -POSIÇÃO ICX/DGO- contém celula vazia. O preenchimento dessa coluna é obrigatória ");
                                 }
                                 if (planilha.Cells[rows, 19].Value != null)
                                 {
@@ -274,7 +350,7 @@ namespace ControleGestaoFtth.Controllers
                             // Salvar os dados no banco de dados
                             foreach (var optico in dados)
                             {
-                                //_TesteOpticoRepository.Cadastrar(optico);
+                                _TesteOpticoRepository.Cadastrar(optico);
                             }
                         });
                         //ALETA DE SUCESSO
@@ -286,10 +362,12 @@ namespace ControleGestaoFtth.Controllers
                     }
                 }
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 //ALERTA DE FALHA
-                TempData["Falha"] = $"Arquivo de importação contém erros críticos em seu relatorório. Verificar se os dados contidos nas colunas correspondem com as respectivas entradas.";
+                TempData["Falha"] = $"ATENÇÃO! {ex.Message}";
+                //RESETAR BARRA DE PROGRESSO SESSÃO IMPORT
+                _progressBar.Progresso = 0;
                 // Redirecionar o usuário de volta para a página inicial
                 return RedirectToAction("Index");
             }
