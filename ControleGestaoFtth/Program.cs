@@ -2,6 +2,7 @@ using ControleGestaoFtth.ComponentModel;
 using ControleGestaoFtth.Context;
 using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 using Microsoft.Extensions.FileProviders;
@@ -9,7 +10,14 @@ using Microsoft.Extensions.FileProviders;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddSessionStateTempDataProvider();
+
+builder.Services.Configure<CookieTempDataProviderOptions>(options => {
+    options.Cookie.IsEssential = true;
+});
+
+builder.Services.AddSession();
 
 string conn = builder.Configuration.GetConnectionString("AppDbContext");
 
@@ -46,6 +54,8 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

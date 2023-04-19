@@ -118,16 +118,30 @@
             //SPINNER LOADER
             const spinnerFtth = (display) => {
                 $(display).html(`
-                                <div class= "d-flex justify-content-center">
-                                    <div class="spinner-border text-secondary m-5" role="status">
-                                        <span class="sr-only">Loading...</span>
-                                    </div>
-                                </div>
-                            `   )
+                                        <div class= "d-flex justify-content-center">
+                                            <div class="spinner-border text-secondary m-5" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                            </div>
+                                        </div>
+                                    `   )
             }
+            //VARIAVEL PARA ARMAZENAMENTO DO ESTADO SELECT ESTAÇÃO
+            var historicoEstacao = "@ViewBag.HistoricoEstacao";
 
-            //ATUALIZAR DISPLAY PARTIAL VIEW
-            ftth('TesteOptico/listar');
+            if(historicoEstacao != ""){
+                //CARREGAR ESTADO DO SELECT NA PAGINA INDEX
+                $('#dropEstacao option[value = "' + historicoEstacao + '"]').prop('selected', 'selected');
+                //CARREGAR TABELA GRID
+                ftth('TesteOptico/listar?estacao=' + historicoEstacao);
+                //CARREGAR VIEW PAINEL MENNU
+                panel('TesteOptico/listar?estacao=' + historicoEstacao);
+                //CARREGAR HISTORICO CONSULTA NA VARIAVEL GLOBAL
+                estacao = historicoEstacao;
+
+            }else{
+                //ATUALIZAR DISPLAY PARTIAL VIEW
+                ftth('TesteOptico/listar');
+            }
 
             //BAIXAR MODELO BASE
             $('#modeloBase').on('click', function () {
@@ -157,12 +171,14 @@
             });
 
             //UPLOAD MODELO IMPORTAÇÃO BASE
-            $('.modal-body').on('click', '#btnUpload', function () {
-                var updateOprogressBar = setInterval(function () {
+            $('.modal-body').on('submit', 'form', function () {
+                $(this).find("button[type='submit']").prop('disabled', true);
+                $('.modal-header #close-model').attr("disabled", "disabled");
+                setInterval(function () {
                     $.get('/ProgressBar',
                         {}, function (resposta) {
                             $('.modal-body #display-view').html(resposta);
-                            return false;
+                             return false;
                         });
                 }, 100);
             });
