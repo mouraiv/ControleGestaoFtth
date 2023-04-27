@@ -45,37 +45,45 @@
                         <td>
                             <table class="tableFtth" data-id="@TesteOptico.Id" style="cursor: pointer;">
                                 <tr>
-                                    <td id="rowTitle" colspan="1" align="center" style="width: 20%;">
-                                        <a>@TesteOptico.Construtora.Nome - @TesteOptico.Estacao.NomeEstacao</a>
-                                    </td>
-                                    <td width="20%" colspan="2">
-                                        <a>Cabo: @TesteOptico.Cabo</a>
-                                    </td>
-                                    <td width="20%" align="center" valign="baseline">
-                                        <a>Data Recebimento: @TesteOptico.DatadeRecebimento?.ToString("dd/MM/yyyy")</a>
-                                    </td>
-                                    <td width="20%">
-                                        <a>Data Teste: @TesteOptico.DatadoTeste?.ToString("dd/MM/yyyy")</a>
-                                    </td>
-                                    <td width="20%">
-                                        <a>Técnico: @TesteOptico.Tecnico</a>
+                                    <td id="rowTitle" colspan="7" align="center" style="width: 100%;">
+                                        <a>@TesteOptico.Estacao.Estado.Regiao.Nome</a>
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td>
-                                        <a>CDO: @TesteOptico.CDO</a>
+                                    <td id="rowTitle" colspan="2" align="center">
+                                        <a>@TesteOptico.Estacao.Estado.Nome</a>
                                     </td>
-                                    <td width="5%">
-                                        <a>Celula: @TesteOptico.Celula</a>
+                                    <td id="rowTitle" colspan="2" align="center">
+                                        <a>@TesteOptico.Construtora.Nome - @TesteOptico.Estacao.NomeEstacao</a>
                                     </td>
-                                    <td width="5%">
-                                        <a>UMs: @TesteOptico.TotalUms</a>
+                                    <td align="center">
+                                        <a>Data Recebimento: @TesteOptico.DatadeRecebimento?.ToString("dd/MM/yyyy")</a>
                                     </td>
-                                    <td align="center" valign="baseline"><a>@TesteOptico.Netwin?.Tipo</a></td>
-                                    <td>
+                                     <td>
                                         <a>Data Construções: @TesteOptico.DatadeConstrucao?.ToString("dd/MM/yyyy")</a>
                                     </td>
                                     <td>
+                                        <a>Data Teste: @TesteOptico.DatadoTeste?.ToString("dd/MM/yyyy")</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td width="10%">
+                                        <a>@TesteOptico.CDO</a>
+                                    </td>
+                                    <td width="7%">
+                                        <a>Cabo: @TesteOptico.Cabo</a>
+                                    </td>
+                                    <td width="8%">
+                                        <a>Celula: @TesteOptico.Celula</a>
+                                    </td>
+                                    <td width="7%">
+                                        <a>UMs: @TesteOptico.TotalUms</a>
+                                    </td>
+                                    <td align="center" width="20%"><a>@TesteOptico.Netwin?.Tipo</a></td>
+                                    <td width="20%">
+                                        <a>Técnico: @TesteOptico.Tecnico</a>
+                                    </td>
+                                    <td width="32%">
                                         <a>Equipe: @TesteOptico.EquipedeConstrucao</a>
                                     </td>
                                 </tr>

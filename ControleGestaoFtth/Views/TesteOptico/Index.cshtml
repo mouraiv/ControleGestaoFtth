@@ -33,10 +33,20 @@
 <!-- Menu dropdown -->
 <div class="container-filter">
 
-    <div class="form-group" id="estacao">
-        <label>Estação</label>
-        @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"NomeEstacao","NomeEstacao"), "--Todos--",new { @id="dropEstacao", @class="custom-select"})
-    </div>
+        <div class="form-group" id="estacao">
+            <label>Região - Brasil</label>
+            @Html.DropDownList("selectRegiao",new SelectList(ViewBag.selectRegiao,"Nome","Nome"), "--Todos--",new { @id="dropRegiao", @class="custom-select"})
+        </div>
+
+        <div class="form-group" id="estacao">
+            <label>Estados - Brasil</label>
+            @Html.DropDownList("selectEstado",new SelectList(ViewBag.selectEstado,"Nome","Nome"), "--Todos--",new { @id="dropEstado", @class="custom-select"})
+        </div>
+
+        <div class="form-group" id="estacao">
+            <label>Estação</label>
+            @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"NomeEstacao","NomeEstacao"), "--Todos--",new { @id="dropEstacao", @class="custom-select"})
+        </div>
 
     <div id="filterMenu">
     </div>
@@ -96,6 +106,8 @@
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW INDEX CONSTRUTORA
         function TesteOpticoIndex() {
             //VARIAVEIS GLOBAIS LOCAL
+            var regiao = "";
+            var estado = "";
             var estacao = "";
             var cdo = "";
             var cabo = "";
@@ -183,6 +195,31 @@
                 }, 100);
             });
 
+            //FILTRO DROPDOWNLIST REGIÃO
+            $('#dropRegiao').on('change', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#ftthLista');
+
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                regiao = $('#dropRegiao').val();
+
+                //RESETAR VALIAVEIS GLOBAIS QUANDO NÃO HOUVER ESTAÇÃO SELECIONADA
+                if (regiao == "") {
+                    estado = "";
+                    estacao = "";
+                    cdo = "";
+                    cabo = "";
+                    celula = "";
+                }
+
+                //CARREGAR VIEW PAINEL MENNU
+                panel('TesteOptico/listar?regiao=' + regiao);
+
+                //CARREGAR TABELA GRID
+                ftth('TesteOptico/listar?regiao=' + regiao);
+                return false;
+            });
+
             //FILTRO DROPDOWNLIST ESTACAO
             $('#dropEstacao').on('change', function () {
                 //CARREGAR SPINNER LOADER
@@ -267,7 +304,7 @@
                 let urlFtth = $(this).find('a').attr('href');
 
                 //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
-                ftth(urlFtth + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
+                ftth(urlFtth + '&regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
                 return false;
             });
 

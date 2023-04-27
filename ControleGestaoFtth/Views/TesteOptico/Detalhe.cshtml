@@ -20,17 +20,21 @@
                 {
                     <table id="ftthDetalhe">
                         <tr>
-                            <td colspan="2">Construtora: <a>@Model.Construtora.Nome</a></td>
+                            <td align="center" colspan="2"><a>@Model.Estacao.Estado.Regiao.Nome</a></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a>@Model.Estacao.Estado.Nome</a></td>
+                            <td align="center"><a>@Model.Construtora.Nome</a></td>
                         </tr>
                         <tr>
                             <td>Estação: <a>@Model.Estacao?.NomeEstacao</a></td>
                             <td>Tipo Obra: <a>@Model.TipoObra?.Nome</a></td>
                         </tr>
                         <tr data-bs-toggle="collapse" href="#collapseFtthDetalhe" role="button">
-                            <td colspan="2">CDO: <a id="IndexCdo">@Model.CDO</a> - <a>@Model.Netwin?.Tipo</a><i class="fa fa-exclamation-circle"></i></td>
+                            <td colspan="2"><a id="IndexCdo">@Model.CDO</a> - <a>@Model.Netwin?.Tipo</a><i class="fa fa-exclamation-circle"></i></td>
                         </tr>
                         <tr class="collapse" id="collapseFtthDetalhe">
-                            <td colspan="2" align="center" valign="baseline"><a>-- @Model.Netwin?.Descricao --</a></td>
+                            <td colspan="2" align="center"><a>-- @Model.Netwin?.Descricao --</a></td>
                         </tr>
                         <tr>
                             <td>Cabo: <a>@Model.Cabo</a></td>

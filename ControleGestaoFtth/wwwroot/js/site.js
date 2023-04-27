@@ -24,7 +24,7 @@ $(document).ready(function () {
 
     //CASO O BOTÃO NÃO SEJA ACIONADO, FECHAR A ALERT 10S
     setTimeout(function () {
-        $('.alert').hide('hide');
+        //$('.alert').hide('hide');
     }, 10000);
 
     //BOTÃO FECHAR ALERTA
