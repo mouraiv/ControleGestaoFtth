@@ -127,6 +127,11 @@
                     return false;
                 });
 
+            if (estado == "") {
+                $('#dropEstacao option[value = ""]').prop('selected', 'selected');
+                $('#dropEstacao').attr('disabled', true);
+            }
+
             //SPINNER LOADER
             const spinnerFtth = (display) => {
                 $(display).html(`
@@ -149,6 +154,8 @@
                 panel('TesteOptico/listar?estacao=' + historicoEstacao);
                 //CARREGAR HISTORICO CONSULTA NA VARIAVEL GLOBAL
                 estacao = historicoEstacao;
+                //DESBLOQUEAR DROPLIST
+                $('#dropEstacao').attr('disabled', false);
 
             }else{
                 //ATUALIZAR DISPLAY PARTIAL VIEW
@@ -202,21 +209,29 @@
 
                 //CARREGAR VALOR DROPDOWN NA VARIAVEL
                 regiao = $('#dropRegiao').val();
+            
+                //CARREGAR TABELA GRID
+                ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao);
+                return false;
+            });
 
-                //RESETAR VALIAVEIS GLOBAIS QUANDO NÃO HOUVER ESTAÇÃO SELECIONADA
-                if (regiao == "") {
-                    estado = "";
-                    estacao = "";
-                    cdo = "";
-                    cabo = "";
-                    celula = "";
-                }
+            //FILTRO DROPDOWNLIST REGIÃO
+            $('#dropEstado').on('change', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#ftthLista');
 
-                //CARREGAR VIEW PAINEL MENNU
-                panel('TesteOptico/listar?regiao=' + regiao);
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                estado = $('#dropEstado').val();
 
                 //CARREGAR TABELA GRID
-                ftth('TesteOptico/listar?regiao=' + regiao);
+                ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao);
+
+                if(estado == ""){
+                    $('#dropEstacao').attr('disabled', true);
+                }else{
+                    $('#dropEstacao').attr('disabled', false);
+                }
+
                 return false;
             });
 
@@ -228,18 +243,11 @@
                 //CARREGAR VALOR DROPDOWN NA VARIAVEL
                 estacao = $('#dropEstacao').val();
 
-                //RESETAR VALIAVEIS GLOBAIS QUANDO NÃO HOUVER ESTAÇÃO SELECIONADA
-                if (estacao == "") {
-                    cdo = "";
-                    cabo = "";
-                    celula = "";
-                }
-
                 //CARREGAR VIEW PAINEL MENNU
-                panel('TesteOptico/listar?estacao=' + estacao);
+                panel('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
 
                 //CARREGAR TABELA GRID
-                ftth('TesteOptico/listar?estacao=' + estacao);
+                ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
                 return false;
             });
 
@@ -265,7 +273,8 @@
                     $('#dropCelula').attr('disabled', false);
                 }
                 //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
-                ftth('TesteOptico/Listar?estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
+                ftth('TesteOptico/Listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
+                
                 return false;
             });
 
@@ -278,7 +287,7 @@
                 cabo = $('#dropCabo').val();
 
                 //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
-                ftth('TesteOptico/Listar?estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
+                ftth('TesteOptico/Listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
                 return false;
             });
 
@@ -291,7 +300,7 @@
                 celula = $('#dropCelula').val();
 
                 //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
-                ftth('TesteOptico/Listar?estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
+                ftth('TesteOptico/Listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + ' &cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
                 return false;
             });
 

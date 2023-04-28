@@ -7,9 +7,10 @@ namespace ControleGestaoFtth.Models
     {
         [Key]
         public int Id { get; set; }
-        public string? Nome { get; set; }
+        public string Nome { get; set; } = null!;
         public int RegiaoId { get; set; }
         public Regioe Regiao { get; set; } = null!;
+        public ICollection<Estacoe> Estacao { get; set; } = null!;
 
     }
 }

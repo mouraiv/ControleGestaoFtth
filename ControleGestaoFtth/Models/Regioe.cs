@@ -6,6 +6,7 @@ namespace ControleGestaoFtth.Models
     {
         [Key]
         public int Id { get; set; }
-        public string? Nome { get; set; }
+        public string Nome { get; set; } = null!;
+        public ICollection<Estado> Estados { get; set; } = null!;
     }
 }

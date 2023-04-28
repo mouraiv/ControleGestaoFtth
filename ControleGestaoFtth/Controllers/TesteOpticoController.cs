@@ -3,7 +3,6 @@ using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
-using System.Diagnostics;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -404,28 +403,27 @@ namespace ControleGestaoFtth.Controllers
             return View(TesteOptico);
         }
         [HttpGet]
-        public IActionResult Listar(int? pagina, string regiao, string estado, string estacao, string cdo, int? cabo, int? celula)
+        public IActionResult Listar(int? pagina, string regiao, string estado, string? estacao, string cdo, int? cabo, int? celula)
         {
-            if (estacao != null)
-            {
-                ViewData["selectEstado"] = _TesteOpticoRepository.Estado(regiao);
-                ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes(estado);
-                ViewData["selectCdoFilter"] = _TesteOpticoRepository.FilterCdo(estacao);
-                ViewData["selectCaboFilter"] = _TesteOpticoRepository.FilterCabo(estacao);
-                ViewData["selectCelulaFilter"] = _TesteOpticoRepository.FilterCelula(estacao);
-            }
-            else
-            {
-                ViewData["selectEstado"] = _TesteOpticoRepository.Estado("");
-                ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes("");
-                ViewData["selectCdoFilter"] = _TesteOpticoRepository.FilterCdo("");
-                ViewData["selectCaboFilter"] = _TesteOpticoRepository.FilterCabo("");
-                ViewData["selectCelulaFilter"] = _TesteOpticoRepository.FilterCelula("");
-            }
-
             try
             {
-                IEnumerable<TesteOptico> listar = _TesteOpticoRepository.Listar(pagina, regiao, estado, estacao ?? "", cdo, cabo, celula);
+                if (estacao != null)
+                {
+                    ViewData["selectEstado"] = _TesteOpticoRepository.Estado(regiao);
+                    ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes(estado);
+                    ViewData["selectCdoFilter"] = _TesteOpticoRepository.FilterCdo(estacao);
+                    ViewData["selectCaboFilter"] = _TesteOpticoRepository.FilterCabo(estacao);
+                    ViewData["selectCelulaFilter"] = _TesteOpticoRepository.FilterCelula(estacao);
+                }
+                else
+                {
+                    ViewData["selectEstado"] = _TesteOpticoRepository.Estado("");
+                    ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes("");
+                    ViewData["selectCdoFilter"] = _TesteOpticoRepository.FilterCdo("");
+                    ViewData["selectCaboFilter"] = _TesteOpticoRepository.FilterCabo("");
+                    ViewData["selectCelulaFilter"] = _TesteOpticoRepository.FilterCelula("");
+                }
+                IEnumerable<TesteOptico> listar = _TesteOpticoRepository.Listar(pagina, regiao, estado, estacao, cdo, cabo, celula);
 
                 return PartialView(listar);
             }

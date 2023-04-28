@@ -82,46 +82,17 @@ namespace ControleGestaoFtth.Repository
             return true;
         }
 
-        public IEnumerable<TesteOptico> Listar(int? pagina, string regiao, string estado, string estacao, string cdo, int? cabo, int? celula)
+        public IEnumerable<TesteOptico> Listar(int? pagina, string regiao, string estado, string? estacao, string cdo, int? cabo, int? celula)
         {
                 int paginaTamanho = 10;
                 int paginaNumero = (pagina ?? 1);
 
-                var testesOpticos = _context.TesteOpticos
-                .Include(p => p.Netwin)
-                .Include(p => p.Construtora)
-                .Include(p => p.Estacao)
-                .ThenInclude(p => p.Estado)
-                .ThenInclude(p => p.Regiao)
-                    .Select(value => new TesteOptico
-                    {
-                        Id = value.Id,
-                        Estacao = value.Estacao,
-                        Construtora = value.Construtora,
-                        CDO = value.CDO,
-                        Cabo = value.Cabo,
-                        Celula = value.Celula,
-                        TotalUms = value.TotalUms,
-                        Netwin = value.Netwin,
-                        DatadeRecebimento = value.DatadeRecebimento,
-                        State = value.State,
-                        DatadoTeste = value.DatadoTeste,
-                        DatadeConstrucao = value.DatadeConstrucao,
-                        EquipedeConstrucao = value.EquipedeConstrucao,
-                        Tecnico = value.Tecnico,
-                    }).Where(p => p.Estacao.Estado.Regiao.Nome.Equals("SUDESTE"))
-                    .ToList()
-                    .ToPagedList(paginaNumero, paginaTamanho);
-
-                return testesOpticos;
-
-                /*IQueryable<TesteOptico> resultado = _context.TesteOpticos
-                   .AsNoTracking()
-                   .Include(p => p.Estacao)
-                   .Include(p => p.Estacao.Estado)
-                   .Include(p => p.Estacao.Estado.Regiao)
-                   .Include(p => p.Construtora)
-                   .Include(p => p.Netwin)
+            var resultado = _context.TesteOpticos
+               .Include(p => p.Estacao)
+               .ThenInclude(p => p.Estado)
+               .ThenInclude(p => p.Regiao)
+               .Include(p => p.Construtora)
+               .Include(p => p.Netwin)
                    .Select(value => new TesteOptico
                    {
                        Id = value.Id,
@@ -137,64 +108,54 @@ namespace ControleGestaoFtth.Repository
                        DatadoTeste = value.DatadoTeste,
                        DatadeConstrucao = value.DatadeConstrucao,
                        EquipedeConstrucao = value.EquipedeConstrucao,
-                       Tecnico = value.Tecnico,
-                   });
+                       Tecnico = value.Tecnico
 
-               if (!string.IsNullOrEmpty(regiao))
-               {
-                   return resultado
-                       .Where(p => p.Estacao.TesteOpticos.Any(p => p.Estacao.Estado.Regiao.Equals("SUDESTE")))
+                   }).AsQueryable();
+
+            if (!string.IsNullOrEmpty(regiao) && string.IsNullOrEmpty(estado) && string.IsNullOrEmpty(estacao))
+            {
+                 resultado = resultado
+                     .Where(p => p.Estacao.Estado.Regiao.Nome.Contains(regiao));                
+            }
+            else if (!string.IsNullOrEmpty(regiao) && !string.IsNullOrEmpty(estado) && string.IsNullOrEmpty(estacao))
+            {
+                resultado = resultado
+                     .Where(p => p.Estacao.Estado.Regiao.Nome.Contains(regiao) && p.Estacao.Estado.Nome == estado);
+            }
+            else if (string.IsNullOrEmpty(regiao) && !string.IsNullOrEmpty(estado) && string.IsNullOrEmpty(estacao))
+            {
+                resultado = resultado
+                     .Where(p => p.Estacao.Estado.Nome == estado);
+            }
+            else if (!string.IsNullOrEmpty(estado) && !string.IsNullOrEmpty(estacao) && string.IsNullOrEmpty(cdo) && cabo == null && celula == null)
+            {
+                resultado = resultado
+                    .Where(p => p.Estacao.Estado.Nome == estado && p.Estacao.NomeEstacao == estacao);
+            }
+            else if (!string.IsNullOrEmpty(cdo))
+            {
+                resultado = resultado
+                    .Where(p => p.Estacao.NomeEstacao == estacao && p.CDO == cdo);
+            }
+            else if (cabo != null && celula == null)
+            {
+                resultado = resultado
+                   .Where(p => p.Cabo == cabo);
+            }
+            else if (celula != null && cabo ==null)
+            {
+                resultado = resultado
+                   .Where(p => p.Celula == celula);
+            }
+            else if (cabo != null && celula != null)
+            {
+                resultado = resultado
+                   .Where(p => p.Cabo == cabo && p.Celula == celula);
+            }
+
+            return resultado
                        .OrderByDescending(x => x.Id)
                        .ToList().ToPagedList(paginaNumero, paginaTamanho);
-               }
-              else if (!string.IsNullOrEmpty(estado))
-               {
-                   return resultado
-                       .Where(p => p.Estacao.Estado.Regiao.Nome == regiao && p.Estacao.Estado.Nome == estado)
-                       .OrderByDescending(x => x.Id)
-                       .ToList().ToPagedList(paginaNumero, paginaTamanho);
-               }
-               else if (!string.IsNullOrEmpty(estacao))
-               {
-                   return resultado
-                       .Where(p => p.Estacao.Estado.Nome == estado && p.Estacao.NomeEstacao == estacao)
-                       .OrderByDescending(x => x.Id)
-                       .ToList().ToPagedList(paginaNumero, paginaTamanho);
-               }
-               else if (cdo != null)
-               {
-                   return resultado
-                      .Where(p => p.Estacao.NomeEstacao == estacao && p.CDO == cdo)
-                      .OrderByDescending(x => x.Id)
-                      .ToList().ToPagedList(paginaNumero, paginaTamanho);
-               }
-               else if (cabo != null && celula == null)
-               {
-                   return resultado
-                      .Where(p => p.Estacao.NomeEstacao == estacao && p.Cabo == cabo)
-                      .OrderByDescending(x => x.Id)
-                      .ToList().ToPagedList(paginaNumero, paginaTamanho);
-               }
-               else if (celula != null && cabo == null)
-               {
-                   return resultado
-                      .Where(p => p.Estacao.NomeEstacao == estacao && p.Celula == celula)
-                      .OrderByDescending(x => x.Id)
-                      .ToList().ToPagedList(paginaNumero, paginaTamanho);
-               }
-               else if (cabo != null && celula != null)
-               {
-                   return resultado
-                      .Where(p => p.Estacao.NomeEstacao == estacao && p.Cabo == cabo && p.Celula == celula)
-                      .OrderByDescending(x => x.Id)
-                      .ToList().ToPagedList(paginaNumero, paginaTamanho);
-               }
-               else
-               {
-                   return resultado
-                       .OrderByDescending(x => x.Id)
-                       .ToList().ToPagedList(paginaNumero, paginaTamanho);
-               }*/
         }
         public IEnumerable<Estacoe> Estacoes()
         {

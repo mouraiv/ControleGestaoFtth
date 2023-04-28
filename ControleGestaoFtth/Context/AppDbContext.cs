@@ -7,7 +7,7 @@ namespace ControleGestaoFtth.Context
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            //Database.SetCommandTimeout(1800);
+            Database.SetCommandTimeout(1800);
         }
 
         public DbSet<Construtora> Construtoras => Set<Construtora>();
@@ -44,22 +44,19 @@ namespace ControleGestaoFtth.Context
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Regioe>()
-                .HasKey(p => p.Id);
+               .HasMany(p => p.Estados)
+               .WithOne(p => p.Regiao)
+               .HasForeignKey(e => e.RegiaoId);
 
             modelBuilder.Entity<Estado>()
-                .HasOne(p => p.Regiao)
-                .WithMany()
-                .HasForeignKey(p => p.RegiaoId);
+                .HasMany(p => p.Estacao)
+                .WithOne(p => p.Estado)
+                .HasForeignKey(e => e.EstadosId);
 
             modelBuilder.Entity<Estacoe>()
-                .HasOne(p => p.Estado)
-                .WithMany()
-                .HasForeignKey(p => p.EstadosId);
-
-            modelBuilder.Entity<TesteOptico>()
-                .HasOne(p => p.Estacao)
-                .WithMany()
-                .HasForeignKey(p => p.EstacoesId);
+                .HasMany(p => p.TesteOptico)
+                .WithOne(p => p.Estacao)
+                .HasForeignKey(e => e.EstacoesId);
 
             modelBuilder.Entity<TesteOptico>()
                 .HasOne(p => p.TipoObra)
