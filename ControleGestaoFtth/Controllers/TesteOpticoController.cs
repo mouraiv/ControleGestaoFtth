@@ -30,7 +30,9 @@ namespace ControleGestaoFtth.Controllers
             if (TempData["HstEstacao"] != null)
             {
                 var estacao = TempData["HstEstacao"] as string;
+                var estado = TempData["HstEstado"] as string;
                 ViewBag.HistoricoEstacao = estacao;
+                ViewBag.HistoricoEstado = estado;
             }
              
             return View();
@@ -407,9 +409,16 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                if (estacao != null)
+                if (regiao != null)
                 {
                     ViewData["selectEstado"] = _TesteOpticoRepository.Estado(regiao);
+                }
+                else
+                {
+                    ViewData["selectEstado"] = _TesteOpticoRepository.Estado("");
+                }
+                if (estacao != null)
+                {
                     ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes(estado);
                     ViewData["selectCdoFilter"] = _TesteOpticoRepository.FilterCdo(estacao);
                     ViewData["selectCaboFilter"] = _TesteOpticoRepository.FilterCabo(estacao);
@@ -417,7 +426,6 @@ namespace ControleGestaoFtth.Controllers
                 }
                 else
                 {
-                    ViewData["selectEstado"] = _TesteOpticoRepository.Estado("");
                     ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes("");
                     ViewData["selectCdoFilter"] = _TesteOpticoRepository.FilterCdo("");
                     ViewData["selectCaboFilter"] = _TesteOpticoRepository.FilterCabo("");
@@ -443,6 +451,7 @@ namespace ControleGestaoFtth.Controllers
                 TesteOptico testeOptico = _TesteOpticoRepository.CarregarId(id);
 
                 TempData["HstEstacao"] = testeOptico.Estacao.NomeEstacao.ToString();
+                TempData["HstEstado"] = testeOptico.Estacao.Estado.Nome.ToString();
 
                 return View(testeOptico);
             }

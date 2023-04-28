@@ -144,10 +144,12 @@
             }
             //VARIAVEL PARA ARMAZENAMENTO DO ESTADO SELECT ESTAÇÃO
             var historicoEstacao = "@ViewBag.HistoricoEstacao";
+            var historicoEstado = "@ViewBag.HistoricoEstado";
 
             if(historicoEstacao != ""){
                 //CARREGAR ESTADO DO SELECT NA PAGINA INDEX
                 $('#dropEstacao option[value = "' + historicoEstacao + '"]').prop('selected', 'selected');
+                $('#dropEstado option[value = "' + historicoEstado + '"]').prop('selected', 'selected');
                 //CARREGAR TABELA GRID
                 ftth('TesteOptico/listar?estacao=' + historicoEstacao);
                 //CARREGAR VIEW PAINEL MENNU
@@ -156,6 +158,8 @@
                 estacao = historicoEstacao;
                 //DESBLOQUEAR DROPLIST
                 $('#dropEstacao').attr('disabled', false);
+                //CARREGAR TABELA GRID
+                ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao);
 
             }else{
                 //ATUALIZAR DISPLAY PARTIAL VIEW
@@ -209,9 +213,29 @@
 
                 //CARREGAR VALOR DROPDOWN NA VARIAVEL
                 regiao = $('#dropRegiao').val();
+
+                //VARIAVEIS GLOBAIS LOCAL
+                estado = "";
+                estacao = "";
+                cdo = "";
+                cabo = "";
+                celula = "";
+
+                //RESET DROPLISTDOWN
+                $('#dropEstado option[value = ""]').prop('selected', 'selected');
+                $('#dropEstacao option[value = ""]').prop('selected', 'selected');
+                $('#dropCdo option[value = ""]').prop('selected', 'selected');
+                $('#dropCabo option[value = ""]').prop('selected', 'selected');
+                $('#dropCelula option[value = ""]').prop('selected', 'selected');
+
+                //BLOQUEAR DROPDOWNLIST ESTADO
+                $('#dropEstacao').attr('disabled', true);
+
+                //REMOVE DIV PANEL FILTER
+                $('#filterMenu').html("");
             
                 //CARREGAR TABELA GRID
-                ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao);
+                ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
                 return false;
             });
 
@@ -224,7 +248,7 @@
                 estado = $('#dropEstado').val();
 
                 //CARREGAR TABELA GRID
-                ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao);
+                ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
 
                 if(estado == ""){
                     $('#dropEstacao').attr('disabled', true);
@@ -251,7 +275,7 @@
                 return false;
             });
 
-            //FILTRO DROPDOWNLIST ESTACAO
+            //FILTRO DROPDOWNLIST CDO
             $('.container-filter').on('change', '#dropCdo', function () {
                 //CARREGAR SPINNER LOADER
                 spinnerFtth('#ftthLista');
