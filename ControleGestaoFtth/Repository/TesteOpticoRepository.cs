@@ -82,7 +82,7 @@ namespace ControleGestaoFtth.Repository
             return true;
         }
 
-        public IEnumerable<TesteOptico> Listar(int? pagina, string regiao, string estado, string? estacao, string cdo, int? cabo, int? celula)
+        public IEnumerable<TesteOptico> Listar(int? pagina, string? regiao, string estado, string? estacao, string cdo, int? cabo, int? celula)
         {
                 int paginaTamanho = 10;
                 int paginaNumero = (pagina ?? 1);

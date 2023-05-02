@@ -9,7 +9,7 @@ namespace ControleGestaoFtth.Repository.Interface
         TesteOptico Atualizar(TesteOptico testeOptico);
         bool Deletar(int id);
         TesteOptico CarregarId(int id);
-        IEnumerable<TesteOptico> Listar(int? pagina, string regiao, string estado, string? estacao, string cdo, int? cabo, int? celula);
+        IEnumerable<TesteOptico> Listar(int? pagina, string? regiao, string estado, string? estacao, string cdo, int? cabo, int? celula);
         IEnumerable<TesteOptico> UniqueCdo();
         IEnumerable<Estacoe> Estacoes();
         IEnumerable<Construtora> Construtoras();
