@@ -33,12 +33,12 @@
 <!-- Menu dropdown -->
 <div class="container-filter">
 
-        <div class="form-group" id="estacao">
+        <div class="form-group" id="regiao">
             <label>Região - Brasil</label>
             @Html.DropDownList("selectRegiao",new SelectList(ViewBag.selectRegiao,"Nome","Nome"), "--Todos--",new { @id="dropRegiao", @class="custom-select"})
         </div>
 
-        <div class="form-group" id="estacao">
+        <div class="form-group" id="estado">
             <label>Estados - Brasil</label>
             @Html.DropDownList("selectEstado",new SelectList(ViewBag.selectEstado,"Nome","Nome"), "--Todos--",new { @id="dropEstado", @class="custom-select"})
         </div>
@@ -47,6 +47,9 @@
             <label>Estação</label>
             @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"NomeEstacao","NomeEstacao"), "--Todos--",new { @id="dropEstacao", @class="custom-select"})
         </div>
+
+    <div id="menuPtr" class="d-flex">
+    </div>
 
     <div id="filterMenu">
     </div>
@@ -120,13 +123,61 @@
                     return false;
                 });
 
+            //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW
+            const ftthMenuPrt = (url) => $.get(url,
+                {}, function (resposta) {
+
+                    if(resposta.estado != undefined && resposta.estacao == undefined){
+                        //LIMPAR DROPLIST
+                        $('#dropEstado').empty();
+
+                        //CARREGAR OPTION DEFAUT
+                        $('#dropEstado').append($('<option/>', {
+                            value: "",
+                            text: "--Todos--"
+                        }));
+
+                        //LOAD DROPLIST ESTADO
+                        $.each(
+                            resposta.estado,
+                            function (index, item) {
+                                $('#dropEstado').append($('<option/>', {
+                                    value: item.nome,
+                                    text: item.nome
+                                }));
+                            });
+                    } else if (resposta.estado == undefined && resposta.estacao != undefined){
+
+                        //LIMPAR DROPLIST
+                        $('#dropEstacao').empty();
+
+                        //CARREGAR OPTION DEFAUT
+                        $('#dropEstacao').append($('<option/>', {
+                            value: "",
+                            text: "--Todos--"
+                        }));
+
+                        //LOAD DROPLIST ESTADO
+                        $.each(
+                            resposta.estacao,
+                            function (index, item) {
+                                $('#dropEstacao').append($('<option/>', {
+                                    value: item.nomeEstacao,
+                                    text: item.nomeEstacao
+                                }));
+                            });
+                    }
+
+                    return false;
+                });
+            
             //DISPLAY ATUALIZAÇÃO DIV ELEMENT PANEL MENU FILTRO
             const panel = (url) => $.get(url,
                 {}, function (resposta) {
                     $('#filterMenu').html($(resposta).filter('#panelUpdate').html());
                     return false;
                 });
-
+                
             if (estado == "") {
                 $('#dropEstacao option[value = ""]').prop('selected', 'selected');
                 $('#dropEstacao').attr('disabled', true);
@@ -142,22 +193,22 @@
                                         </div>
                                     `   )
             }
+
             //VARIAVEL PARA ARMAZENAMENTO DO ESTADO SELECT ESTAÇÃO
             var historicoEstacao = "@ViewBag.HistoricoEstacao";
             var historicoEstado = "@ViewBag.HistoricoEstado";
 
-            if(historicoEstacao != ""){
+            if(historicoEstacao != "" || historicoEstado != ""){
+                //CARREGAR HISTORICO EM VARIAVEL GLOBAL
+                estado = historicoEstado;
+                estacao = historicoEstacao;
                 //CARREGAR ESTADO DO SELECT NA PAGINA INDEX
                 $('#dropEstacao option[value = "' + historicoEstacao + '"]').prop('selected', 'selected');
                 $('#dropEstado option[value = "' + historicoEstado + '"]').prop('selected', 'selected');
-                //CARREGAR TABELA GRID
-                ftth('TesteOptico/listar?estacao=' + historicoEstacao);
-                //CARREGAR VIEW PAINEL MENNU
-                panel('TesteOptico/listar?estacao=' + historicoEstacao);
-                //CARREGAR HISTORICO CONSULTA NA VARIAVEL GLOBAL
-                estacao = historicoEstacao;
                 //DESBLOQUEAR DROPLIST
                 $('#dropEstacao').attr('disabled', false);
+                //CARREGAR VIEW PAINEL MENNU
+                panel('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao);
                 //CARREGAR TABELA GRID
                 ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao);
 
@@ -233,19 +284,28 @@
 
                 //REMOVE DIV PANEL FILTER
                 $('#filterMenu').html("");
-            
+
+                //CARREGAR DROPLIST ESTADO E ESTAÇÃO
+                ftthMenuPrt('TesteOptico/GetListDropDown?regiao=' + regiao + '&estado=' + estado);
+
+                //RESETA SELECT CHANGE APOS O CARREGAMENTO
+                $('#dropEstado option[value = ""]').prop('selected', 'selected');
+      
                 //CARREGAR TABELA GRID
                 ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
                 return false;
             });
 
-            //FILTRO DROPDOWNLIST REGIÃO
+            //FILTRO DROPDOWNLIST ESTADO
             $('#dropEstado').on('change', function () {
                 //CARREGAR SPINNER LOADER
                 spinnerFtth('#ftthLista');
 
                 //CARREGAR VALOR DROPDOWN NA VARIAVEL
                 estado = $('#dropEstado').val();
+
+                 //CARREGAR DROPLIST ESTADO E ESTAÇÃO
+                 ftthMenuPrt('TesteOptico/GetListDropDown?regiao=' + regiao + '&estado=' + estado);
 
                 //CARREGAR TABELA GRID
                 ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
@@ -350,7 +410,7 @@
             });
         } (TesteOpticoIndex());
     </script>
-        }
+    }
 
 
 

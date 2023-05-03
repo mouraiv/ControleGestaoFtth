@@ -13,7 +13,7 @@ namespace ControleGestaoFtth.Models
         public string NomeEstacao { get; set; } = null!;
         public int? EstadosId { get; set; }
         public Estado Estado { get; set; } = null!;
-        public ICollection<TesteOptico> TesteOptico { get; set; } = null!;
+        public virtual ICollection<TesteOptico> TesteOptico { get; set; } = null!;
 
     }
 }

@@ -6,7 +6,6 @@
     <!-- Condição Nula do Modal -->
     @if (Model != null && Model.Any())
     {
-
         <div class="form-group" id="plCdo">
             <label>CDO</label>
             @Html.DropDownList("selectCdoFilter", new SelectList(ViewBag.selectCdoFilter,"CDO","CDO"), "--Todos--",new { @id="dropCdo", @class="custom-select"})

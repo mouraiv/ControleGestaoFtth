@@ -23,6 +23,7 @@ namespace ControleGestaoFtth.Controllers
         }
         public IActionResult Index()
         {
+
             ViewData["selectRegiao"] = _TesteOpticoRepository.Regiao();
             ViewData["selectEstado"] = _TesteOpticoRepository.Estado();
             ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
@@ -37,7 +38,32 @@ namespace ControleGestaoFtth.Controllers
              
             return View();
         }
-        public ActionResult Arquivo()
+        public IActionResult GetListDropDown(string regiao, string estado, string estacao)
+        {
+            var list = new { 
+            
+            };
+            if (regiao != null && estado == null)
+            {
+                var estadoList = _TesteOpticoRepository.Estado(regiao).Select(value => new Estado { Nome = value.Nome });
+                return Json(new { estado = estadoList });
+
+            }
+            else if (estado != null && regiao != null)
+            {
+                var estacaoList = _TesteOpticoRepository.Estacoes(estado).Select(value => new Estacoe { NomeEstacao = value.NomeEstacao });
+                return Json(new { estacao = estacaoList });
+            }
+            else
+            {
+                return Json(new
+                {
+                    estado = _TesteOpticoRepository.Estado().Select(value => new Estado { Nome = value.Nome }),
+                    estacao = _TesteOpticoRepository.Estacoes().Select(value => new Estacoe { NomeEstacao = value.NomeEstacao })
+                });
+            }
+        }
+            public ActionResult Arquivo()
         {
 
             var listarArquivos = new List<ArquivoModel>();
@@ -417,24 +443,14 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                if (regiao != null)
-                {
-                    ViewData["selectEstado"] = _TesteOpticoRepository.Estado(regiao);
-                }
-                else
-                {
-                    ViewData["selectEstado"] = _TesteOpticoRepository.Estado("");
-                }
                 if (estacao != null)
                 {
-                    ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes(estado);
                     ViewData["selectCdoFilter"] = _TesteOpticoRepository.FilterCdo(estacao);
                     ViewData["selectCaboFilter"] = _TesteOpticoRepository.FilterCabo(estacao);
                     ViewData["selectCelulaFilter"] = _TesteOpticoRepository.FilterCelula(estacao);
                 }
                 else
                 {
-                    ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes("");
                     ViewData["selectCdoFilter"] = _TesteOpticoRepository.FilterCdo("");
                     ViewData["selectCaboFilter"] = _TesteOpticoRepository.FilterCabo("");
                     ViewData["selectCelulaFilter"] = _TesteOpticoRepository.FilterCelula("");

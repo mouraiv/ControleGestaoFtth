@@ -10,7 +10,7 @@ namespace ControleGestaoFtth.Models
         public string Nome { get; set; } = null!;
         public int RegiaoId { get; set; }
         public Regioe Regiao { get; set; } = null!;
-        public ICollection<Estacoe> Estacao { get; set; } = null!;
+        public virtual ICollection<Estacoe> Estacao { get; set; } = null!;
 
     }
 }

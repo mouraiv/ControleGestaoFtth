@@ -7,6 +7,6 @@ namespace ControleGestaoFtth.Models
         [Key]
         public int Id { get; set; }
         public string Nome { get; set; } = null!;
-        public ICollection<Estado> Estados { get; set; } = null!;
+        public virtual ICollection<Estado> Estados { get; set; } = null!;
     }
 }

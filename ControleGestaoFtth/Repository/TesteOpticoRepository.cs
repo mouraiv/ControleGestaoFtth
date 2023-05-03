@@ -1,6 +1,7 @@
 ﻿using ControleGestaoFtth.Context;
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using X.PagedList;
@@ -60,13 +61,14 @@ namespace ControleGestaoFtth.Repository
         public TesteOptico CarregarId(int id)
         {
             return _context.TesteOpticos
+                      .AsNoTracking()
                       .Include(p => p.Estacao)
+                      .ThenInclude(p => p.Estado)
+                      .ThenInclude(p => p.Regiao)
                       .Include(p => p.Construtora)
                       .Include(p => p.TipoObra)
                       .Include(p => p.Netwin)
                       .Include(p => p.EstadoCampo)
-                      .Include(p => p.Estacao.Estado)
-                      .Include(p => p.Estacao.Estado.Regiao)
                       .Where(p => p.Id == id)
                       .First();
         }
@@ -160,7 +162,6 @@ namespace ControleGestaoFtth.Repository
         public IEnumerable<Estacoe> Estacoes()
         {
             return _context.Estacoes
-                .AsNoTracking()
                 .Select(value => new Estacoe
                 {
                     Id = value.Id,
@@ -173,7 +174,6 @@ namespace ControleGestaoFtth.Repository
         public IEnumerable<TesteOptico> FilterCdo(string estacao)
         {
             return _context.TesteOpticos
-                .AsNoTracking()
                 .Include(p => p.Estacao)
                 .Where(p => p.Estacao.NomeEstacao == estacao)
                 .AsEnumerable()
@@ -189,7 +189,6 @@ namespace ControleGestaoFtth.Repository
         public IEnumerable<TesteOptico> FilterCabo(string estacao)
         {
             return _context.TesteOpticos
-               .AsNoTracking()
                .Include(p => p.Estacao)
                .Where(p => p.Estacao.NomeEstacao == estacao)
                .AsEnumerable()
@@ -207,7 +206,6 @@ namespace ControleGestaoFtth.Repository
         public IEnumerable<TesteOptico> FilterCelula(string estacao)
         {
             return _context.TesteOpticos
-                .AsNoTracking()
                 .Include(p => p.Estacao)
                 .Where(p => p.Estacao.NomeEstacao == estacao)
                 .AsEnumerable()
@@ -223,14 +221,12 @@ namespace ControleGestaoFtth.Repository
         public IEnumerable<Netwin> Netwins()
         {
             return _context.Netwins
-                .AsNoTracking()
                 .ToList();
         }
 
         public IEnumerable<TipoObra> TipoObras()
         {
             return _context.TipoObras
-                .AsNoTracking()
                 .AsEnumerable()
                 .DistinctBy(p => p.Nome)
                 .OrderBy(p => p.Nome)
@@ -240,7 +236,6 @@ namespace ControleGestaoFtth.Repository
         public IEnumerable<EstadoCampo> EstadoCampos()
         {
             return _context.EstadoCampos
-                .AsNoTracking()
                 .Select(value => new EstadoCampo
                 {
                     Id = value.Id,
@@ -265,7 +260,6 @@ namespace ControleGestaoFtth.Repository
         public IEnumerable<Construtora> Construtoras()
         {
             return _context.Construtoras
-                .AsNoTracking()
                 .Select(value => new Construtora
                 {
                     Id = value.Id,
@@ -295,15 +289,14 @@ namespace ControleGestaoFtth.Repository
         public Enderecostotais Enderecototais(string cdo, string municipio)
         {
             return _context.Enderecostotais
-               .AsNoTracking()
-               .Where(p => !string.IsNullOrWhiteSpace(p.NOME_CDO) && p.NOME_CDO == cdo && p.MUNICIPIO == municipio)
-               .Select(value => new Enderecostotais
-               {
-                   COD_VIABILIDADE = value.COD_VIABILIDADE
+                .AsNoTracking()
+                .Select(value => new Enderecostotais
+                {
+                    COD_VIABILIDADE = value.COD_VIABILIDADE
 
-               }).First();
+                })
+                .FirstOrDefault(p => p.NOME_CDO == cdo && p.MUNICIPIO == municipio) ?? new Enderecostotais();
         }
-
         public int LastId()
         {
             return _context.TesteOpticos.Max(c => c.Id);
@@ -339,7 +332,7 @@ namespace ControleGestaoFtth.Repository
             return _context.Estados
                 .AsNoTracking()
                 .Include(p => p.Regiao)
-                .Where(p => p.Regiao.Nome == regiao)
+                .Where(p => p.Regiao.Nome.Contains(regiao))
                 .AsEnumerable()
                 .Select(value => new Estado
                 {
@@ -353,7 +346,6 @@ namespace ControleGestaoFtth.Repository
         public IEnumerable<Estacoe> Estacoes(string estado)
         {
             return _context.Estacoes
-                .AsNoTracking()
                 .Include(p => p.Estado)
                 .Where(p => p.Estado.Nome == estado)
                 .AsEnumerable()
