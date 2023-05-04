@@ -2,6 +2,7 @@
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
+using System.Drawing;
 using X.PagedList;
 
 namespace ControleGestaoFtth.Repository
@@ -66,28 +67,33 @@ namespace ControleGestaoFtth.Repository
                 .ToList();
         }
 
-        public IEnumerable<Estacoe> Listar(int? pagina, string nomeEstacao, string responsavel)
+        public IEnumerable<Estacoe> Listar(int? pagina, string estado, string estacao)
         {
             int paginaTamanho = 10;
             int paginaNumero = (pagina ?? 1);
 
-            IQueryable<Estacoe> resultado = _context.Estacoes.AsNoTracking();
+            var resultado = _context.Estacoes
+                .Include(p => p.Estado).AsQueryable();
 
-            if (nomeEstacao != null || responsavel != null)
+            if (estado != null && estacao == null)
             {
-                return resultado.
-                    Where(p => p.NomeEstacao.Equals(nomeEstacao))
-                   .ToList().ToPagedList(paginaNumero, paginaTamanho);
+                resultado = resultado.
+                    Where(p => p.Estado.Nome == estado);
+
+            }else if (estado != null && estacao != null)
+            {
+                resultado = resultado.
+                    Where(p => p.Estado.Nome == estado && p.NomeEstacao == estacao);
             }
-            
+
             return resultado
+                .OrderByDescending(x => x.Id)
                 .ToList().ToPagedList(paginaNumero, paginaTamanho); 
         }
 
         public IEnumerable<TesteOptico> UniqueFk()
         {
             return _context.TesteOpticos
-               .AsNoTracking()
                .Select(value => new TesteOptico
                {
                    EstacoesId = value.EstacoesId
@@ -99,16 +105,46 @@ namespace ControleGestaoFtth.Repository
             return _context.Estacoes.Any(p => p.NomeEstacao == estacao || p.Sigla == sgl);
         }
 
-        public IEnumerable<Estado> Estados()
+        public IEnumerable<Estado> Estado()
         {
             return _context.Estados
-               .AsNoTracking()
-               .Select(value => new Estado
-               {
-                   Id = value.Id,
-                   Nome = value.Nome
+                .AsNoTracking()
+                .AsEnumerable()
+                .Select(value => new Estado
+                {
+                    Id = value.Id,
+                    Nome = value.Nome
 
-               }).ToList();
+                }).OrderBy(p => p.Nome)
+                .ToList();
+        }
+
+        public IEnumerable<Estacoe> Estacao()
+        {
+            return _context.Estacoes
+                .AsEnumerable()
+                .Select(value => new Estacoe
+                {
+                    Id = value.Id,
+                    NomeEstacao = value.NomeEstacao,
+
+                }).OrderBy(p => p.NomeEstacao)
+                .ToList();
+        }
+
+        public IEnumerable<Estacoe> Estacao(string estado)
+        {
+            return _context.Estacoes
+                .Include(p => p.Estado)
+                .Where(p => p.Estado.Nome == estado)
+                .AsEnumerable()
+                .Select(value => new Estacoe
+                {
+                    Id = value.Id,
+                    NomeEstacao = value.NomeEstacao,
+
+                }).OrderBy(p => p.NomeEstacao)
+                .ToList();
         }
     }
 }

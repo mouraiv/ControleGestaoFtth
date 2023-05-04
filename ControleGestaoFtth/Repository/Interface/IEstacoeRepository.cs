@@ -9,9 +9,11 @@ namespace ControleGestaoFtth.Repository.Interface
         bool Deletar(int id);
         bool EstacaoExiste(string estacao, string sgl);
         IEnumerable<Estacoe> Listar();
-        IEnumerable<Estacoe> Listar(int? pagina, string nomeEstacao, string responsavel);
+        IEnumerable<Estacoe> Listar(int? pagina, string estado, string estacao);
         IEnumerable<TesteOptico> UniqueFk();
-        IEnumerable<Estado> Estados();
+        IEnumerable<Estado> Estado();
+        IEnumerable<Estacoe> Estacao();
+        IEnumerable<Estacoe> Estacao(string estado);
         Estacoe CarregarId(int id);
     }
 }

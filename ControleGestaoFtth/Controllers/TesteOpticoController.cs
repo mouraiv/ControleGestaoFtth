@@ -42,9 +42,6 @@ namespace ControleGestaoFtth.Controllers
         }
         public IActionResult GetListDropDown(string regiao, string estado, string estacao)
         {
-            var list = new { 
-            
-            };
             if (regiao != null && estado == null)
             {
                 var estadoList = _TesteOpticoRepository.Estado(regiao).Select(value => new Estado { Nome = value.Nome });

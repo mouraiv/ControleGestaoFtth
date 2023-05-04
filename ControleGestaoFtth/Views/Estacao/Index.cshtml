@@ -33,9 +33,14 @@
 <div class="container-filter-sm">
 
     <div class="form-group">
+        <label>Estado</label>
+        @Html.DropDownList("selectEstado",new SelectList(ViewBag.selectEstado,"Nome","Nome"), "--Todos--",new { @id="dropEstado", @class="custom-select"})
+    </div>
+    <div class="form-group">
         <label>Estação</label>
         @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"NomeEstacao","NomeEstacao"), "--Todos--",new { @id="dropEstacao", @class="custom-select"})
     </div>
+ 
 </div>
 <!-- End -->
 
@@ -79,13 +84,45 @@
         function EstacaoIndex() {
 
             //VARIAVEIS GLOBAIS LOCAL
-            var nomeEstacao = "";
-            var responsavel = ""
+            var estado = "";
+            var estacao = "";
 
             //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW
             const ftth = (url) => $.get(url,
                 {}, function (resposta) {
                     $('#ftthLista').html($(resposta).html());
+                    return false;
+                });
+
+            //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW
+            const ftthMenuPrt = (url) => $.get(url,
+                {}, function (resposta) {
+                   if (resposta.estacao != undefined ) {
+
+                        //LIMPAR DROPLIST
+                        $('#dropEstacao').empty();
+
+                        //RESETAR ESTAÇÃO
+                        estacao = "";
+
+                        //CARREGAR OPTION DEFAUT
+                        $('#dropEstacao').append($('<option/>', {
+                            value: "",
+                            text: "--Todos--"
+                        }));
+
+                        //LOAD DROPLIST ESTADO
+                        $.each(
+                            resposta.estacao,
+                            function (index, item) {
+                                $('#dropEstacao').append($('<option/>', {
+                                    value: item.nomeEstacao,
+                                    text: item.nomeEstacao
+                                }));
+                                console.log(item.nomeEstacao);
+                            });
+                    }
+
                     return false;
                 });
 
@@ -104,25 +141,31 @@
             ftth('Estacao/listar');
 
             //FILTRO DROPDOWNLIST ESTACAO
+            $('#dropEstado').on('change', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#ftthLista');
+
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                estado = $('#dropEstado').val();
+
+                //CARREGAR DROPLIST ESTADO E ESTAÇÃO
+                ftthMenuPrt('Estacao/GetListDropDown?estado=' + estado + '&estacao=' + estacao);
+
+                //CARREGAR TABELA GRID
+                ftth('Estacao/listar?estado=' + estado + '&estacao=' + estacao);
+                return false;
+            });
+
+            //FILTRO DROPDOWNLIST ESTACAO
             $('#dropEstacao').on('change', function () {
                 //CARREGAR SPINNER LOADER
                 spinnerFtth('#ftthLista');
 
                 //CARREGAR VALOR DROPDOWN NA VARIAVEL
-                nomeEstacao = $('#dropEstacao').val();
-
-                /* DESABILITAR DROPDOWNLIST "RESPONSAVEL" E RESETAR VARIAVEIS
-               GLOBAIS DO MESMO, CASO UM VALOR SEJA SET EM ESTACAO */
-                if (nomeEstacao != "") {
-                    responsavel = "";
-                    $('#dropResponsavel option[value = ""]').prop('selected', 'selected');
-                    $('#dropResponsavel').attr('disabled', true);
-                } else {
-                    $('#dropResponsavel').attr('disabled', false);
-                }
+                estacao = $('#dropEstacao').val();
 
                 //CARREGAR TABELA GRID
-                ftth('Estacao/listar?nomeEstacao=' + nomeEstacao);
+                ftth('Estacao/listar?estado=' + estado + '&estacao=' + estacao);
                 return false;
             });
 
@@ -135,7 +178,7 @@
                 let urlFtth = $(this).find('a').attr('href');
 
                 //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
-                ftth(urlFtth + '&estacao=' + nomeEstacao + '&responsavel=' + responsavel);
+                ftth(urlFtth + '&estado=' + estado + '&estacao=' + estacao);
                 return false;
             });
 

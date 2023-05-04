@@ -1,4 +1,5 @@
 ﻿using ControleGestaoFtth.Models;
+using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -15,17 +16,18 @@ namespace ControleGestaoFtth.Controllers
         }
         public IActionResult Index()
         {
-            ViewData["selectEstacao"] = _estacaoRepository.Listar();
+            ViewData["selectEstacao"] = _estacaoRepository.Estacao();
+            ViewData["selectEstado"] = _estacaoRepository.Estado();
             return View();
         }
         public IActionResult Inserir()
         {
-            ViewData["selectEstado"] = _estacaoRepository.Estados();
+            ViewData["selectEstado"] = _estacaoRepository.Estado();
             return View();
         }
         public IActionResult Editar(int id)
         {
-            ViewData["selectEstado"] = _estacaoRepository.Estados();
+            ViewData["selectEstado"] = _estacaoRepository.Estado();
             Estacoe estacao = _estacaoRepository.CarregarId(id);
 
             return View(estacao);
@@ -36,13 +38,28 @@ namespace ControleGestaoFtth.Controllers
 
             return View(estacao);
         }
+        public IActionResult GetListDropDown(string estado)
+        {
+             if (estado != null)
+            {
+                var estacaoList = _estacaoRepository.Estacao(estado).Select(value => new Estacoe { NomeEstacao = value.NomeEstacao });
+                return Json(new { estacao = estacaoList });
+            }
+            else
+            {
+                return Json(new
+                {
+                    estacao = _estacaoRepository.Estacao().Select(value => new Estacoe { NomeEstacao = value.NomeEstacao })
+                });
+            }
+        }
 
         [HttpPost]
         public IActionResult Inserir(Estacoe estacao)
         {
             try
             {
-                ViewData["selectEstado"] = _estacaoRepository.Estados();
+                ViewData["selectEstado"] = _estacaoRepository.Estado();
 
                 if (_estacaoRepository.EstacaoExiste(estacao.NomeEstacao, estacao.Sigla))
                 {
@@ -69,7 +86,7 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
-                ViewData["selectEstado"] = _estacaoRepository.Estados();
+                ViewData["selectEstado"] = _estacaoRepository.Estado();
                 _estacaoRepository.Atualizar(estacao);
                 TempData["Sucesso"] = "Editado com sucesso.";
                 return RedirectToAction("Editar", new { id = estacao.Id });
@@ -124,11 +141,11 @@ namespace ControleGestaoFtth.Controllers
         }
 
         [HttpGet]
-        public IActionResult Listar(int? pagina, string nomeEstacao, string responsavel)
+        public IActionResult Listar(int? pagina, string estado, string estacao)
         {
             try
             {
-                IEnumerable<Estacoe> listar = _estacaoRepository.Listar(pagina, nomeEstacao, responsavel);
+                IEnumerable<Estacoe> listar = _estacaoRepository.Listar(pagina, estado, estacao);
 
                 return PartialView(listar);
             }

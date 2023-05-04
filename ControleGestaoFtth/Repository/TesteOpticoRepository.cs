@@ -61,7 +61,6 @@ namespace ControleGestaoFtth.Repository
         public TesteOptico CarregarId(int id)
         {
             return _context.TesteOpticos
-                      .AsNoTracking()
                       .Include(p => p.Estacao)
                       .ThenInclude(p => p.Estado)
                       .ThenInclude(p => p.Regiao)
