@@ -11,6 +11,7 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<Estacoe> Listar();
         IEnumerable<Estacoe> Listar(int? pagina, string nomeEstacao, string responsavel);
         IEnumerable<TesteOptico> UniqueFk();
+        IEnumerable<Estado> Estados();
         Estacoe CarregarId(int id);
     }
 }

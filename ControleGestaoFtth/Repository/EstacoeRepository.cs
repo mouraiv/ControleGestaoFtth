@@ -19,6 +19,7 @@ namespace ControleGestaoFtth.Repository
 
             if (db == null) throw new Exception("Houve um erro na atualização");
 
+            db.EstadosId = estacao.EstadosId;
             db.NomeEstacao = estacao.NomeEstacao;
             db.Sigla = estacao.Sigla;
 
@@ -96,6 +97,18 @@ namespace ControleGestaoFtth.Repository
         public bool EstacaoExiste(string estacao, string sgl)
         {
             return _context.Estacoes.Any(p => p.NomeEstacao == estacao || p.Sigla == sgl);
+        }
+
+        public IEnumerable<Estado> Estados()
+        {
+            return _context.Estados
+               .AsNoTracking()
+               .Select(value => new Estado
+               {
+                   Id = value.Id,
+                   Nome = value.Nome
+
+               }).ToList();
         }
     }
 }

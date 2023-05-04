@@ -366,6 +366,11 @@
         border-start-end-radius: 0rem !important;
     }
 
+    #formEditar #dropEstadoIE{
+        width: 200px;
+        height: 31px;
+    }
+
     #formEditar {
         background-color: #ECF0F1;
         padding-top: 0.5rem;

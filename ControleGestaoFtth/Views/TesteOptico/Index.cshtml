@@ -23,11 +23,10 @@
 }
 <!-- End  Alert-->
 <!-- Menu button vertical -->
-<div id="menuBarVertical">
-    <a role="button" id="btnRoles" class="btn btn-primary btn-sm">Adicionar</a>
+<div id="menuBarVertical">    
+    <button type="button" id="modeloBase" data-bs-toggle="modal" data-bs-target="#modelDown" class="btn btn-primary btn-sm">Modelo Base</button>
     <hr class="divisorMenu m-0 p-0 ms-3">
-    <button type="button" id="modeloBase" data-bs-toggle="modal" data-bs-target="#modelDown" class="btn btn-primary btn-sm ms-3">Modelo Base</button>
-    <button data-bs-toggle="modal" id="baseImport" data-bs-target="#modelImport" class="btn btn-warning btn-sm ms-2">Importar Base</button>
+    <button data-bs-toggle="modal" id="baseImport" data-bs-target="#modelImport" class="btn btn-warning btn-sm ms-3 ms-2">Importar Base</button>
 </div>
 <!-- End -->
 <!-- Menu dropdown -->
@@ -195,16 +194,20 @@
             }
 
             //VARIAVEL PARA ARMAZENAMENTO DO ESTADO SELECT ESTAÇÃO
+            var historicoRegiao = "@ViewBag.HistoricoRegiao";
             var historicoEstacao = "@ViewBag.HistoricoEstacao";
             var historicoEstado = "@ViewBag.HistoricoEstado";
 
             if(historicoEstacao != "" || historicoEstado != ""){
                 //CARREGAR HISTORICO EM VARIAVEL GLOBAL
+                regiao = historicoRegiao.replace("&#xD;", "");
                 estado = historicoEstado;
                 estacao = historicoEstacao;
+
                 //CARREGAR ESTADO DO SELECT NA PAGINA INDEX
-                $('#dropEstacao option[value = "' + historicoEstacao + '"]').prop('selected', 'selected');
-                $('#dropEstado option[value = "' + historicoEstado + '"]').prop('selected', 'selected');
+                $('#dropRegiao option[value = "' + regiao + '"]').prop('selected', 'selected');
+                $('#dropEstacao option[value = "' + estacao + '"]').prop('selected', 'selected');
+                $('#dropEstado option[value = "' + estado + '"]').prop('selected', 'selected');
                 //DESBLOQUEAR DROPLIST
                 $('#dropEstacao').attr('disabled', false);
                 //CARREGAR VIEW PAINEL MENNU
@@ -327,8 +330,13 @@
                 //CARREGAR VALOR DROPDOWN NA VARIAVEL
                 estacao = $('#dropEstacao').val();
 
-                //CARREGAR VIEW PAINEL MENNU
-                panel('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
+                if(estacao == ""){
+                    //REMOVE DIV PANEL FILTER
+                    $('#filterMenu').html("");
+                }else{
+                    //CARREGAR VIEW PAINEL MENNU
+                    panel('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);
+                }
 
                 //CARREGAR TABELA GRID
                 ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&cabo=' + cabo + '&celula=' + celula);

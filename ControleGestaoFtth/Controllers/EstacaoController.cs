@@ -15,15 +15,17 @@ namespace ControleGestaoFtth.Controllers
         }
         public IActionResult Index()
         {
-            ViewData ["selectEstacao"] = _estacaoRepository.Listar();
+            ViewData["selectEstacao"] = _estacaoRepository.Listar();
             return View();
         }
         public IActionResult Inserir()
         {
+            ViewData["selectEstado"] = _estacaoRepository.Estados();
             return View();
         }
         public IActionResult Editar(int id)
         {
+            ViewData["selectEstado"] = _estacaoRepository.Estados();
             Estacoe estacao = _estacaoRepository.CarregarId(id);
 
             return View(estacao);
@@ -40,6 +42,7 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
+                ViewData["selectEstado"] = _estacaoRepository.Estados();
 
                 if (_estacaoRepository.EstacaoExiste(estacao.NomeEstacao, estacao.Sigla))
                 {
@@ -66,6 +69,7 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
+                ViewData["selectEstado"] = _estacaoRepository.Estados();
                 _estacaoRepository.Atualizar(estacao);
                 TempData["Sucesso"] = "Editado com sucesso.";
                 return RedirectToAction("Editar", new { id = estacao.Id });

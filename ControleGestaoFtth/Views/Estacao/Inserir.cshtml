@@ -1,7 +1,7 @@
 ﻿@model Estacoe
 
 <div id="formInsert" class="d-flex flex-row justify-content-center">
-    <div class="d-flex flex-column">
+    <div style="width:600px;">
         <!-- Formulário para edição -->
         <form asp-controller="Estacao" asp-action="Inserir" method="post" class="needs-validation" novalidate>
             <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- INSERIR --</a></div>
@@ -24,12 +24,19 @@
                     }
                     <!-- End  Alert-->
                 </div>
-                <div class="form-group position-relative col">
-                    <label>Estação:</label>
-                    <input type="text" asp-for="NomeEstacao" class="form-control" maxlength="50" required>
-                    <div class="invalid-feedback">Campo Obrigatório.</div>
+                <div class="d-flex">
+                    <div class="form-group">
+                        <label>Estado:</label>
+                        @Html.DropDownListFor(model => model.EstadosId,new SelectList(ViewBag.selectEstado,"Id","Nome"), "--Selecionar--",new { @id="dropEstadoIE", @class="custom-select", required = ""})
+                        <div class="invalid-feedback">Campo Obrigatório.</div>
+                    </div>
+                    <div class="form-group col">
+                        <label>Estação:</label>
+                        <input type="text" asp-for="NomeEstacao" class="form-control" maxlength="50" required>
+                        <div class="invalid-feedback">Campo Obrigatório.</div>
+                    </div>
                 </div>
-                <div class="form-group col">
+                <div class="form-group">
                     <label>Sigla:</label>
                     <input type="text" asp-for="Sigla" class="form-control" maxlength="50" required>
                     <div class="invalid-feedback">Campo Obrigatório.</div>

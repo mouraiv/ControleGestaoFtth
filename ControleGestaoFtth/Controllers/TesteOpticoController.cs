@@ -28,10 +28,12 @@ namespace ControleGestaoFtth.Controllers
             ViewData["selectEstado"] = _TesteOpticoRepository.Estado();
             ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
 
-            if (TempData["HstEstacao"] != null)
+            if (TempData["HstEstado"] != null)
             {
+                var regiao = TempData["HstRegiao"] as string;
                 var estacao = TempData["HstEstacao"] as string;
                 var estado = TempData["HstEstado"] as string;
+                ViewBag.HistoricoRegiao = regiao;
                 ViewBag.HistoricoEstacao = estacao;
                 ViewBag.HistoricoEstado = estado;
             }
@@ -474,6 +476,7 @@ namespace ControleGestaoFtth.Controllers
             {
                 TesteOptico testeOptico = _TesteOpticoRepository.CarregarId(id);
 
+                TempData["HstRegiao"] = testeOptico.Estacao.Estado.Regiao.Nome.ToString();
                 TempData["HstEstacao"] = testeOptico.Estacao.NomeEstacao.ToString();
                 TempData["HstEstado"] = testeOptico.Estacao.Estado.Nome.ToString();
 
