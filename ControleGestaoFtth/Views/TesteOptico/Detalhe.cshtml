@@ -30,6 +30,10 @@
                             <td>Estação: <a>@Model.Estacao?.NomeEstacao</a></td>
                             <td>Tipo Obra: <a>@Model.TipoObra?.Nome</a></td>
                         </tr>
+                        <tr>
+                            <td>Fabricante: <a>@Model.Fabricante</a></td>
+                            <td>Modelo: <a>@Model.Modelo</a></td>
+                        </tr>
                         <tr data-bs-toggle="collapse" href="#collapseFtthDetalhe" role="button">
                             <td colspan="2"><a id="IndexCdo">@Model.CDO</a> - <a>@Model.Netwin?.Tipo</a><i class="fa fa-exclamation-circle"></i></td>
                         </tr>
@@ -58,6 +62,14 @@
                         </tr>
                         <tr>
                             <td colspan="2">Localização: <a>@Model.Endereco</a></td>
+                        </tr>
+                        <tr>
+                            <td>Estado Operacional: <a>@Model.EstadoOperacional</a></td>
+                            <td>Data Est. Operacional: <a>@Model.DataEstadoOperacional?.ToString("dd/MM/yyyy")</a></td>
+                        </tr>
+                        <tr>
+                            <td>Estado Controle: <a>@Model.EstadoControle</a></td>
+                            <td>Data Est. Controle: <a>@Model.DataEstadoControle?.ToString("dd/MM/yyyy")</a></td>
                         </tr>
                         <tr>
                             <td>Bobina Lançamento: <a>@Model.BobinadeLancamento</a></td>

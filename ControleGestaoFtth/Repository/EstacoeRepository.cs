@@ -146,5 +146,20 @@ namespace ControleGestaoFtth.Repository
                 }).OrderBy(p => p.NomeEstacao)
                 .ToList();
         }
+
+        public IEnumerable<Municipio> Municipio(string estado)
+        {
+            return _context.Municipios
+                .Include(p => p.Estado)
+                .Where(p => p.Estado.Nome == estado)
+                .AsNoTracking()
+                .AsEnumerable()
+                .Select(value => new Municipio
+                {
+                    Nome = value.Nome,
+
+                }).OrderBy(p => p.Nome)
+                .ToList();
+        }
     }
 }

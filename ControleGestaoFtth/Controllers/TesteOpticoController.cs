@@ -3,6 +3,7 @@ using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using OfficeOpenXml;
+using System.Diagnostics;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -153,11 +154,11 @@ namespace ControleGestaoFtth.Controllers
             return id;
         }
 
-        public int GetCodViabilidadeEnderecosTotais(string cdo, string municipio)
+        public int GetCodViabilidadeEnderecosTotais(string cdo, string municipio, string uf)
         {
             try
             {
-                int? codViabilidade = _TesteOpticoRepository.Enderecototais(cdo, municipio).COD_VIABILIDADE;
+                int? codViabilidade = _TesteOpticoRepository.Enderecototais(cdo, municipio, uf).COD_VIABILIDADE;
                 int id = 0;
 
                 foreach (var netwin in _TesteOpticoRepository.Netwins())
@@ -175,7 +176,6 @@ namespace ControleGestaoFtth.Controllers
                 return 1;
             }
         }
-
         [HttpPost]
         public async Task<IActionResult> Importar(IFormFile file)
         {
@@ -270,8 +270,24 @@ namespace ControleGestaoFtth.Controllers
                                 }
                                 if (planilha.Cells[rows, 8].Value != null)
                                 {
+                                    var dataEstadoOperacional = _TesteOpticoRepository.Materiais(planilha.Cells[rows, 8].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "").DataEstadoOperacional ?? "";
+                                    var dataEstadoControle = _TesteOpticoRepository.Materiais(planilha.Cells[rows, 8].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "").DataEstadoControle ?? "";
+
                                     testeOptico.CDO = planilha.Cells[rows, 8].Value.ToString()?.ToUpper() ?? "";
-                                    testeOptico.NetwinId = GetCodViabilidadeEnderecosTotais(planilha.Cells[rows, 8].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "");
+                                    testeOptico.NetwinId = GetCodViabilidadeEnderecosTotais(planilha.Cells[rows, 8].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "");
+                                    testeOptico.Fabricante = _TesteOpticoRepository.Materiais(planilha.Cells[rows, 8].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "").Fabricante;
+                                    testeOptico.Modelo = _TesteOpticoRepository.Materiais(planilha.Cells[rows, 8].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "").Modelo;
+                                    testeOptico.EstadoOperacional = _TesteOpticoRepository.Materiais(planilha.Cells[rows, 8].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "").EstadoOperacional;
+                                    if(dataEstadoOperacional != "")
+                                    {
+                                        testeOptico.DataEstadoOperacional = DateTime.Parse(dataEstadoOperacional);
+                                    }
+                                    testeOptico.EstadoControle = _TesteOpticoRepository.Materiais(planilha.Cells[rows, 8].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "").EstadoControle;
+                                    if (dataEstadoControle != "")
+                                    {
+                                        testeOptico.DataEstadoControle = DateTime.Parse(dataEstadoControle);
+                                    }
+                                    testeOptico.Endereco = _TesteOpticoRepository.Materiais(planilha.Cells[rows, 8].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 4].Value.ToString()?.ToUpper() ?? "", planilha.Cells[rows, 3].Value.ToString()?.ToUpper() ?? "").Endereco;
                                     //CONTADOR DE PROGRESSO IMPORTAÇÃO
                                     _progressBar.Progresso = rows * 100 / totalRows;
                                 }

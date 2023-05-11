@@ -25,14 +25,16 @@
                     <!-- End  Alert-->
                 </div>
                 <div class="d-flex">
-                    <div class="form-group">
+                    <div class="form-group col">
                         <label>Estado:</label>
                         @Html.DropDownListFor(model => model.EstadosId,new SelectList(ViewBag.selectEstado,"Id","Nome"), "--Selecionar--",new { @id="dropEstadoIE", @class="custom-select", required = ""})
                         <div class="invalid-feedback">Campo Obrigatório.</div>
                     </div>
                     <div class="form-group col">
-                        <label>Estação:</label>
-                        <input type="text" asp-for="NomeEstacao" class="form-control" maxlength="50" required>
+                        <label>Estação</label>
+                        <select id="dropMunicipio" asp-for="NomeEstacao" class="custom-select" required>
+                            <option selected>--Selecionar--</option>
+                        </select>
                         <div class="invalid-feedback">Campo Obrigatório.</div>
                     </div>
                 </div>
@@ -50,3 +52,70 @@
         <!-- End Formulário-->
     </div>
 </div>
+
+@section Scripts
+    {
+    <script>
+        //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW INDEX CONSTRUTORA
+        function EstacaoConfig() {
+
+            //VARIAVEIS GLOBAIS LOCAL
+            var estado = "";
+
+            //BLOQUEAR DROPLIST
+            $('#dropMunicipio').attr('disabled', true);
+
+            //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW
+            const dropFilter = (url) => $.get(url,
+                {}, function (resposta) {
+
+                    if (resposta.municipios != undefined) {
+
+                        //LIMPAR DROPLIST
+                        $('#dropMunicipio').empty();
+
+                        //RESETAR ESTAÇÃO
+                        estacao = "";
+
+                        //CARREGAR OPTION DEFAUT
+                        $('#dropMunicipio').append($('<option/>', {
+                            value: "",
+                            text: "--Selecionar--"
+                        }));
+
+                        //LOAD DROPLIST ESTADO
+                        $.each(
+                            resposta.municipios,
+                            function (index, item) {
+                                $('#dropMunicipio').append($('<option/>', {
+                                    value: item.nome,
+                                    text: item.nome
+                                }));
+                            });
+                    }
+
+                    return false;
+                });
+
+            //FILTRO DROPDOWNLIST ESTACAO
+            $('#dropEstadoIE').on('change', function () {   
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                estado = $('#dropEstadoIE option:selected').text();
+
+                //CONDIÇÃO PARA BLOQUEIO DROPLIST ESTAÇÃO
+                if (estado != "") {
+                    //DESBLOQUEAR DROPLIST
+                    $('#dropMunicipio').attr('disabled', false);
+                } else {
+                    //BLOQUEAR DROPLIST
+                    $('#dropMunicipio').attr('disabled', true);
+                }
+
+                //CARREGAR DROPLIST ESTADO E ESTAÇÃO
+                dropFilter('GetListMunicipios?estado=' + estado);
+
+                return false;
+            });
+        } (EstacaoConfig());
+        </script>
+    }

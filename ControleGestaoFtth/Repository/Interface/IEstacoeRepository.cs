@@ -14,6 +14,7 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<Estado> Estado();
         IEnumerable<Estacoe> Estacao();
         IEnumerable<Estacoe> Estacao(string estado);
+        IEnumerable<Municipio> Municipio(string estado);
         Estacoe CarregarId(int id);
     }
 }

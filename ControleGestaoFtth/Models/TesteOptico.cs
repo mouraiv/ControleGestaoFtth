@@ -19,6 +19,12 @@ namespace ControleGestaoFtth.Models
         public int? Celula { get; set; }
         public int? Capacidade { get; set; }
         public int? TotalUms { get; set; }
+        public string? Fabricante { get; set; }
+        public string? Modelo { get; set; }
+        public string? EstadoOperacional { get; set; }
+        public DateTime? DataEstadoOperacional { get; set; } 
+        public string? EstadoControle { get; set; }
+        public DateTime? DataEstadoControle { get; set; }
         public string? Endereco { get; set; }
         public EstadoCampo EstadoCampo { get; set; } = null!;
         public int? EstadoCamposId { get; set; }

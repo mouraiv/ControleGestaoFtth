@@ -53,6 +53,11 @@ namespace ControleGestaoFtth.Controllers
                 });
             }
         }
+        public IActionResult GetListMunicipios(string estado)
+        {
+            var municipiosList = _estacaoRepository.Municipio(estado);
+            return Json(new { municipios = municipiosList }); 
+        }
 
         [HttpPost]
         public IActionResult Inserir(Estacoe estacao)

@@ -367,7 +367,11 @@
     }
 
     #formEditar #dropEstadoIE{
-        width: 200px;
+        width: 278px;
+        height: 31px;
+    }
+     #formEditar #dropMunicipio{
+        width: 278px;
         height: 31px;
     }
 

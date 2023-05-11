@@ -16,7 +16,8 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<Netwin> Netwins();
         IEnumerable<TipoObra> TipoObras();
         IEnumerable<EstadoCampo> EstadoCampos();
-        Enderecostotais Enderecototais(string cdo, string municipio);
+        Enderecostotais Enderecototais(string cdo, string municipio, string uf);
+        Materiais Materiais(string cdo, string municipio, string uf);
         List<string> ArquivoOptico(string sgl, string cdo, string[] extensoes);
         string GetArquivo(string caminho);
         IEnumerable<Regioe> Regiao();

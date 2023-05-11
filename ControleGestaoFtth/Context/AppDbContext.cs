@@ -18,10 +18,12 @@ namespace ControleGestaoFtth.Context
         public DbSet<State> States => Set<State>();
         public DbSet<Tecnico> Tecnicos => Set<Tecnico>();
         public DbSet<Estado> Estados => Set<Estado>();
+        public DbSet<Municipio> Municipios => Set<Municipio>();
         public DbSet<Regioe> Regioes => Set<Regioe>();
         public DbSet<TipoObra> TipoObras => Set<TipoObra>();
         public DbSet<Usuario> Usuarios => Set<Usuario>();
         public DbSet<Enderecostotais> Enderecostotais => Set<Enderecostotais>();
+        public DbSet<Materiais> Materiais => Set<Materiais>();
 
         public override int SaveChanges()
         {
@@ -43,6 +45,10 @@ namespace ControleGestaoFtth.Context
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<Enderecostotais>();
+
+            modelBuilder.Entity<Materiais>();
+
             modelBuilder.Entity<Regioe>()
                .HasMany(p => p.Estados)
                .WithOne(p => p.Regiao)
@@ -57,6 +63,11 @@ namespace ControleGestaoFtth.Context
                 .HasMany(p => p.TesteOptico)
                 .WithOne(p => p.Estacao)
                 .HasForeignKey(e => e.EstacoesId);
+
+            modelBuilder.Entity<Municipio>()
+                .HasOne(p => p.Estado)
+                .WithMany()
+                .HasForeignKey(p => p.EstadoId);
 
             modelBuilder.Entity<TesteOptico>()
                 .HasOne(p => p.TipoObra)

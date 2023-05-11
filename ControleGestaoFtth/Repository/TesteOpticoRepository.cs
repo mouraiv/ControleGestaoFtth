@@ -1,4 +1,5 @@
-﻿using ControleGestaoFtth.Context;
+﻿using Aspose.Pdf.Operators;
+using ControleGestaoFtth.Context;
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Google.Protobuf.WellKnownTypes;
@@ -285,16 +286,18 @@ namespace ControleGestaoFtth.Repository
             return arquivo ?? "";
         }
 
-        public Enderecostotais Enderecototais(string cdo, string municipio)
+        public Enderecostotais Enderecototais(string cdo, string municipio, string uf)
         {
             return _context.Enderecostotais
                 .AsNoTracking()
+                .Where(p => p.MUNICIPIO == municipio &&
+                            p.UF == uf)
                 .Select(value => new Enderecostotais
                 {
                     COD_VIABILIDADE = value.COD_VIABILIDADE
 
                 })
-                .FirstOrDefault(p => p.NOME_CDO == cdo && p.MUNICIPIO == municipio) ?? new Enderecostotais();
+                .FirstOrDefault(p => p.NOME_CDO == cdo) ?? new Enderecostotais();
         }
         public int LastId()
         {
@@ -355,6 +358,29 @@ namespace ControleGestaoFtth.Repository
 
                 }).OrderBy(p => p.NomeEstacao)
                 .ToList();
+        }
+
+        public Materiais Materiais(string cdo, string municipio, string uf)
+        {
+                var materiais = _context.Materiais
+                    .AsNoTracking()
+                    .Where(p => p.Municipio.Contains(municipio) &&
+                                p.NomeUnidFederativa.Contains(uf))
+                    .Select(value => new Materiais
+                    {
+                        Fabricante = value.Fabricante,
+                        Modelo = value.Modelo,
+                        EstadoOperacional = value.EstadoOperacional,
+                        DataEstadoOperacional = value.DataEstadoOperacional,
+                        EstadoControle = value.EstadoControle,
+                        DataEstadoControle = value.DataEstadoControle,
+                        Infraestrutura = value.Infraestrutura,
+                        Endereco = value.Endereco
+
+                    })
+                    .FirstOrDefault(p => p.Infraestrutura.Contains(cdo)) ?? new Materiais();
+                    
+                return materiais;
         }
     }
 }
