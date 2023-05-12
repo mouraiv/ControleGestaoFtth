@@ -16,5 +16,10 @@ namespace ControleGestaoFtth.Controllers
         {
             return View();
         }
+        [HttpPost]
+        public IActionResult Importar(IFormFile file)
+        {
+            return View();
+        }
     }
 }

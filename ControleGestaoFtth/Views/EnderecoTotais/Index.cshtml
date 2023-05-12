@@ -1,7 +1,47 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.PagedList<Enderecostotais>
 @{
+
+    ViewData["Title"] = "Endereços Totais";
+
 }
 
-<h1>Endereços Totais</h1>
+<!-- Alert para tratamento de exceções -->
+@if (TempData["Sucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <a>@TempData["Sucesso"]</a>
+    </div>
+}
+@if (TempData["Falha"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <a>@TempData["Falha"]</a>
+    </div>
+}
+<!-- End  Alert-->
+<!-- Menu button vertical -->
+<div id="menuBarVertical">
+    <button data-bs-toggle="modal" id="baseImport" data-bs-target="#modelImport" class="btn btn-warning btn-sm ms-3 ms-2">Importar CSV</button>
+</div>
+<!-- End -->
+<!-- Modal -->
+<div class="modal fade" id="modelImport" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="d-flex m-0">
+            <div class="modal-content m-0">
+                <div class="modal-header m-0 p-0">
+                    <a class="modal-title w-100 text-center">-- Importar CSV Endereços Totais --</a>
+                    <button type="button" id="close-model" class="close m-0 p-0" data-bs-dismiss="modal" aria-label="Close">x</button>
+                </div>
+                <div class="modal-body">
+                    <!--Conteudo Display-->
+                    <!-- End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
