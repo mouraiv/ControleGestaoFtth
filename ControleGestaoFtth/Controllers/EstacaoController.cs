@@ -16,8 +16,8 @@ namespace ControleGestaoFtth.Controllers
         }
         public IActionResult Index()
         {
-            ViewData["selectEstacao"] = _estacaoRepository.Estacao();
             ViewData["selectEstado"] = _estacaoRepository.Estado();
+            ViewData["selectEstacao"] = _estacaoRepository.Estacao();
             return View();
         }
         public IActionResult Inserir()
@@ -53,12 +53,6 @@ namespace ControleGestaoFtth.Controllers
                 });
             }
         }
-        public IActionResult GetListMunicipios(string estado)
-        {
-            var municipiosList = _estacaoRepository.Municipio(estado);
-            return Json(new { municipios = municipiosList }); 
-        }
-
         [HttpPost]
         public IActionResult Inserir(Estacoe estacao)
         {

@@ -370,9 +370,12 @@
         width: 278px;
         height: 31px;
     }
-     #formEditar #dropMunicipio{
-        width: 278px;
-        height: 31px;
+
+    select#\#dropEditUf.custom-select{
+        width: 150px;
+    }
+    select#\#dropEditEstacao.custom-select{
+        width: 200px;
     }
 
     #formEditar {
@@ -395,11 +398,11 @@
         margin-top: 0.1rem;
      }
 
-    #titleEditForm {
+     #titleEditForm {
         padding-bottom: 0.3rem;
         border-bottom: 1px solid #b6c5c9;
         margin-bottom: 1rem;
-    }
+     }
 
      #titleEditForm a{
         font-size: 1rem;

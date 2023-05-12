@@ -49,7 +49,7 @@ namespace ControleGestaoFtth.Controllers
                 return Json(new { estado = estadoList });
 
             }
-            else if (estado != null && regiao != null)
+            else if (estado != null)
             {
                 var estacaoList = _TesteOpticoRepository.Estacoes(estado).Select(value => new Estacoe { NomeEstacao = value.NomeEstacao });
                 return Json(new { estacao = estacaoList });
@@ -441,7 +441,9 @@ namespace ControleGestaoFtth.Controllers
             TesteOptico TesteOptico = _TesteOpticoRepository.CarregarId(id);
             ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
             ViewData["selectConstrutora"] = _TesteOpticoRepository.Construtoras();
+            ViewData["selectRegiao"] = _TesteOpticoRepository.Regiao();
             ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
+            ViewData["selectEstado"] = _TesteOpticoRepository.Estado();
             ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
             ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();
 
@@ -596,17 +598,18 @@ namespace ControleGestaoFtth.Controllers
             }
 
         }
-        [HttpPost]
+        /*[HttpPost]
         public IActionResult Inserir(TesteOptico TesteOptico)
         {
-            ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
-            ViewData["selectConstrutora"] = _TesteOpticoRepository.Construtoras();
-            ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
-            ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
-            ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();
-
+          
             try
             {
+                ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
+                ViewData["selectConstrutora"] = _TesteOpticoRepository.Construtoras();
+                ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
+                ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
+                ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();
+
                 if (ModelState.IsValid)
                 {
                     if (_TesteOpticoRepository.UniqueCdo().Any(p => p.CDO.Equals(TesteOptico.CDO.ToUpper())))
@@ -629,12 +632,20 @@ namespace ControleGestaoFtth.Controllers
                 TempData["Falha"] = $"Erro ao inserir - {error.Message}.";
                 return View(TesteOptico);
             }
-        }
+        }*/
         [HttpPost]
         public IActionResult Editar(TesteOptico TesteOptico)
         {
             try
             {
+                ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
+                ViewData["selectConstrutora"] = _TesteOpticoRepository.Construtoras();
+                ViewData["selectRegiao"] = _TesteOpticoRepository.Regiao();
+                ViewData["selectEstado"] = _TesteOpticoRepository.Estado();
+                ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
+                ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
+                ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();
+
                 _TesteOpticoRepository.Atualizar(TesteOptico);
                 TempData["Sucesso"] = "Editado com sucesso.";
                 return RedirectToAction("Editar", new { id = TesteOptico.Id });

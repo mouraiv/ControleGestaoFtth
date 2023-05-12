@@ -310,7 +310,7 @@ namespace ControleGestaoFtth.Repository
                .Select(value => new Regioe
                {
                    Id = value.Id,
-                   Nome = value.Nome
+                   Nome = value.Nome,
 
                })
                .OrderBy(p => p.Nome)
@@ -323,7 +323,9 @@ namespace ControleGestaoFtth.Repository
                 .Select(value => new Estado
                 {
                     Id = value.Id,
-                    Nome = value.Nome
+                    Nome = value.Nome,
+                    Regiao = value.Regiao
+                    
 
                 }).OrderBy(p => p.Nome)
                 .ToList();
@@ -339,7 +341,7 @@ namespace ControleGestaoFtth.Repository
                 .Select(value => new Estado
                 {
                     Id = value.Id,
-                    Nome = value.Nome
+                    Nome = value.Nome,
 
                 }).OrderBy(p => p.Nome)
                 .ToList();

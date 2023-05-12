@@ -35,7 +35,15 @@
                 </ul>
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Netwin" asp-action="Index"><i class="fa fa-database" aria-hidden="true"></i>Base Netwin</a>
+                        <a class="nav-link" id="toggleBtn" data-bs-toggle="collapse" href="#netwin"><i class="fa fa-database" aria-hidden="true"></i>Base Netwin</a>
+                    </li>
+                </ul>
+                <ul class="nav-dropdown collapse" id="netwin">
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="EnderecoTotais" asp-action="Index">Endereços Totais</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="MaterialRede" asp-action="Index">Materiais de Rede</a>
                     </li>
                 </ul>
                 <ul class="navbar-nav">
@@ -67,13 +75,13 @@
                         <a class="nav-link" asp-area="" asp-controller="TesteOptico" asp-action="Index">Teste Óptico</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Construtora" asp-action="Index">Análise</a>
+                        <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">Análise</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Estacao" asp-action="Index">Gestão</a>
+                        <a class="nav-link" asp-area="" asp-controller="Gestao" asp-action="Index">Gestão</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" asp-area="" asp-controller="Netwin" asp-action="Index">Projeto</a>
+                        <a class="nav-link" asp-area="" asp-controller="" asp-action="Index">Projeto</a>
                     </li>
                 </ul>
             </div>

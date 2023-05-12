@@ -24,16 +24,24 @@
                 }
                 <!-- End  Alert-->
             </div>
-            <div class="form-group" id="titleEditForm">
+            <div class="form-group text-center" id="titleEditForm">
+                <a id="labelRegiao">@Model.Estacao?.Estado?.Regiao?.Nome</a>
+            </div>
+            <div class="form-group">
+                <label>Responsável:</label>
                 @Html.DropDownListFor(model => model.ConstrutorasId, new SelectList(ViewBag.selectConstrutora,"Id","Nome"), new {@id="#dropConstrutora", @class="custom-select w-100"})
             </div>
             <div class="selectEstacaoClass form-group col">
-                <label>Estação:</label>
-                <div class="row">
-                    <div class="col">
-                        @Html.DropDownListFor(model => model.EstacoesId, new SelectList(ViewBag.selectEstacao,"Id","NomeEstacao"), new {@id="#dropEditEstacao", @class="custom-select w-100"})
+                <div class="d-flex align-items-center">
+                    <div id="editEstado">
+                        <label>Estado:</label>
+                        @Html.DropDownList("selectEstado", new SelectList(ViewBag.selectEstado,"Nome","Nome"), Model.Estacao?.Estado?.Nome, new {@id="#dropEditUf", @class="custom-select"})
                     </div>
-                    <div class="col-auto">
+                    <div id="editEstacao">
+                        <label>Estação:</label>
+                        @Html.DropDownListFor(model => model.EstacoesId, new SelectList(ViewBag.selectEstacao,"Id","NomeEstacao"), new {@id="#dropEditEstacao", @class="custom-select"})
+                    </div>
+                    <div class="pt-4">
                         <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" id="iconBtn" class="btn-plus-estacao" title="Adicionar"><i class="fa fa-plus"></i></button>
                     </div>
                 </div>
@@ -203,6 +211,9 @@
 @section Scripts
     {
     <script>
+        //VARIAVEIS GLOBAIS
+        var estado = "";
+
         //SPINNER LOADER
         function spinnerFtth(display) {
             $(display).html(`
@@ -213,6 +224,31 @@
                                                 </div>
                                             `)
         }
+
+        //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW
+        const ftthMenuPrt = (url) => $.get(url,
+            {}, function (resposta) {
+                if (resposta.estacao != undefined) {
+
+                    //LIMPAR DROPLIST
+                    $('#editEstacao select').empty();
+
+                    //RESETAR ESTAÇÃO
+                    estacao = "";
+
+                    //LOAD DROPLIST ESTADO
+                    $.each(
+                        resposta.estacao,
+                        function (index, item) {
+                            $('#editEstacao select').append($('<option/>', {
+                                value: item.nomeEstacao,
+                                text: item.nomeEstacao
+                            }));
+                        });
+                }
+
+                return false;
+            });
 
         //FUNÇÃO GET CARREGAR ADD INSERT VIEW E CHAMAR O COLLAPSE MODAL
         function AddInsertModal(url) {
@@ -272,6 +308,8 @@
             //VARIAVEIS GLOBAIS DE ACESSO JSON MODAL SERIALIZE
             var jsonViabilidadeSelect = @Html.Raw(Json.Serialize(ViewBag.selectViabilidade));
             var jsonEstacaoSelect = @Html.Raw(Json.Serialize(ViewBag.selectEstacao));
+            var jsonRegiao = @Html.Raw(Json.Serialize(ViewBag.selectRegiao));
+            var jsonEstado = @Html.Raw(Json.Serialize(ViewBag.selectEstado));
             var id = @Model.Id;
 
             //CARREGAR ESTADO DO SELECT NA PAGINA EDITAR
@@ -281,8 +319,27 @@
             $('#dropViabilidade option[value = "' + @Model.Netwin?.Id + '"]').prop('selected', 'selected');
             $('#dropEditEstadoCampo option[value = "' + @Model.EstadoCampo.Id + '"]').prop('selected', 'selected');
 
+            //CARREGAR DESCRIÇÃO DO SELECT TAG ESTADO
+            $('#formEditar').on('change', '#editEstado select', function () {
+
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                estado = $(this).val();
+
+                //CARREGAR ID DO ESTADO
+                let _JsonEstado = jsonEstado.find(p => p.nome == estado);
+                
+                //CARREGAR LABEL REGIAO
+                $('form').find('#labelRegiao').text(_JsonEstado.regiao.nome);
+
+                //CARREGAR DROPLIST ESTADO E ESTAÇÃO
+                ftthMenuPrt('../GetListDropDown?regiao=&estado=' + estado);
+
+                return false;
+
+            });
+
             //CARREGAR DESCRIÇÃO DO SELECT TAG ESTAÇÃO
-            $('#formEditar').on('change', '.selectEstacaoClass select', function () {
+            $('#formEditar').on('change', '#editEstacao select', function () {
                 //FILTRAR ID E ARMAZENAR
                 let _JsonEstacaoSelect = jsonEstacaoSelect.find(p => p.id === parseInt($(this).val()));
 
