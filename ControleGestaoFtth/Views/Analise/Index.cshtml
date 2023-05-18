@@ -1,0 +1,389 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.PagedList<TesteOptico>
+@{
+
+    ViewData["Title"] = "Construtora";
+
+}
+
+<!-- Alert para tratamento de exceções -->
+@if (TempData["Sucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <a>@TempData["Sucesso"]</a>
+    </div>
+}
+@if (TempData["Falha"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <a>@TempData["Falha"]</a>
+    </div>
+}
+<!-- End  Alert-->
+<!-- Menu dropdown -->
+<div class="container-filter">
+
+    <div class="form-group" id="regiao">
+        <label>Região - Brasil</label>
+        @Html.DropDownList("selectRegiao",new SelectList(ViewBag.selectRegiao,"Nome","Nome"), "--Todos--",new { @id="dropRegiao", @class="custom-select"})
+    </div>
+
+    <div class="form-group" id="estado">
+        <label>Estados - Brasil</label>
+        @Html.DropDownList("selectEstado",new SelectList(ViewBag.selectEstado,"Nome","Nome"), "--Todos--",new { @id="dropEstado", @class="custom-select"})
+    </div>
+
+    <div class="form-group" id="estacao">
+        <label>Estação</label>
+        @Html.DropDownList("selectEstacao",new SelectList(ViewBag.selectEstacao,"NomeEstacao","NomeEstacao"), "--Todos--",new { @id="dropEstacao", @class="custom-select"})
+    </div>
+
+    <div id="menuPtr" class="d-flex">
+    </div>
+
+    <div id="filterMenu">
+    </div>
+
+</div>
+<!-- End -->
+<!-- Display partial view base ftth  -->
+<div id="ftthLista">
+    <div class="d-flex justify-content-center">
+        <div class="spinner-border text-secondary m-5" role="status">
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+</div>
+<!-- End display -->
+<!-- Modal -->
+<div class="modal fade" id="modelDown" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="d-flex m-0">
+            <div class="modal-content m-0">
+                <div class="modal-header m-0 p-0">
+                    <a class="modal-title w-100 text-center">-- Modelo Base de Importação --</a>
+                    <button type="button" id="close-model" class="close m-0 p-0" data-bs-dismiss="modal" aria-label="Close">x</button>
+                </div>
+                <div class="modal-body">
+                    <!--Conteudo Display-->
+                    <!-- End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+<!-- Modal -->
+<div class="modal fade" id="modelImport" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="d-flex m-0">
+            <div class="modal-content m-0">
+                <div class="modal-header m-0 p-0">
+                    <a class="modal-title w-100 text-center">-- Importação Base de Dados --</a>
+                    <button type="button" id="close-model" class="close m-0 p-0" data-bs-dismiss="modal" aria-label="Close">x</button>
+                </div>
+                <div class="modal-body">
+                    <!--Conteudo Display-->
+                    <!-- End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+@section Scripts
+    {
+    <script>
+        //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW INDEX CONSTRUTORA
+        function TesteOpticoIndex() {
+            //VARIAVEIS GLOBAIS LOCAL
+            var regiao = "";
+            var estado = "";
+            var estacao = "";
+            var cdo = "";
+            var tecnico = "";
+            var status = "";
+
+            //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW
+            const ftth = (url) => $.get(url,
+                {}, function (resposta) {
+                    $('#ftthLista').html($(resposta).filter('#tableUpdate').html());
+                    return false;
+                });
+
+            //FUNÇÃO DE ATUALIZAÇÃO DISPLAY PARTIALVIEW
+            const ftthMenuPrt = (url) => $.get(url,
+                {}, function (resposta) {
+
+                    if (resposta.estado != undefined && resposta.estacao == undefined) {
+                        //LIMPAR DROPLIST
+                        $('#dropEstado').empty();
+
+                        //CARREGAR OPTION DEFAUT
+                        $('#dropEstado').append($('<option/>', {
+                            value: "",
+                            text: "--Todos--"
+                        }));
+
+                        //LOAD DROPLIST ESTADO
+                        $.each(
+                            resposta.estado,
+                            function (index, item) {
+                                $('#dropEstado').append($('<option/>', {
+                                    value: item.nome,
+                                    text: item.nome
+                                }));
+                            });
+                    } else if (resposta.estado == undefined && resposta.estacao != undefined) {
+
+                        //LIMPAR DROPLIST
+                        $('#dropEstacao').empty();
+
+                        //CARREGAR OPTION DEFAUT
+                        $('#dropEstacao').append($('<option/>', {
+                            value: "",
+                            text: "--Todos--"
+                        }));
+
+                        //LOAD DROPLIST ESTADO
+                        $.each(
+                            resposta.estacao,
+                            function (index, item) {
+                                $('#dropEstacao').append($('<option/>', {
+                                    value: item.nomeEstacao,
+                                    text: item.nomeEstacao
+                                }));
+                            });
+                    }
+
+                    return false;
+                });
+
+            //DISPLAY ATUALIZAÇÃO DIV ELEMENT PANEL MENU FILTRO
+            const panel = (url) => $.get(url,
+                {}, function (resposta) {
+                    $('#filterMenu').html($(resposta).filter('#panelUpdate').html());
+                    return false;
+                });
+
+            if (estado == "") {
+                $('#dropEstacao option[value = ""]').prop('selected', 'selected');
+                $('#dropEstacao').attr('disabled', true);
+            }
+
+            //SPINNER LOADER
+            const spinnerFtth = (display) => {
+                $(display).html(`
+                                                <div class= "d-flex justify-content-center">
+                                                    <div class="spinner-border text-secondary m-5" role="status">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            `   )
+            }
+
+            //VARIAVEL PARA ARMAZENAMENTO DO ESTADO SELECT ESTAÇÃO
+            //var historicoRegiao = "@ViewBag.HistoricoRegiao";
+            //var historicoEstacao = "@ViewBag.HistoricoEstacao";
+            //var historicoEstado = "@ViewBag.HistoricoEstado";
+
+            /*if (historicoEstacao != "" || historicoEstado != "") {
+                //CARREGAR HISTORICO EM VARIAVEL GLOBAL
+                regiao = historicoRegiao.replace("&#xD;", "");
+                estado = historicoEstado;
+                estacao = historicoEstacao;
+
+                //CARREGAR ESTADO DO SELECT NA PAGINA INDEX
+                $('#dropRegiao option[value = "' + regiao + '"]').prop('selected', 'selected');
+                $('#dropEstacao option[value = "' + estacao + '"]').prop('selected', 'selected');
+                $('#dropEstado option[value = "' + estado + '"]').prop('selected', 'selected');
+                //DESBLOQUEAR DROPLIST
+                $('#dropEstacao').attr('disabled', false);
+                //CARREGAR VIEW PAINEL MENNU
+                panel('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao);
+                //CARREGAR TABELA GRID
+                ftth('TesteOptico/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao);
+
+            } else {
+                //ATUALIZAR DISPLAY PARTIAL VIEW
+                ftth('TesteOptico/listar');
+            }*/
+
+            //ATUALIZAR DISPLAY PARTIAL VIEW
+            ftth('Analise/listar');
+
+            //FILTRO DROPDOWNLIST REGIÃO
+            $('#dropRegiao').on('change', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#ftthLista');
+
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                regiao = $('#dropRegiao').val();
+
+                //VARIAVEIS GLOBAIS LOCAL
+                estado = "";
+                estacao = "";
+                cdo = "";
+                tecnico = "";
+                status = "";
+
+                //RESET DROPLISTDOWN
+                $('#dropEstado option[value = ""]').prop('selected', 'selected');
+                $('#dropEstacao option[value = ""]').prop('selected', 'selected');
+  
+                //BLOQUEAR DROPDOWNLIST ESTADO
+                $('#dropEstacao').attr('disabled', true);
+
+                //REMOVE DIV PANEL FILTER
+                $('#filterMenu').html("");
+
+                //CARREGAR DROPLIST ESTADO E ESTAÇÃO
+                ftthMenuPrt('Analise/GetListDropDown?regiao=' + regiao + '&estado=' + estado);
+
+                //RESETA SELECT CHANGE APOS O CARREGAMENTO
+                $('#dropEstado option[value = ""]').prop('selected', 'selected');
+
+                //CARREGAR TABELA GRID
+                ftth('Analise/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&tecnico=' + tecnico + '&status=' + status);
+                return false;
+            });
+
+            //FILTRO DROPDOWNLIST ESTADO
+            $('#dropEstado').on('change', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#ftthLista');
+
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                estado = $('#dropEstado').val();
+
+                //CARREGAR DROPLIST ESTADO E ESTAÇÃO
+                ftthMenuPrt('Analise/GetListDropDown?regiao=' + regiao + '&estado=' + estado);
+
+                //CARREGAR TABELA GRID
+                ftth('Analise/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&tecnico=' + tecnico + '&status=' + status);
+
+                if (estado == "") {
+                    $('#dropEstacao').attr('disabled', true);
+                } else {
+                    $('#dropEstacao').attr('disabled', false);
+                }
+
+                return false;
+            });
+
+            //FILTRO DROPDOWNLIST ESTACAO
+            $('#dropEstacao').on('change', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#ftthLista');
+
+                //VARIAVEIS GLOBAIS LOCAL
+                cdo = "";
+                tecnico = "";
+                status = "";
+
+                //RESETA DROPLIST
+                $('#dropCabo option[value = ""]').prop('selected', 'selected');
+                $('#dropCelula option[value = ""]').prop('selected', 'selected');
+                $('#dropCdo option[value = ""]').prop('selected', 'selected');
+
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                estacao = $('#dropEstacao').val();
+
+                if (estacao == "") {
+                    //REMOVE DIV PANEL FILTER
+                    $('#filterMenu').html("");
+                } else {
+                    //CARREGAR VIEW PAINEL MENNU
+                    panel('Analise/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&tecnico=' + tecnico + '&status=' + status);
+                }
+
+                //CARREGAR TABELA GRID
+                ftth('Analise/listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&tecnico=' + tecnico + '&status=' + status);
+                return false;
+            });
+
+            //FILTRO DROPDOWNLIST CDO
+            $('.container-filter').on('change', '#dropCdo', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#ftthLista');
+
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                cdo = $('#dropCdo').val();
+                console.log(cdo);
+
+                /* DESABILITAR DROPDOWNLIST "CABO" "CELULA" E RESETAR VARIAVEIS
+                GLOBAIS DOS MESMOS, CASO UM VALOR SEJA SET EM CDO */
+                if (cdo != "") {
+                    tecnico = "";
+                    status = "";
+                    $('#dropCabo option[value = ""]').prop('selected', 'selected');
+                    $('#dropCelula option[value = ""]').prop('selected', 'selected');
+                    $('#dropCabo').attr('disabled', true);
+                    $('#dropCelula').attr('disabled', true);
+                } else {
+                    $('#dropCabo').attr('disabled', false);
+                    $('#dropCelula').attr('disabled', false);
+                }
+                //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
+                ftth('Analise/Listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&tecnico=' + tecnico + '&status=' + status);
+
+                return false;
+            });
+
+            //FILTRO DROPDOWNLIST CABO DA TABELA FTTH BASE
+            $('.container-filter').on('change', '#dropCabo', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#ftthLista');
+
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                tecnico = $('#dropCabo').val();
+
+                //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
+                ftth('Analise/Listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&tecnico=' + tecnico + '&status=' + status);
+                return false;
+            });
+
+            //FILTRO DROPDOWNLIST CELULA DA TABELA FTTH BASE
+            $('.container-filter').on('change', '#dropCelula', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#ftthLista');
+
+                //CARREGAR VALOR DROPDOWN NA VARIAVEL
+                status = $('#dropCelula').val();
+
+                //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
+                ftth('Analise/Listar?regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + ' &cdo=' + cdo + '&tecnico=' + tecnico + '&status=' + status);
+                return false;
+            });
+
+            //PAGINAÇÃO DA TABELA FTTH BASE
+            $('#ftthLista, #paged').on('click', '.btnPaged', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#ftthLista');
+
+                //ARMAZENAR HREF EM EXECUÇÃO
+                let urlFtth = $(this).find('a').attr('href');
+
+                //CARREGAR GRID VIEW COM OS FILTROS DA BASE FTTH
+                ftth(urlFtth + '&regiao=' + regiao + '&estado=' + estado + '&estacao=' + estacao + '&cdo=' + cdo + '&tecnico=' + tecnico + '&status=' + status);
+                return false;
+            });
+
+            //PEGAR VALORES DA TABELA PARA REQUISIÇÃO ATUALIZAR
+            $('#ftthLista').on('click', '.tableFtth', function () {
+                //VARIAVEL PEGA ID DE REGISTRO DA GRID VIEW
+                let carregarId = $(this).attr("data-id");
+
+                location.href = "@Url.Action("Detalhe", "Analise")" + "/" + carregarId;
+            });
+        } (TesteOpticoIndex());
+    </script>
+    }
+
+
+
+
+
+

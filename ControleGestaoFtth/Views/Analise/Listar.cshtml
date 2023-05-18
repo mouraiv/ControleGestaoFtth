@@ -1,0 +1,128 @@
+﻿@using X.PagedList.Mvc.Core
+@model X.PagedList.PagedList<Analise>
+
+<div id="panelUpdate">
+
+    <!-- Condição Nula do Modal -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="form-group" id="plCdo">
+            <label>CDO</label>
+            @Html.DropDownList("selectCdoFilter", new SelectList(ViewBag.selectCdoFilter,"Id","CDO"), "--Todos--",new { @id="dropCdo", @class="custom-select"})
+        </div>
+
+        <div class="form-group" id="plCabo">
+            <label>Técnico</label>
+            @Html.DropDownList("selectTecnicoFilter", new SelectList(ViewBag.selectTecnicoFilter,"Id","Nome"), "--Todos--",new { @id="dropCabo", @class="custom-select"})
+        </div>
+
+        <div class="form-group" id="plCelula">
+            <label>Status</label>
+            @Html.DropDownList("statusList", new SelectList(ViewBag.selectStatusFilter,"Value", "Text"), "--Todos--",new { @id="dropCelula", @class="custom-select"})
+        </div>
+
+        <div id="metricaFtth">
+            <a></a>
+        </div>
+    }
+    <!-- End condição -->
+
+</div>
+
+<div id="tableUpdate">
+
+    <table class="table">
+
+        <tbody>
+            <!-- Condição Nula do Modal -->
+            @if (Model != null && Model.Any())
+            {
+                <!-- Interar valores e preencher grid -->
+                foreach (var analise in Model)
+                {
+                    <tr id="effectTableFtth">
+                        <td>
+                            <table class="tableFtth" data-id="@analise.Id" style="cursor: pointer;">
+                                <tr>
+                                    <td id="rowTitle" colspan="7" align="center" style="width: 100%;">
+                                        <a>@analise.TesteOptico.Estacao.Estado.Regiao.Nome</a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="rowTitle" colspan="4" align="center">
+                                        <a>@analise.TesteOptico.Construtora.Nome - @analise.TesteOptico.Estacao.NomeEstacao</a>
+                                    </td>
+                                    <td align="center" width="16%">
+                                        <a>Data Recebimento: @analise.TesteOptico.DatadeRecebimento?.ToString("dd/MM/yyyy")</a>
+                                    </td>
+                                    <td id="rowTitle" colspan="2" align="center">
+                                        <a>@analise.TesteOptico.Estacao.Estado.Nome</a>
+                                    </td>
+                                 </tr>
+                                <tr>
+                                    <td width="10%">
+                                        <a>@analise.TesteOptico.CDO</a>
+                                    </td>
+                                    <td width="7%">
+                                        <a>Cabo: @analise.TesteOptico.Cabo</a>
+                                    </td>
+                                    <td width="7%">
+                                        <a>Celula: @analise.TesteOptico.Celula</a>
+                                    </td>
+                                    <td width="7%">
+                                        <a>UMs: @analise.TesteOptico.TotalUms</a>
+                                    </td>
+                                    @if (analise.Status == 0)
+                                    {
+                                        <td style="background-color:#FFCCCC" align="center">
+                                        <a>REPROVADO</a>
+                                    </td>
+                                    }
+                                    else
+                                    {
+                                        <td style="background-color:#CCFFCC" align="center">
+                                        <a>APROVADO</a>
+                                     </td>
+                                    }
+                                    <td width="15%">
+                                        <a>Data Analise: @analise.DataAnalise.ToString("dd/MM/yyyy")</a>
+                                    </td>
+                                    <td width="20%">
+                                        <a>Analista : @analise.Tecnico.Nome</a>
+                                    </td>
+                            </table>
+                        </td>
+                    </tr>
+                }
+                <!-- End Interar -->
+            }
+            else
+            {
+                <tr>
+                    <td>Nenhum resultado.</td>
+                </tr>
+            }
+            <!-- End condição -->
+        </tbody>
+    </table>
+
+    <!-- Condição nula do modal e preencher paginação acaso haja (0 > 1) paginas - TesteOptico -->
+    @if (Model != null && Model.Any() && Model.PageCount > 1)
+    {
+        <div id="paged" class="d-flex justify-content-center">
+            <!-- Exibir paginação -->
+        @Html.PagedListPager(
+        Model, pagina => Url.Action(null , new {pagina}),
+        new X.PagedList.Web.Common.PagedListRenderOptions(){
+        LiElementClasses = new List<string>{"btn btn-outline-secondary btn-sm btnPaged"}
+        })
+            <!-- End Paginação -->
+        </div>
+    }
+    <!-- End Condição -->
+</div>
+
+
+
+
+

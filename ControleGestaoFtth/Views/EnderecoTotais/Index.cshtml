@@ -45,3 +45,48 @@
     </div>
 </div>
 <!-- End Modal -->
+
+@section Scripts
+    {
+    <script>
+        //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW INDEX CONSTRUTORA
+        function EnderecoTotaisIndex() {
+            //SPINNER LOADER
+            const spinnerFtth = (display) => {
+                $(display).html(`
+                                                <div class= "d-flex justify-content-center">
+                                                    <div class="spinner-border text-secondary m-5" role="status">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            `   )
+            }
+        //IMPORTAR MODELO BASE
+            $('#baseImport').on('click', function () {
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('.modal-body');
+                //CARREGAR MODEL DE IMPORTAÇÃO MODELO BASE
+                $.get('EnderecoTotais/Importar',
+                    {}, function (resposta) {
+                        $('.modal-body').html(resposta);
+                        return false;
+                    });
+                return false;
+            });
+
+            //UPLOAD MODELO IMPORTAÇÃO BASE
+            $('.modal-body').on('submit', 'form', function () {
+                $(this).find("button[type='submit']").prop('disabled', true);
+                $('.modal-header #close-model').attr("disabled", "disabled");
+                setInterval(function () {
+                    $.get('/ProgressBar',
+                        {}, function (resposta) {
+                            $('.modal-body #display-view').html(resposta);
+                             return false;
+                        });
+                }, 100);
+            });
+
+        } (EnderecoTotaisIndex());
+    </script>
+    }

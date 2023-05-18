@@ -1,0 +1,169 @@
+﻿@model Analise
+
+<div class="d-flex flex-row justify-content-center" id="container-detalhe">
+
+    <div id="widgetbox" class="modal-content">
+        <i style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#largeModal" class="fa fa-picture-o" id="iconWidget" aria-hidden="true"></i>
+        <img style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#modalProgress" src="/images/29472.png" alt="DWG" id="iconDwg" href="#" width="25" height="25">
+    </div>
+
+    <div class="modal-content">
+        <div class="modal-header bg-primary p-2 position-relative">
+            <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
+                -- Ficha Técnica --
+            </a>
+        </div>
+        <div class="modal-body">
+            <div id="displayDetalheFtth">
+                <!-- Condição Nula do Modal -->
+                @if (Model != null)
+                {
+                    <table id="ftthDetalhe">
+                        <tr>
+                            <td align="center" colspan="2"><a>@Model.TesteOptico.Estacao.Estado.Regiao.Nome</a></td>
+                        </tr>
+                        <tr>
+                            <td align="center"><a>@Model.TesteOptico.Estacao.Estado.Nome</a></td>
+                            <td align="center"><a>@Model.TesteOptico.Construtora.Nome</a></td>
+                        </tr>
+                        <tr>
+                            <td>Estação: <a>@Model.TesteOptico.Estacao.NomeEstacao</a></td>
+                            <td>Tipo Obra: <a>@Model.TesteOptico.TipoObra.Nome</a></td>
+                        </tr>
+                        <tr>
+                            <td>Fabricante: <a>@Model.TesteOptico.Fabricante</a></td>
+                            <td>Modelo: <a>@Model.TesteOptico.Modelo</a></td>
+                        </tr>
+                        <tr>
+                            <td align="center"  colspan="2"><a id="IndexCdo">@Model.TesteOptico.CDO</a></td>
+                            <td align="center" colspan="2"><a>@Model.Status</a></td>
+                        </tr>
+                         <tr>
+                            <td>Cabo: <a>@Model.TesteOptico.Cabo</a></td>
+                            <td>Celula: <a>@Model.TesteOptico.Celula</a></td>
+                        </tr>
+                        <tr>
+                            <td>Capacinade: <a>@Model.TesteOptico.Capacidade</a></td>
+                            <td>Analista: <a>@Model.Tecnico.Nome</a></td>
+                        </tr>
+                        <tr>
+                            <td>Total UMs: <a>@Model.TesteOptico.TotalUms</a></td>
+                        </tr>
+                      </table>
+
+                    <div class="modal-footer">
+                        <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Index" class="btn btn-secondary">Voltar</a>
+                        <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
+                        <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Confirmacao" asp-route-id="@Model.Id" class="btn btn-danger">Excluir</a>
+                    </div>
+                }
+                <!-- End condição -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header m-0 p-0">
+                <a class="modal-title w-100 text-center">-- Teste Óptico | IMAGENS --</a>
+                <button type="button" id="close-model" class="close m-0 p-0" data-bs-dismiss="modal" aria-label="Close">x</button>
+            </div>
+            <div class="modal-body-img">
+                <!--Conteudo Display-->
+                <!-- End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+
+@section Scripts
+    {
+    <script>
+        //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW DETAHLE
+        function AnaliseDetalhe() {
+            //VARIAVEL GLOBAL
+            var sgl = "@Model?.Estacao?.Sigla";
+            var cdo = "@Model?.CDO";
+
+            function task(i) {
+                setTimeout(function () {
+                    $("#progressbar").width(i + "%");
+                }, 100 * i);
+            }
+
+            $.get('@Url.Action("FileResultImg", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo,
+                {}, function (data) {
+                    if (data.imagemOptica != true) {
+                        $("#iconWidget").removeAttr("data-bs-target");
+                        $("#iconWidget").removeAttr("data-bs-toggle");
+                        $("#iconWidget").removeAttr("style")
+                        $("#iconWidget").css({ "color": "#ced4da" });
+                    } else {
+                        //CARREGAR IMAGEM NO MODAL
+                        $('#iconWidget').on('click', function () {
+                            let dir = '@Url.Action("ImgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
+
+                            $.get(dir,
+                                {}, function (resposta) {
+                                    $('.modal-body-img').html(resposta);
+                                    return false;
+                                });
+                            return false;
+                        });
+                    }
+                    return false;
+                });
+
+            $.get('@Url.Action("FileResultDwg", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo,
+                {}, function (data) {
+                    if (data.dwgToPdf != true) {
+                        $("#iconDwg").removeAttr("data-bs-target");
+                        $("#iconDwg").removeAttr("data-bs-toggle");
+                        $("#iconDwg").removeAttr("style")
+                        $("#iconDwg").css({ "opacity": "0.2" });
+                    } else {
+                        //CARREGAR DWG NO MODAL
+                        $('#iconDwg').on('click', function () {
+
+                            let i = 0;
+                            while (i < 65) {
+                                task(i)
+                                i++;
+                            };
+
+                            let dirFile = '@Url.Action("DwgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
+                            let dirFileMemory = '@Url.Action("DwgView", "TesteOptico")';
+
+                            $.ajax({
+                                type: "GET",
+                                url: dirFile,
+                                xhrFields: {
+                                    onprogress: function (e) {
+                                        if (e.lengthComputable) {
+                                            var percentComplete = (e.loaded / e.total) * 100;
+                                            if (percentComplete > 65) {
+                                                $("#progressbar").width(percentComplete + "%");
+                                            }
+                                        }
+                                    }
+                                },
+                                success: function () {
+                                    setTimeout(function () {
+                                        location.href = dirFileMemory;
+                                    }, 2000);
+                                }
+                            });
+                        });
+                    }
+                    return false;
+                });
+
+        } (AnaliseDetalhe())
+    </script>
+    }
+
+

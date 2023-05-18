@@ -91,6 +91,11 @@ namespace ControleGestaoFtth.Repository
             throw new NotImplementedException();
         }
 
+        public bool EnderecoTotaisExiste(int IdEndereco)
+        {
+            return _context.Enderecostotais.Any(p => p.ID_ENDERECO == IdEndereco);
+        }
+
         public int LastId()
         {
             throw new NotImplementedException();

@@ -15,5 +15,6 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<Estacoe> Estacoes(string estado);
         IEnumerable<Enderecostotais> Listar();
         IEnumerable<Enderecostotais> Listar(int? pagina, string? regiao, string estado, string? estacao, string cdo, int codViabilidade);
+        bool EnderecoTotaisExiste(int idEndereco);
     }
 }

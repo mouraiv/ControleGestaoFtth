@@ -47,5 +47,6 @@ namespace ControleGestaoFtth.Models
         public string? PosicaoICX_DGO { get; set; }
         public string? SplitterCEOS { get; set; }
         public string? FibraDGO { get; set; }
+        virtual public ICollection<Analise> Analise { get; set; } = null!;
     }
 }

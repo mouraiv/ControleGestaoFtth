@@ -29,7 +29,7 @@ namespace ControleGestaoFtth.Models
         public string? UCS_RESIDENCIAIS { get; set; }
         public string? UCS_COMERCIAIS { get; set; }
         public string NOME_CDO { get; set; } = null!;
-        public int? ID_ENDERECO { get; set; }
+        public int ID_ENDERECO { get; set; } = 0!;
         public string? LATITUDE { get; set; }
         public string? LONGITUDE { get; set; }
         public string? TIPO_SURVEY { get; set; }

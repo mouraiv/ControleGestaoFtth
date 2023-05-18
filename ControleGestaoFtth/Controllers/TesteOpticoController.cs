@@ -407,7 +407,7 @@ namespace ControleGestaoFtth.Controllers
                             }
                         });
                         //ALETA DE SUCESSO
-                        TempData["Sucesso"] = "Inportação concluída.";
+                        TempData["Sucesso"] = "Importação concluída.";
                         //RESETAR BARRA DE PROGRESSO SESSÃO IMPORT
                         _progressBar.Progresso = 0;
                         // Redirecionar o usuário de volta para a página inicial

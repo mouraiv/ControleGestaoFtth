@@ -31,6 +31,7 @@ builder.Services.AddScoped<INetwinRepository, NetwinRepository>();
 builder.Services.AddScoped<IEstadoCampoRepository, EstadoCampoRepository>();
 builder.Services.AddScoped<ITesteOpticoRepository, TesteOpticoRepository>();
 builder.Services.AddScoped<IEnderecoTotaisRepository, EnderecoTotaisRepository>();
+builder.Services.AddScoped<IAnaliseRepository, AnaliseRepository>();
 builder.Services.AddSingleton<ConversionViewModel>();
 builder.Services.AddSingleton<ProgressBar>();
 builder.Services.AddSingleton<ArquivoModel>();
@@ -54,6 +55,7 @@ app.UseStaticFiles(new StaticFileOptions
     RequestPath = "/Upload"
 });
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseSession();
