@@ -41,7 +41,7 @@ namespace ControleGestaoFtth.Controllers
              
             return View();
         }
-        public IActionResult GetListDropDown(string regiao, string estado, string estacao)
+        public IActionResult GetListDropDown(string regiao, string estado)
         {
             if (regiao != null && estado == null)
             {

@@ -8,7 +8,9 @@ namespace ControleGestaoFtth.Repository.Interface
         Analise Atualizar(Analise analise);
         bool Deletar(int id);
         Analise CarregarId(int id);
+        Analise CarregarIdTesteOptico(int id);
         IEnumerable<Analise> Listar(int? pagina, string? regiao, string estado, string? estacao, int? cdo, int? tecnico, int? status);
+        IEnumerable<Analise> Historico(int? testeOpticoId);
         IEnumerable<Analise> UniqueCdo();
         IEnumerable<Tecnico> Tecnico();
         IEnumerable<Regioe> Regiao();

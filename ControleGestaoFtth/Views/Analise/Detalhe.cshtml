@@ -10,7 +10,7 @@
     <div class="modal-content">
         <div class="modal-header bg-primary p-2 position-relative">
             <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
-                -- Ficha Técnica --
+                -- Ficha Técnica - Análise de Testes Ópticos --
             </a>
         </div>
         <div class="modal-body">
@@ -27,6 +27,9 @@
                             <td align="center"><a>@Model.TesteOptico.Construtora.Nome</a></td>
                         </tr>
                         <tr>
+                            <td align="center" colspan="2"><a>@Model.Status</a></td>
+                        </tr>
+                        <tr>
                             <td>Estação: <a>@Model.TesteOptico.Estacao.NomeEstacao</a></td>
                             <td>Tipo Obra: <a>@Model.TesteOptico.TipoObra.Nome</a></td>
                         </tr>
@@ -35,19 +38,61 @@
                             <td>Modelo: <a>@Model.TesteOptico.Modelo</a></td>
                         </tr>
                         <tr>
-                            <td align="center"  colspan="2"><a id="IndexCdo">@Model.TesteOptico.CDO</a></td>
-                            <td align="center" colspan="2"><a>@Model.Status</a></td>
+                            <td align="center"  colspan="2"><a id="IndexCdo">--- @Model.TesteOptico.CDO ---</a></td>
                         </tr>
                          <tr>
                             <td>Cabo: <a>@Model.TesteOptico.Cabo</a></td>
                             <td>Celula: <a>@Model.TesteOptico.Celula</a></td>
-                        </tr>
+                         </tr>
                         <tr>
                             <td>Capacinade: <a>@Model.TesteOptico.Capacidade</a></td>
-                            <td>Analista: <a>@Model.Tecnico.Nome</a></td>
+                            <td>Total UMs: <a>@Model.TesteOptico.TotalUms</a></td>
                         </tr>
                         <tr>
-                            <td>Total UMs: <a>@Model.TesteOptico.TotalUms</a></td>
+                            <td>Bobina Lançamento: <a>@Model.TesteOptico.BobinadeLancamento</a></td>
+                            <td>Posição ICX/DGO: <a>@Model.TesteOptico.PosicaoICX_DGO</a></td>
+                        </tr>
+                        <tr>
+                            <td>Bobina de Recepção: <a>@Model.TesteOptico.BobinadeRecepcao</a></td>
+                            <td>Splitter CEOS: <a>@Model.TesteOptico.SplitterCEOS</a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Localização: <a>@Model.TesteOptico.Endereco</a></td>
+                        </tr>
+                        <tr id="tblHstContainer">
+                            <td align="center" class="p-0 m-0" colspan="2">
+
+                                <table id="tblAnaliseTec">
+                                    <thead>
+                                        <tr id="titleHstAnalise">
+                                            <th colspan="5">
+                                                <a>Analise Ténica</a>
+                                            </th>
+                                        </tr>
+                                        <tr>
+                                            <th width="7%">
+                                                <a>#</a>
+                                            </th>
+                                             <th width="27%">
+                                                <a>Analista</a>
+                                             </th>
+                                            <th width="27%">
+                                                <a>Data</a>
+                                            </th>
+                                            <th width="27%">
+                                                <a>Obs</a>
+                                            </th>
+                                            <th width="13%">
+                                                <a>--</a>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="listaHstAnalise">
+                                        <!-- CARREGAR HISTORICO JQUERY -->
+                                   </tbody>
+                                </table>
+
+                            </td>
                         </tr>
                       </table>
 
@@ -86,8 +131,9 @@
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW DETAHLE
         function AnaliseDetalhe() {
             //VARIAVEL GLOBAL
-            var sgl = "@Model?.Estacao?.Sigla";
-            var cdo = "@Model?.CDO";
+            var sgl = "@Model?.TesteOptico.Estacao.Sigla";
+            var cdo = "@Model?.TesteOptico.CDO";
+            var testeOpticoId = "@Model?.TesteOpticoId";
 
             function task(i) {
                 setTimeout(function () {
@@ -161,6 +207,26 @@
                     }
                     return false;
                 });
+     
+             //CARREGAR HISTÓRICO DE ANALISE
+            $.get('../GetHistoricoAnalise?id='+testeOpticoId,
+                    {}, function (resposta) {
+                    //LISTAR HISTÓRICO
+                    var tabelaBody = $("#listaHstAnalise");
+                    let style = "tblStyleHstAnalise";
+
+                    $.each(resposta.historico, function (index, item) {
+                        var row = $("<tr></tr>");
+
+                        $("<td></td>").text(index).addClass(style).appendTo(row);
+                        $("<td></td>").text(item.tecnico.nome).addClass(style).appendTo(row);
+                        $("<td></td>").text(item.dataAnalise).addClass(style).appendTo(row);
+                        $("<td></td>").text(item.status).addClass(style).appendTo(row);
+                        $("<td></td>").text("--").addClass(style).appendTo(row);
+                        row.appendTo(tabelaBody);
+                    });
+                    return false;
+                    });
 
         } (AnaliseDetalhe())
     </script>

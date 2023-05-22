@@ -3,6 +3,7 @@ using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Drawing;
 
 namespace ControleGestaoFtth.Controllers
 {
@@ -63,7 +64,7 @@ namespace ControleGestaoFtth.Controllers
 
             try
             {
-                Analise analise = _analiseRepository.CarregarId(id);
+                Analise analise = _analiseRepository.CarregarIdTesteOptico(id);
 
                 //TempData["HstRegiao"] = testeOptico.Estacao.Estado.Regiao.Nome.ToString();
                 //TempData["HstEstacao"] = testeOptico.Estacao.NomeEstacao.ToString();
@@ -100,6 +101,14 @@ namespace ControleGestaoFtth.Controllers
                     estacao = _analiseRepository.Estacoes("").Select(value => new Estacoe { NomeEstacao = value.NomeEstacao })
                 });
             }
+        }
+        public IActionResult GetHistoricoAnalise(int id)
+        {
+           return Json(new
+             {
+                historico = _analiseRepository.Historico(id)
+             });
+          
         }
     }
 }

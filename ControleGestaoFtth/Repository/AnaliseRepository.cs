@@ -2,7 +2,6 @@
 using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.EntityFrameworkCore;
-using System.Drawing;
 using X.PagedList;
 
 namespace ControleGestaoFtth.Repository
@@ -42,7 +41,7 @@ namespace ControleGestaoFtth.Repository
             return analise;
         }
 
-        public Analise CarregarId(int id)
+        public Analise CarregarIdTesteOptico(int id)
         {
             return _context.Analises
                       .Include(p => p.TesteOptico)
@@ -51,6 +50,15 @@ namespace ControleGestaoFtth.Repository
                       .ThenInclude(p => p.Regiao)
                       .Include(p => p.TesteOptico)
                       .ThenInclude(p => p.Construtora)
+                      .Include(p => p.TesteOptico)
+                      .ThenInclude(p => p.TipoObra)
+                      .Include(p => p.Tecnico)
+                      .Where(p => p.TesteOpticoId == id)
+                      .First();
+        }
+        public Analise CarregarId(int id)
+        {
+            return _context.Analises
                       .Include(p => p.Tecnico)
                       .Where(p => p.Id == id)
                       .First();
@@ -240,6 +248,14 @@ namespace ControleGestaoFtth.Repository
         public IEnumerable<Analise> UniqueCdo()
         {
             throw new NotImplementedException();
+        }
+
+        public IEnumerable<Analise> Historico(int? testeOpticoId)
+        {
+            return _context.Analises
+                .Include(p => p.Tecnico)
+                .Where(p => p.TesteOpticoId == testeOpticoId)
+                .ToList();
         }
     }
 }

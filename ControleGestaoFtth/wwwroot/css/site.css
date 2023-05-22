@@ -532,3 +532,26 @@
         font-size:0.9rem;
         font-weight: 600;
     }
+
+    #tblAnaliseTec{
+      display:table;
+      width:100%;
+      font-size:0.7rem;
+    }
+
+    #tblAnaliseTec thead #titleHstAnalise{
+       background-color:#CEE2FE;
+       color:#000000;
+    }
+
+    #tblAnaliseTec thead tr{
+       text-align:center;
+       background-color:#0d6efd;
+       color: #ffffff;
+    }
+    
+    #tblAnaliseTec .tblStyleHstAnalise {
+       color: red !important;
+    }
+
+
