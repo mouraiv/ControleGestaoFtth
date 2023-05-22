@@ -552,6 +552,8 @@
     
     #tblAnaliseTec .tblStyleHstAnalise {
        color: red !important;
+       border: 0;
+       border-bottom: 1px solid #0d6efd;
     }
 
 
