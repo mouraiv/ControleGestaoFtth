@@ -27,8 +27,15 @@
                             <td align="center"><a>@Model.TesteOptico.Construtora.Nome</a></td>
                         </tr>
                         <tr>
-                            <td align="center" colspan="2"><a>@Model.Status</a></td>
-                        </tr>
+                            @if (Model.Status == 0)
+                            {
+                                 <td style="color: red;" align="center" colspan="2"><a>REPROVADO</a></td>
+                            }
+                            else
+                            {
+                                <td style="color: green;" align="center" colspan="2"><a>APROVADO</a></td>
+                            }
+                         </tr>
                         <tr>
                             <td>Estação: <a>@Model.TesteOptico.Estacao.NomeEstacao</a></td>
                             <td>Tipo Obra: <a>@Model.TesteOptico.TipoObra.Nome</a></td>
@@ -65,29 +72,42 @@
                                 <table id="tblAnaliseTec">
                                     <thead>
                                         <tr id="titleHstAnalise">
-                                            <th colspan="5">
+                                            <th colspan="7">
                                                 <a>Analise Ténica</a>
                                             </th>
                                         </tr>
                                         <tr>
-                                            <th width="7%">
+                                            <th width="5%">
                                                 <a>#</a>
                                             </th>
-                                             <th width="27%">
+                                             <th>
                                                 <a>Analista</a>
                                              </th>
-                                            <th width="27%">
+                                            <th>
                                                 <a>Data</a>
                                             </th>
-                                            <th width="27%">
+                                            <th>
                                                 <a>Status</a>
                                             </th>
-                                            <th width="13%">
+                                            <th width="5%">
+                                            </th>
+                                            <th width="5%">
+                                            </th>
+                                            <th width="5%">
                                             </th>
                                         </tr>
                                     </thead>
                                     <tbody id="listaHstAnalise">
                                         <!-- CARREGAR HISTORICO JQUERY -->
+                                        <tr>
+                                            <td style="border:0;" colspan="5">
+                                                <div class="d-flex justify-content-center">
+                                                    <div class="spinner-border text-secondary m-5" role="status">
+                                                        <span class="sr-only">Loading...</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
                                    </tbody>
                                 </table>
 
@@ -97,8 +117,7 @@
 
                     <div class="modal-footer">
                         <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Index" class="btn btn-secondary">Voltar</a>
-                        <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-primary">Editar</a>
-                        <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Confirmacao" asp-route-id="@Model.Id" class="btn btn-danger">Excluir</a>
+                        <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-warning">Analisar</a>
                     </div>
                 }
                 <!-- End condição -->
@@ -117,6 +136,28 @@
             </div>
             <div class="modal-body-img">
                 <!--Conteudo Display-->
+                <!-- End -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+<!-- Modal Progress -->
+<div class="modal fade" id="modalProgress" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="basicModal" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-body">
+                <!--Conteudo Display-->
+                <div id="progressModel" role="alert">
+                    <h5 class="alert-heading">DWG -> PDF</h5>
+                    <p>O sistema está preparando a visualização no formato PDF.</p>
+                    <hr>
+                    <div class="progress mb-0">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated" id="progressbar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%">
+                        </div>
+                    </div>
+                </div>
                 <!-- End -->
             </div>
         </div>
@@ -210,19 +251,57 @@
              //CARREGAR HISTÓRICO DE ANALISE
             $.get('../GetHistoricoAnalise?id='+testeOpticoId,
                     {}, function (resposta) {
-                    //LISTAR HISTÓRICO
+                    //VARIAVEL TBODY ANALISE
                     var tabelaBody = $("#listaHstAnalise");
-                    let style = "tblStyleHstAnalise";
-
+                    //LIMPAR HISTORICO ANTES DO PREENCHIMENTO.
+                    tabelaBody.empty();
+                    //ADICIONAR STYLO CORRESPONDENTE A CADA STATUS
+                    var style = "";
+               
+                    //LISTAR HISTORICO DE ANALISE TECNICA
                     $.each(resposta.historico, function (index, item) {
+                        //CONDIÇÃO DE FORMATAÃO DE ACORDO COM STATUS
+                        if(item.status == 0){
+                            style = "tblStyleHstAnaliseaNG";
+
+                        }else{
+                            style = "tblStyleHstAnaliseAP";
+                        }
+                        //CRIAR <TR>
                         var row = $("<tr></tr>");
 
-                        $("<td></td>").text(index).addClass(style).appendTo(row);
+                        //ADICONAR <TD> A <TR>
+                        $("<td></td>").text(index + 1).addClass(style).appendTo(row);
                         $("<td></td>").text(item.tecnico.nome).addClass(style).appendTo(row);
                         $("<td></td>").text(item.dataAnalise).addClass(style).appendTo(row);
-                        $("<td></td>").text(item.status).addClass(style).appendTo(row);
-                        $("<td></td>").text("--").addClass(style).appendTo(row);
+
+                        //CONDIÇÃO STATUS 1 != 0 APROVADO OU REPROVADO
+                        if (item.status == 0) {
+                            $("<td></td>").text("REPROVADO").addClass(style).appendTo(row);
+                        }else{
+                            $("<td></td>").text("APROVADO").addClass(style).appendTo(row);
+                        }
+                        //ADICIONAR BUTTON ICON VISUALIZAR
+                        var tdButtonViewer = $("<td></td>").addClass(style);
+                        var viewer = $("<i></i>").addClass("fa fa-list icon-tblAnalise");
+                        tdButtonViewer.append(viewer);
+                        row.append(tdButtonViewer);
+
+                        //ADICIONAR BUTTON ICON EDITAR
+                        let tdButtonEditar = $("<td></td>").addClass(style);
+                        let editar = $("<i></i>").addClass("fa fa-pencil icon-tblAnalise");
+                        tdButtonEditar.append(editar);
+                        row.append(tdButtonEditar);
+
+                        //ADICIONAR BUTTON ICON EXCLUIR
+                        let tdButtonExcluir = $("<td></td>").addClass(style);
+                        let excluir = $("<i></i>").addClass("fa fa-trash icon-tblAnalise");
+                        tdButtonExcluir.append(excluir);
+                        row.append(tdButtonExcluir);
+
+                        //ALIMENTAR A TABELA
                         row.appendTo(tabelaBody);
+                    
                     });
                     return false;
                     });
