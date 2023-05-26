@@ -117,7 +117,7 @@
 
                     <div class="modal-footer">
                         <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Index" class="btn btn-secondary">Voltar</a>
-                        <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Editar" asp-route-id="@Model.Id" class="btn btn-warning">Analisar</a>
+                        <button role="button" id="btnRoles" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning analise">Analisar</button>
                     </div>
                 }
                 <!-- End condição -->
@@ -125,6 +125,24 @@
         </div>
     </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!--Conteudo Display-->
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-secondary m-5" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div> 
+            <!-- End -->
+
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
 
 <!-- Modal -->
 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="basicModal" aria-hidden="true">
@@ -174,6 +192,17 @@
             var sgl = "@Model?.TesteOptico.Estacao.Sigla";
             var cdo = "@Model?.TesteOptico.CDO";
             var testeOpticoId = "@Model?.TesteOpticoId";
+
+            //SPINNER LOADER
+            function spinnerFtth(display) {
+                $(display).html(`
+                          <div class= "d-flex justify-content-center">
+                            <div class="spinner-border text-secondary m-5" role="status">
+                                 <span class="sr-only">Loading...</span>
+                            </div>
+                          </div>
+                         `)
+            }
 
             function task(i) {
                 setTimeout(function () {
@@ -273,7 +302,20 @@
                         //ADICONAR <TD> A <TR>
                         $("<td></td>").text(index + 1).addClass(style).appendTo(row);
                         $("<td></td>").text(item.tecnico.nome).addClass(style).appendTo(row);
-                        $("<td></td>").text(item.dataAnalise).addClass(style).appendTo(row);
+
+                        //TRATA EXIBIÇÃO DE DATA
+                        var dataObj = new Date(item.dataAnalise);
+                        var dia = dataObj.getDate();
+                        if (dia < 10) {
+                            dia = '0' + dia;
+                        }
+                        var mes = dataObj.getMonth() + 1
+                        if (mes < 10) {
+                            mes = '0' + mes;
+                        }
+                        var ano = dataObj.getFullYear();
+                        var dataFormatada = dia + "/" + mes + "/" + ano;
+                        $("<td></td>").text(dataFormatada).addClass(style).appendTo(row);
 
                         //CONDIÇÃO STATUS 1 != 0 APROVADO OU REPROVADO
                         if (item.status == 0) {
@@ -306,7 +348,133 @@
                     return false;
                     });
 
+            //FUNÇÃO GET CARREGAR ADD INSERT VIEW E CHAMAR O COLLAPSE MODAL
+            function AddInsertModal(url) {
+                $.get(url,
+                    {}, function (resposta) {
+                        //ATUALIZAR
+                        AtualizarModalInsert(resposta);
+                        return false;
+                    });
+            }
+
+            //ATUALIZAR MODAL INSERT
+            function AtualizarModalInsert(resposta){
+                //CARREGAR SPINNER LOADER
+                spinnerFtth('#exampleModal .modal-content');
+
+                //EDITAR MODAL HEADER
+                $('#exampleModal .modal-content').html(`
+                                        <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden="true""></i>
+                                        <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
+                                           -- INSERIR --
+                                        </a>
+                                     `);
+
+                //CARREGAR PARTIAL VIEW
+                $('#exampleModal .modal-content').html($(resposta).html());
+
+                //REMOVER ATRIBUTOS
+                $('#exampleModal .modal-content form').removeAttr('action');
+                $('#exampleModal .modal-content form').removeAttr('method');
+                $('#exampleModal .modal-content form').removeAttr('asp-controlle');
+                $('#exampleModal .modal-content form').removeAttr('asp-action');
+
+                //EDITAR MODAL FOOTER
+                $('#exampleModal .modal-content .modal-footer').html(`
+                                                <button type="button" id="submit" class="btn btn-primary mt-2">Inserir</button>
+                                        <button type="button" onclick="location.href='@Url.Action("Detalhe", "Analise", new {id = Model?.TesteOpticoId})'" class= "btn btn-secondary mt-2 me-2">Fechar</button>
+                                    `);
+
+                //CASO O BOTÃO NÃO SEJA ACIONADO, FECHAR A ALERT 10S
+                setTimeout(function () {
+                    $('#exampleModal .modal-content .alert').hide('hide');
+                }, 10000);
+
+                //BOTÃO FECHAR ALERTA
+                $('#exampleModal .modal-content .close-alert').click(function () {
+                    $('.alert').hide('hide');
+                });
+
+                //CARREGAR EVENTO
+                EventInsertModel();
+
+            }
+
+            //AÇÃO INSERT BUTTON ADD ANALISE MODAL
+            $('.analise').click(function () {
+                //CARREGAR FUNÇÃO INSERT ADD MODAL
+                AddInsertModal('@Url.Action("Inserir", "Analise")?id=' + testeOpticoId);
+                return false;
+            });
+
         } (AnaliseDetalhe())
+
+        //FUNÇÃO DE TRATAMENTO JSON FORMULÁRIO RESPONSE PARA POST CONTROLLER
+        function JsonFormPost() {
+            //VARIAVEL RECEBE E SERIALIZA OS DADOS DO FORMULÁRIO
+            let json = $('.modal-content #formEditar input').serializeArray();
+
+            //VARIAVEL DE TRATAMENTO
+            var obj = {};
+
+            //PERCORRER VARIAVEL JSON
+            $.each(json, function () {
+                //INTERRAR E ARMAZENAR VALORES
+                obj[this.name] = this.value || '';
+            });
+            return obj;
+        }
+
+        //FUNÇÃO VALIDAR E INSERIR DADOS DO FORMULÁRIO VIA POST JQUERY
+        function InsertValidarModal(url, model, ativar) {
+            //VALIDAÇÃO DE FORMULÁRIO MODAL
+            'use strict'
+
+            //PEGAR DOM DO FORMULARIO BOOTSTRAP PARA VALIDAÇÃO
+            var forms = document.querySelectorAll('.modal-content form');
+
+            //PERCORRER PROPS IMPUT EVENT
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+
+                    } else {
+                        if (ativar == true) {
+                            //EFETUAR REQUISIÇÃO POST
+                            $.post(url,
+                                {
+                                    [model]: JsonFormPost()
+                                }, function (resposta) {
+                                    //ATUALIZAR MODAL INSERT
+                                    AtualizarModalInsert(resposta);
+                                    return false;
+                                });
+                        }
+                    }
+                    //CARREGAR VALIDAÇÃO
+                    form.classList.add('was-validated');
+                    return false;
+                });
+        }
+
+        function EventInsertModel() {
+            $('.modal-content form').on('click', '#submit', function () {
+                //FILTRA ENTRADA MODEL DA REQUISIÇÃO
+                switch ($('.modal-content #formEditar').attr('name')) {
+                    case "analiseInsert":
+                        //INSERIR ANALISE
+                        InsertValidarModal('../Inserir', 'analiseInsert', true);
+                        console.log("Rodou")
+                        break;
+                    default:
+                        return false;
+                }
+            });
+        }
+
     </script>
     }
 

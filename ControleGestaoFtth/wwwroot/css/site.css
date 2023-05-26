@@ -550,7 +550,8 @@
        color: #ffffff;
     }
 
-    #tblAnaliseTec .tblStyleHstAnaliseNG {
+    #tblAnaliseTec .tblStyleHstAnaliseaNG {
+       position:relative;
        color: red !important;
        border: 0;
        border-bottom: 1px solid #0d6efd;
@@ -567,7 +568,6 @@
        text-align: center;
        font-size: 0.7rem;
        font-weight: 700;
-
     }  
 
     #tblAnaliseTec .fa{
@@ -577,7 +577,155 @@
         right:0;
         left: 0.3rem;
         bottom:0.2rem;
+        cursor: pointer;
+    }
+
+    #dropStatusAnalise{
+        height: 33px;
+        min-width: 275px !important;
+        margin: 0;
+    }
+
+    #tblCdoia{
+       width: 575px;
+       background-color:#e4e4e4;
+       border: 1px solid #ced4da;
+       margin-top: 1rem;
+    }
+
+    #tblCdoia #DisplayUploadTblAnalise{
+        display: flex;
+        border: 1px solid #ced4da;
+        border-radius: 50px;
+    }
+
+    #tblCdoia #DisplayUploadTblAnalise div{
+        display:flex;
+        align-items: center;
+        border-left: 1px solid #ced4da;
+        height: 19px;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px
+    }
+
+    #tblCdoia #DisplayUploadTblAnalise i, #tblCdoia #DisplayUploadTblAnalise a{
+        margin-left: 0.4rem;
+        margin-right: 0.4rem;
+    }
+
+    #tblCdoia a{
+       font-size: 0.6rem;
+       font-weight: 700;
 
     }
+
+    #tblCdoia tr td {
+        padding: 0.3rem;
+        vertical-align:baseline;
+    }
+
+    td#tliCdoia {
+        background-color:#b9b9b9;
+        padding: 0;
+        border: 1px solid #b9b9b9; 
+        font-size: 0.2rem;
+    }
+
+    td#tliCdoia a{
+        font-size: 0.6rem;
+        font-weight:700;
+    }
+
+
+    td#tdCdoiaObs {
+        display: flex;
+        align-items: baseline;
+        flex-direction: row;
+    }
+
+    td#tdCdoiaObs a{
+        margin-right: 0.2rem;
+    }
+
+    td#tdCdoiaObs input{
+        height: 28px;
+    }
+
+    /* CSS BUTTON TOGGLE SWICH */
+
+    .switch {
+        position: relative;
+        display: inline-block;
+        width: 30px;
+        height: 15px;
+    }
+
+    .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+    }
+
+    .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: green;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }
+
+    .slider:before {
+        position: absolute;
+        content: "";
+        height: 26px;
+        width: 26px;
+        left: 1px;
+        bottom: 1px;
+        background-color: white;
+        -webkit-transition: .4s;
+        transition: .4s;
+    }    
+
+    input:checked + .slider {
+        background-color: red;
+    }
+
+    input:focus + .slider {
+        box-shadow: 0 0 1px #2196F3;
+    }
+
+    input:checked + .slider:before {
+        -webkit-transform: translateX(15px);
+        -ms-transform: translateX(15px);
+        transform: translateX(15px);
+    }
+
+    .form-check {
+        display: block;
+        /* min-height: 1.5rem; */
+        padding-left: 1.5em;
+        margin-bottom: 0 !important;
+    }
+
+    .form-check-input {
+        margin-top: 0.29em !important;
+    }
+
+    /* Rounded sliders */
+    .slider.round {
+        border-radius: 20px;
+    }
+
+    .slider.round:before {
+        border-radius: 50%;
+        height: 13px;
+        width: 13px;
+    }
+
+
 
 

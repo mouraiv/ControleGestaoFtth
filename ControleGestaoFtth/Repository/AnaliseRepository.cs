@@ -40,7 +40,6 @@ namespace ControleGestaoFtth.Repository
             _context.SaveChanges();
             return analise;
         }
-
         public Analise CarregarIdTesteOptico(int id)
         {
             return _context.Analises
@@ -54,14 +53,16 @@ namespace ControleGestaoFtth.Repository
                       .ThenInclude(p => p.TipoObra)
                       .Include(p => p.Tecnico)
                       .Where(p => p.TesteOpticoId == id)
-                      .First();
+                      .OrderByDescending(g => g.DataAnalise)
+                      .FirstOrDefault() ?? new Analise();
         }
         public Analise CarregarId(int id)
         {
             return _context.Analises
                       .Include(p => p.Tecnico)
                       .Where(p => p.Id == id)
-                      .First();
+                      .OrderByDescending(g => g.DataAnalise)
+                      .FirstOrDefault() ?? new Analise();
         }
 
         public bool Deletar(int id)
@@ -127,31 +128,26 @@ namespace ControleGestaoFtth.Repository
             int paginaNumero = (pagina ?? 1);
 
             var resultado = _context.Analises
-               .Include(p => p.TesteOptico)
+                .AsNoTracking()
+                .Where(a => a.TesteOpticoId != null)
+                .Include(p => p.TesteOptico)
                    .ThenInclude(p => p.Estacao)
                    .ThenInclude(p => p.Estado)
                    .ThenInclude(p => p.Regiao)
                .Include(p => p.TesteOptico)
                    .ThenInclude(p => p.Construtora)
                .Include(p => p.Tecnico)
-                   .AsNoTracking()
                    .AsEnumerable()
+                   .DistinctBy(d => d.TesteOpticoId)
+                   .OrderByDescending(a => a.DataAnalise)
                    .Select(value => new Analise
                    {
-                       Id = value.Id,
                        TesteOpticoId = value.TesteOpticoId,
-                       TecnicoId= value.TecnicoId,
+                       Tecnico = value.Tecnico,
                        TesteOptico = value.TesteOptico,
                        Status = value.Status,
-                       Tecnico = value.Tecnico,
-                       DataAnalise = value.DataAnalise,
-                       Observacao = value.Observacao,
-                       CDOIA = value.CDOIA,
-                       CDOIAStatus = value.CDOIAStatus,
-                       CDOIA_Obs = value.CDOIA_Obs
-
+       
                    }).AsQueryable();
-
 
             if (!string.IsNullOrEmpty(regiao) && string.IsNullOrEmpty(estado) && string.IsNullOrEmpty(estacao))
             {
@@ -195,8 +191,6 @@ namespace ControleGestaoFtth.Repository
             }
 
             return resultado
-                   .DistinctBy(p => p.TesteOpticoId)
-                   .OrderByDescending(p => p.Id)
                    .ToList().ToPagedList(paginaNumero, paginaTamanho);
         }
 
