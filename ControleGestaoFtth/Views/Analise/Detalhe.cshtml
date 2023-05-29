@@ -408,6 +408,41 @@
                 return false;
             });
 
+            //BOTÃO ADICIONAR CDOIA
+            $('#exampleModal .modal-content').on('click','#addCdoia', function () {
+                var cdoiaNumber = $('#inputCdoia').val(); // Obter o valor do input
+                var cdoiaText =  cdo + '.' + cdoiaNumber; // Criar o texto CDOIA-x.x
+
+                var newRow = $('<tr>\
+                            <td id="txtCdoiaText" width="24%">\
+                              <div><a>' + cdoiaText + '</a></div>\
+                            </td>\
+                            <td width="15%">\
+                              <a>OK</a>\
+                              <label class="switch">\
+                                <input id="statusCdoia'+ cdoiaNumber + '" type="checkbox">\
+                                <span class="slider round"></span>\
+                              </label>\
+                              <a>NOK</a>\
+                            </td>\
+                            <td width="19%">\
+                              <div id="DisplayUploadTblAnalise">\
+                                <div style="background-color:#b9b9b9; border: 1px solid #b9b9b9;">\
+                                 <i id="imgCdoia'+ cdoiaNumber + '" style="cursor:pointer; font-size:0.8rem;" class="fa fa-upload" aria-hidden="true"></i>\
+                                </div>\
+                                <div>\
+                                  <a>0 Arquivos</a>\
+                                </div>\
+                              </div>\
+                            </td>\
+                            <td id="tdCdoiaObs">\
+                              <a>Obs:</a><input id="obsCdoia'+cdoiaNumber+'" type="text" class="form-control">\
+                            </td>\
+                          </tr>');
+
+                $('#tblCdoiaContent').append(newRow); // Adicionar a nova linha à tabela
+            });
+
         } (AnaliseDetalhe())
 
         //FUNÇÃO DE TRATAMENTO JSON FORMULÁRIO RESPONSE PARA POST CONTROLLER

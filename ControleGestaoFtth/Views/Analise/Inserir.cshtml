@@ -34,40 +34,23 @@
                 <div id="cdoiArea">
                     <!-- CONTEUDO -->
                     <table id="tblCdoia">
+                        <thead>
                         <tr>
                             <td id="tliCdoia" colspan="5" align="center"><a>SELECIONAR CDOIA - @Model.TesteOptico.CDO</a></td>
                         </tr>
-                        <tr>
-                            <td width="18%">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                    <label class="form-check-label" for="defaultCheck1">
-                                        <a>CDOIA-365.20</a>
-                                    </label>
-                                </div>
-                            </td>
-                            <td width="15%">
-                                <a>OK</a>
-                                <label class="switch">
-                                    <input type="checkbox">
-                                    <span class="slider round"></span>
-                                </label>
-                                <a>NOK</a>
-                            </td>
-                            <td width="19%">
-                                <div id="DisplayUploadTblAnalise">
-                                    <div style="background-color:#b9b9b9; border: 1px solid #b9b9b9;">
-                                        <i style="cursor:pointer; font-size:0.8rem;" class="fa fa-upload" aria-hidden="true"></i>
-                                    </div>
-                                    <div>
-                                        <a>0 Arquivos</a>
-                                    </div>
-                                </div>
-                            </td>
-                            <td id="tdCdoiaObs">
-                                <a>Obs:</a><input type="text" class="form-control">
+                            <tr id="txtCdoiaNunber">
+                            <td colspan="5">
+                                <a>
+                                    @Model.TesteOptico.CDO.
+                                    <input id="inputCdoia" type="number" min="1" value="1" />
+                                    <i id="addCdoia" class="fa fa-plus-circle" aria-hidden="true"></i>
+                                </a>
                             </td>
                         </tr>
+                        </thead>
+                        <tbody id="tblCdoiaContent">
+                            <!-- CONTEUDO TBL CDOIA -->
+                        </tbody>
                     </table>
 
                 </div>
@@ -82,3 +65,4 @@
         <!-- End Formulário-->
     </div>
 </div>
+

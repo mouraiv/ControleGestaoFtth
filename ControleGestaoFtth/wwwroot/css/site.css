@@ -613,13 +613,16 @@
         margin-right: 0.4rem;
     }
 
+    #tblCdoia #DisplayUploadTblAnalise i:hover{
+        color: #0d6efd;
+    }
+
     #tblCdoia a{
        font-size: 0.6rem;
        font-weight: 700;
-
     }
 
-    #tblCdoia tr td {
+    #tblCdoia tr td{
         padding: 0.3rem;
         vertical-align:baseline;
     }
@@ -649,6 +652,68 @@
 
     td#tdCdoiaObs input{
         height: 28px;
+    }
+
+    #txtCdoiaNunber td{
+        padding-left: 0 !important;
+    }
+
+    #txtCdoiaNunber input{
+        border: 1px solid #b9b9b9;
+        width: 29px !important;
+        height: 24px !important;
+        -moz-appearance: textfield;
+        appearance: textfield;
+        font-weight: 700;
+        font-size: 0.7rem;
+        outline:none;
+    }
+
+    #txtCdoiaNunber input:focus, textarea:focus {
+         box-shadow: 0 0 0 0;
+         outline: 0;
+    }
+
+    #txtCdoiaNunber a {
+        position:relative;
+        border-bottom: 1px solid #b9b9b9;
+        border-left: 1px solid #b9b9b9;
+        background-color: #b9b9b9;
+        font-size: 0.7rem;
+        padding-top: 0.3rem;
+        padding-bottom: 0.2rem;
+        padding-left: 1.4rem;
+        padding-right: 1.6rem;
+        border-start-end-radius: 11px;
+        border-end-end-radius: 11px;
+    }
+
+    #txtCdoiaNunber .fa {
+        cursor:pointer;
+        position: absolute;
+        font-size: 1.1rem;
+        margin-top: 0.4rem;
+        margin-left: 0.3rem;
+    }
+
+    td#txtCdoiaText div{
+        display:flex;
+        background-color: #b9b9b9;
+        justify-content:center;
+        height:22px;
+        align-items:center;
+ 
+    }
+
+    td#txtCdoiaText a {
+        align-items:baseline;
+        font-size: 0.7rem;
+        
+    }
+
+    input[type=number]::-webkit-inner-spin-button { 
+    -webkit-appearance: none;
+    
     }
 
     /* CSS BUTTON TOGGLE SWICH */
