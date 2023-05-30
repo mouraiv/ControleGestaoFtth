@@ -591,6 +591,8 @@
        background-color:#e4e4e4;
        border: 1px solid #ced4da;
        margin-top: 1rem;
+       max-height: 250px;
+       overflow-y:auto;
     }
 
     #tblCdoia #DisplayUploadTblAnalise{
@@ -715,6 +717,45 @@
     -webkit-appearance: none;
     
     }
+
+    #tblCdoiaContent{
+        max-height:190px; 
+        overflow-y:scroll; 
+        display: block;
+    }
+
+    #txtCdoiaNunber #alertTblCdoia{
+        border:0 !important;
+        border-radius: 0 !important;
+        margin: 1rem;
+        background-color: #e4e4e4 !important; 
+        color: red;
+        font-size: 0.6rem;
+    }
+
+    #prtImgCdoia {
+        display: flex;
+        justify-content:flex-start;
+        border: 1px solid #b9b9b9 !important;
+    }
+
+    #prtImgCdoia #ptrIconUpload{
+        background-color:#b9b9b9; 
+        text-align:center;
+        text-align:center; 
+        width: 40px; 
+        border: 1px solid #b9b9b9;
+    }
+    
+    #prtImgCdoia #ptrIconUpload i:hover{
+         color: #0d6efd;
+    }
+
+    #prtImgCdoia #ptrTxtUpload{
+        padding-left: 0.5rem;
+        padding-bottom: 0.2rem;
+    }
+
 
     /* CSS BUTTON TOGGLE SWICH */
 

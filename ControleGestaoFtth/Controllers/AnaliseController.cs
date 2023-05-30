@@ -33,7 +33,7 @@ namespace ControleGestaoFtth.Controllers
                             new SelectListItem { Value = "0", Text = "REPROVADO" }
                         };
             ViewData["selectStatusFilter"] = statusList;
-            return PartialView(analise);
+            return View(analise);
         }
         public IActionResult Editar(int id)
         {
@@ -80,13 +80,13 @@ namespace ControleGestaoFtth.Controllers
                 _analiseRepository.Cadastrar(analise);
 
                 TempData["Sucesso"] = "Inserido com sucesso.";
-                return RedirectToAction("Index");
+                return View();
 
             }
             catch (Exception error)
             {
                 TempData["Falha"] = $"Erro ao inserir - {error}.";
-                return View(analise);
+                return View();
             }
         }
         [HttpPost]

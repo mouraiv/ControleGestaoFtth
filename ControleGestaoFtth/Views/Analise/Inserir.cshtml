@@ -2,6 +2,24 @@
 
 <div id="formInsert" class="d-flex flex-row justify-content-center">
     <div style="width:600px;">
+        <!-- Table info head-->
+        <table>
+            <tr>
+                <td><a></a></td>
+            </tr>
+            <tr>
+                <td><a></a></td>
+                <td><a></a></td>
+            </tr>
+            <tr>
+                <td><a></a></td>
+            </tr>
+             <tr>
+                <td><a></a></td>
+                <td><a></a></td>
+            </tr>
+        </table>
+        <!-- End table -->
         <!-- Formulário para edição -->
         <form asp-controller="Analise" asp-action="Inserir" method="post" class="needs-validation" novalidate>
             <input type="hidden" name="TesteOpticoId" value="@Model.TesteOpticoId">
@@ -11,6 +29,17 @@
                     <label>Data da Analise:</label>
                     <input type="text" value="@DateTime.Now" name="DataAnalise" class="form-control" maxlength="50" disabled required>
                     <div class="invalid-feedback">Campo Obrigatório.</div>
+                </div>
+                 <div class="form-group col">
+                      <label>Carregar Arquivos:</label>
+                     <div id="prtImgCdoia">
+                         <div id="ptrIconUpload">
+                            <i id="imgCdoia" style="cursor:pointer; font-size:0.9rem;" class="fa fa-upload" aria-hidden="true"></i>
+                         </div>
+                         <div id="ptrTxtUpload">
+                            <a>0 Arquivos</a>
+                         </div>
+                     </div>
                 </div>
                 <div class="w-100"></div>
                 <div class="form-group col">
@@ -36,15 +65,16 @@
                     <table id="tblCdoia">
                         <thead>
                         <tr>
-                            <td id="tliCdoia" colspan="5" align="center"><a>SELECIONAR CDOIA - @Model.TesteOptico.CDO</a></td>
+                            <td id="tliCdoia" colspan="6" align="center"><a>SELECIONAR CDOIA - @Model.TesteOptico.CDO</a></td>
                         </tr>
                             <tr id="txtCdoiaNunber">
-                            <td colspan="5">
+                            <td>
                                 <a>
                                     @Model.TesteOptico.CDO.
                                     <input id="inputCdoia" type="number" min="1" value="1" />
                                     <i id="addCdoia" class="fa fa-plus-circle" aria-hidden="true"></i>
                                 </a>
+                                <a id="alertTblCdoia"></a>
                             </td>
                         </tr>
                         </thead>
@@ -57,8 +87,8 @@
                 <!-- END CDOIA -->
 
                 <div class="modal-footer p-0 m-0 mt-4">
-                    <button type="submit" class="btn btn-primary mt-4 ms-2">Editar</button>
-                    <a role="button" asp-action="Index" asp-controller="Analise" id="btnRoles" class="btn btn-secondary mt-4 me-2">Voltar</a>
+                     <a role="button" asp-action="Detalhe" asp-controller="Analise" asp-route-id="@Model.TesteOpticoId" id="btnRoles" class="btn btn-secondary mt-4 ms-2">Voltar</a>
+                     <button type="submit" class="btn btn-primary mt-4 me-2">Inserir</button>
                 </div>
             </div>
         </form>
@@ -66,3 +96,80 @@
     </div>
 </div>
 
+@section Scripts
+    {
+    <script>
+        //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW DETAHLE
+        function AnaliseInserir() {
+            //VARIAVEL GLOBAL
+            var sgl = "@Model?.TesteOptico.Estacao.Sigla";
+            var cdo = "@Model?.TesteOptico.CDO";
+            var testeOpticoId = "@Model?.TesteOpticoId";
+            //INDEX ARRAY CDOIA
+            var cdoiaIndex = [];
+            //RESETAR ALERT TABLE CDOIA
+            $('#alertTblCdoia').empty();
+
+            //SPINNER LOADER
+            function spinnerFtth(display) {
+                $(display).html(`
+                          <div class= "d-flex justify-content-center">
+                            <div class="spinner-border text-secondary m-5" role="status">
+                                 <span class="sr-only">Loading...</span>
+                            </div>
+                          </div>
+                         `)
+            }
+
+            //BOTÃO ADICIONAR CDOIA
+            $('#formEditar').on('click','#addCdoia', function () {
+                //VARIAVEL PEGAR VALOR DO INPUT CDOIA
+                var cdoiaNumber = $('#inputCdoia').val();
+                //TEXT LABEL CDOIA
+                var cdoiaText =  cdo + '.' + cdoiaNumber;
+                //VERIFICAR SE O INPUT CDOIA JÁ EXISTE NA TABELA
+                if(cdoiaIndex.indexOf(cdoiaNumber) == -1){
+                //INSERIR INDEX
+                cdoiaIndex.push(cdoiaNumber);
+                //RESETAR ALERT TABLE CDOIA
+                $('#alertTblCdoia').empty();
+                //CRIAR ROW DE ACORDO COM O INPUT LABEL
+                var newRow = $('<tr>\
+                            <td id="txtCdoiaText" width="24%">\
+                              <div><a>' + cdoiaText + '</a></div>\
+                            </td>\
+                            <td width="15%">\
+                              <a>OK</a>\
+                              <label class="switch">\
+                                <input id="statusCdoia'+ cdoiaNumber + '" type="checkbox">\
+                                <span class="slider round"></span>\
+                              </label>\
+                              <a>NOK</a>\
+                            </td>\
+                            <td width="19%">\
+                              <div id="DisplayUploadTblAnalise">\
+                                <div style="background-color:#b9b9b9; border: 1px solid #b9b9b9;">\
+                                 <i id="imgCdoia'+ cdoiaNumber + '" style="cursor:pointer; font-size:0.8rem;" class="fa fa-upload" aria-hidden="true"></i>\
+                                </div>\
+                                <div>\
+                                  <a>0 Arquivos</a>\
+                                </div>\
+                              </div>\
+                            </td>\
+                            <td id="tdCdoiaObs">\
+                              <a>Obs:</a><input id="obsCdoia'+cdoiaNumber+'" type="text" class="form-control">\
+                            </td>\
+                            <td>\
+                               <i id="excluirCdoia'+ cdoiaNumber + '" style="cursor:pointer; font-size:0.8rem;" class="fa fa-trash" aria-hidden="true"></i>\
+                            </td>\
+                          </tr>');
+                //ADICIONAR A LINHA A TABELA CDOIA
+                $('#tblCdoiaContent').append(newRow);
+                }else{
+                   //RESETAR ALERT TABLE CDOIA
+                   $('#alertTblCdoia').text(`A ${cdoiaText} JÁ FOI ADICIONADA!`);
+                }
+            });
+         }(AnaliseInserir());
+       </script>
+     }

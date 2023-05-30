@@ -117,7 +117,7 @@
 
                     <div class="modal-footer">
                         <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Index" class="btn btn-secondary">Voltar</a>
-                        <button role="button" id="btnRoles" data-bs-toggle="modal" data-bs-target="#exampleModal" class="btn btn-warning analise">Analisar</button>
+                        <a role="button" id="btnRoles" asp-controller="Analise" asp-action="Inserir" asp-route-id="@Model.TesteOpticoId" class="btn btn-warning analise">Analisar</a>
                     </div>
                 }
                 <!-- End condição -->
@@ -125,25 +125,6 @@
         </div>
     </div>
 </div>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-
-            <!--Conteudo Display-->
-            <div class="d-flex justify-content-center">
-                <div class="spinner-border text-secondary m-5" role="status">
-                    <span class="sr-only">Loading...</span>
-                </div>
-            </div> 
-            <!-- End -->
-
-        </div>
-    </div>
-</div>
-<!-- End Modal -->
-
 <!-- Modal -->
 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="basicModal" aria-hidden="true">
     <div class="modal-dialog">
@@ -346,170 +327,9 @@
                     
                     });
                     return false;
-                    });
-
-            //FUNÇÃO GET CARREGAR ADD INSERT VIEW E CHAMAR O COLLAPSE MODAL
-            function AddInsertModal(url) {
-                $.get(url,
-                    {}, function (resposta) {
-                        //ATUALIZAR
-                        AtualizarModalInsert(resposta);
-                        return false;
-                    });
-            }
-
-            //ATUALIZAR MODAL INSERT
-            function AtualizarModalInsert(resposta){
-                //CARREGAR SPINNER LOADER
-                spinnerFtth('#exampleModal .modal-content');
-
-                //EDITAR MODAL HEADER
-                $('#exampleModal .modal-content').html(`
-                                        <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden="true""></i>
-                                        <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
-                                           -- INSERIR --
-                                        </a>
-                                     `);
-
-                //CARREGAR PARTIAL VIEW
-                $('#exampleModal .modal-content').html($(resposta).html());
-
-                //REMOVER ATRIBUTOS
-                $('#exampleModal .modal-content form').removeAttr('action');
-                $('#exampleModal .modal-content form').removeAttr('method');
-                $('#exampleModal .modal-content form').removeAttr('asp-controlle');
-                $('#exampleModal .modal-content form').removeAttr('asp-action');
-
-                //EDITAR MODAL FOOTER
-                $('#exampleModal .modal-content .modal-footer').html(`
-                                                <button type="button" id="submit" class="btn btn-primary mt-2">Inserir</button>
-                                        <button type="button" onclick="location.href='@Url.Action("Detalhe", "Analise", new {id = Model?.TesteOpticoId})'" class= "btn btn-secondary mt-2 me-2">Fechar</button>
-                                    `);
-
-                //CASO O BOTÃO NÃO SEJA ACIONADO, FECHAR A ALERT 10S
-                setTimeout(function () {
-                    $('#exampleModal .modal-content .alert').hide('hide');
-                }, 10000);
-
-                //BOTÃO FECHAR ALERTA
-                $('#exampleModal .modal-content .close-alert').click(function () {
-                    $('.alert').hide('hide');
                 });
-
-                //CARREGAR EVENTO
-                EventInsertModel();
-
-            }
-
-            //AÇÃO INSERT BUTTON ADD ANALISE MODAL
-            $('.analise').click(function () {
-                //CARREGAR FUNÇÃO INSERT ADD MODAL
-                AddInsertModal('@Url.Action("Inserir", "Analise")?id=' + testeOpticoId);
-                return false;
-            });
-
-            //BOTÃO ADICIONAR CDOIA
-            $('#exampleModal .modal-content').on('click','#addCdoia', function () {
-                var cdoiaNumber = $('#inputCdoia').val(); // Obter o valor do input
-                var cdoiaText =  cdo + '.' + cdoiaNumber; // Criar o texto CDOIA-x.x
-
-                var newRow = $('<tr>\
-                            <td id="txtCdoiaText" width="24%">\
-                              <div><a>' + cdoiaText + '</a></div>\
-                            </td>\
-                            <td width="15%">\
-                              <a>OK</a>\
-                              <label class="switch">\
-                                <input id="statusCdoia'+ cdoiaNumber + '" type="checkbox">\
-                                <span class="slider round"></span>\
-                              </label>\
-                              <a>NOK</a>\
-                            </td>\
-                            <td width="19%">\
-                              <div id="DisplayUploadTblAnalise">\
-                                <div style="background-color:#b9b9b9; border: 1px solid #b9b9b9;">\
-                                 <i id="imgCdoia'+ cdoiaNumber + '" style="cursor:pointer; font-size:0.8rem;" class="fa fa-upload" aria-hidden="true"></i>\
-                                </div>\
-                                <div>\
-                                  <a>0 Arquivos</a>\
-                                </div>\
-                              </div>\
-                            </td>\
-                            <td id="tdCdoiaObs">\
-                              <a>Obs:</a><input id="obsCdoia'+cdoiaNumber+'" type="text" class="form-control">\
-                            </td>\
-                          </tr>');
-
-                $('#tblCdoiaContent').append(newRow); // Adicionar a nova linha à tabela
-            });
 
         } (AnaliseDetalhe())
-
-        //FUNÇÃO DE TRATAMENTO JSON FORMULÁRIO RESPONSE PARA POST CONTROLLER
-        function JsonFormPost() {
-            //VARIAVEL RECEBE E SERIALIZA OS DADOS DO FORMULÁRIO
-            let json = $('.modal-content #formEditar input').serializeArray();
-
-            //VARIAVEL DE TRATAMENTO
-            var obj = {};
-
-            //PERCORRER VARIAVEL JSON
-            $.each(json, function () {
-                //INTERRAR E ARMAZENAR VALORES
-                obj[this.name] = this.value || '';
-            });
-            return obj;
-        }
-
-        //FUNÇÃO VALIDAR E INSERIR DADOS DO FORMULÁRIO VIA POST JQUERY
-        function InsertValidarModal(url, model, ativar) {
-            //VALIDAÇÃO DE FORMULÁRIO MODAL
-            'use strict'
-
-            //PEGAR DOM DO FORMULARIO BOOTSTRAP PARA VALIDAÇÃO
-            var forms = document.querySelectorAll('.modal-content form');
-
-            //PERCORRER PROPS IMPUT EVENT
-            Array.prototype.slice.call(forms)
-                .forEach(function (form) {
-                    if (!form.checkValidity()) {
-                        event.preventDefault();
-                        event.stopPropagation();
-
-                    } else {
-                        if (ativar == true) {
-                            //EFETUAR REQUISIÇÃO POST
-                            $.post(url,
-                                {
-                                    [model]: JsonFormPost()
-                                }, function (resposta) {
-                                    //ATUALIZAR MODAL INSERT
-                                    AtualizarModalInsert(resposta);
-                                    return false;
-                                });
-                        }
-                    }
-                    //CARREGAR VALIDAÇÃO
-                    form.classList.add('was-validated');
-                    return false;
-                });
-        }
-
-        function EventInsertModel() {
-            $('.modal-content form').on('click', '#submit', function () {
-                //FILTRA ENTRADA MODEL DA REQUISIÇÃO
-                switch ($('.modal-content #formEditar').attr('name')) {
-                    case "analiseInsert":
-                        //INSERIR ANALISE
-                        InsertValidarModal('../Inserir', 'analiseInsert', true);
-                        console.log("Rodou")
-                        break;
-                    default:
-                        return false;
-                }
-            });
-        }
-
     </script>
     }
 
