@@ -83,7 +83,7 @@
                     <table id="tblCdoia">
                         <thead>
                         <tr>
-                            <td id="tliCdoia" colspan="6" align="center"><a>SELECIONAR CDOIA - @Model.TesteOptico.CDO</a></td>
+                            <td id="tliCdoia" align="center"><a>SELECIONAR CDOIA - @Model.TesteOptico.CDO</a></td>
                         </tr>
                             <tr id="txtCdoiaNunber">
                             <td>
@@ -93,6 +93,7 @@
                                     <i id="addCdoia" class="fa fa-plus-circle" aria-hidden="true"></i>
                                 </a>
                                 <a id="alertTblCdoia"></a>
+                                <button type="button" id="aplicarCdoia">APLICAR</button>
                             </td>
                         </tr>
                         </thead>
@@ -188,6 +189,7 @@
                    $('#alertTblCdoia').text(`A ${cdoiaText} JÁ FOI ADICIONADA!`);
                 }
             });
+
          }(AnaliseInserir());
        </script>
      }
