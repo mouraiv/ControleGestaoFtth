@@ -742,7 +742,6 @@
     #prtImgCdoia #ptrIconUpload{
         background-color:#b9b9b9; 
         text-align:center;
-        text-align:center; 
         width: 40px; 
         border: 1px solid #b9b9b9;
     }
@@ -756,6 +755,24 @@
         padding-bottom: 0.2rem;
     }
 
+    #formEditar #tblInfo {
+        border: 1px solid #b9b9b9;
+        width: 100%;
+        background-color: #e9ecef;
+    }
+
+    #formEditar #tblInfo tr td {
+       border-bottom: 1px solid #b9b9b9; 
+    }
+
+    #formEditar #tblInfo tr td a {
+       font-size: 0.7rem;
+       padding-left: 4.5rem;
+    }
+
+    #formEditar #tblInfo #tblTxtCenter{
+        padding:0 !important;
+    }
 
     /* CSS BUTTON TOGGLE SWICH */
 

@@ -12,6 +12,7 @@ namespace ControleGestaoFtth.Context
 
         public DbSet<Construtora> Construtoras => Set<Construtora>();
         public DbSet<Analise> Analises => Set<Analise>();
+        public DbSet<Cdoia> Cdoias => Set<Cdoia>();
         public DbSet<TesteOptico> TesteOpticos => Set<TesteOptico>();
         public DbSet<Estacoe> Estacoes => Set<Estacoe>();
         public DbSet<EstadoCampo> EstadoCampos => Set<EstadoCampo>();
@@ -98,6 +99,11 @@ namespace ControleGestaoFtth.Context
                 .HasOne(p => p.Tecnico)
                 .WithMany()
                 .HasForeignKey(p => p.TecnicoId);
+
+             modelBuilder.Entity<Analise>()
+                .HasMany(p => p.Cdoias)
+                .WithOne(p => p.Analise)
+                .HasForeignKey(e => e.AnaliseId);
 
             modelBuilder.Entity<Usuario>()
                 .HasOne(p => p.Tecnico)

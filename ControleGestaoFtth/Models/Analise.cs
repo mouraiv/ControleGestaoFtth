@@ -16,5 +16,7 @@ namespace ControleGestaoFtth.Models
         public string? CDOIA { get; set; }
         public string? CDOIAStatus { get; set; }
         public string? CDOIA_Obs { get; set; }
+
+        public virtual ICollection<Cdoia> Cdoias { get; set; } = null!;
     }
 }

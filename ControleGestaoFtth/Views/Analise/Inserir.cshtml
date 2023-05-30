@@ -2,29 +2,32 @@
 
 <div id="formInsert" class="d-flex flex-row justify-content-center">
     <div style="width:600px;">
-        <!-- Table info head-->
-        <table>
-            <tr>
-                <td><a></a></td>
-            </tr>
-            <tr>
-                <td><a></a></td>
-                <td><a></a></td>
-            </tr>
-            <tr>
-                <td><a></a></td>
-            </tr>
-             <tr>
-                <td><a></a></td>
-                <td><a></a></td>
-            </tr>
-        </table>
-        <!-- End table -->
-        <!-- Formulário para edição -->
+       <!-- Formulário para edição -->
         <form asp-controller="Analise" asp-action="Inserir" method="post" class="needs-validation" novalidate>
             <input type="hidden" name="TesteOpticoId" value="@Model.TesteOpticoId">
             <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- INSERIR ANALISE --</a></div>
                 <div id="formEditar" name="analiseInsert" class="row">
+                <!-- Table info -->
+                <div class="form-group col">
+                    <table id="tblInfo" style="margin-bottom: 0.5rem;">
+                    <tr>
+                        <td colspan="2" align="center" style="background-color: #b9b9b9"><a id="tblTxtCenter">@Model.TesteOptico.Estacao.Estado.Regiao.Nome</a></td>
+                    </tr>
+                    <tr>
+                        <td width="50%"><a>@Model.TesteOptico.Estacao.Estado.Nome</a></td>
+                        <td width="50%"><a>@Model.TesteOptico.Construtora.Nome</a></td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center"><a id="tblTxtCenter">--- @Model.TesteOptico.CDO ---</a></td>
+                    </tr>
+                    <tr>
+                        <td><a>Estação: @Model.TesteOptico.Estacao.NomeEstacao</a></td>
+                        <td><a>Tipo Obra: @Model.TesteOptico.TipoObra.Nome</a></td>
+                    </tr>
+                </table>
+                </div>
+                <!-- End table -->
+                <div class="w-100"></div>
                 <div class="form-group col">
                     <label>Data da Analise:</label>
                     <input type="text" value="@DateTime.Now" name="DataAnalise" class="form-control" maxlength="50" disabled required>
@@ -58,6 +61,21 @@
                     <textarea type="text" name="Observacao" class="form-control" maxlength="50" required></textarea>
                     <div class="invalid-feedback">Campo Obrigatório.</div>
                 </div>
+                <div class="w-100"></div>
+                <!-- Table info -->
+                <div class="form-group col">
+                    <table id="tblInfo" style="margin-top: 0.5rem;">
+                        <tr>
+                            <td width="50%"><a>Bobina Lançamento: @Model.TesteOptico.BobinadeLancamento</a></td>
+                            <td width="50%"><a>Posição ICX/DGO: @Model.TesteOptico.PosicaoICX_DGO</a></td>
+                        </tr>
+                        <tr>
+                            <td><a>Bobina Recepção: @Model.TesteOptico.BobinadeRecepcao</a></td>
+                            <td><a>Splitter CEOS: @Model.TesteOptico.SplitterCEOS</a></td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- End Table -->
 
                 <!-- INSERÇÃO DE CDOIA -->
                 <div id="cdoiArea">

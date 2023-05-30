@@ -32,6 +32,7 @@ builder.Services.AddScoped<IEstadoCampoRepository, EstadoCampoRepository>();
 builder.Services.AddScoped<ITesteOpticoRepository, TesteOpticoRepository>();
 builder.Services.AddScoped<IEnderecoTotaisRepository, EnderecoTotaisRepository>();
 builder.Services.AddScoped<IAnaliseRepository, AnaliseRepository>();
+builder.Services.AddScoped<ICdoiaRepository, CdoiaRepository>();
 builder.Services.AddSingleton<ConversionViewModel>();
 builder.Services.AddSingleton<ProgressBar>();
 builder.Services.AddSingleton<ArquivoModel>();
