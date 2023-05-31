@@ -506,11 +506,11 @@ namespace ControleGestaoFtth.Controllers
 
         }
         [HttpGet]
-        public IActionResult FileResultImg(string sgl, string cdo)
+        public IActionResult FileResultImg(string uf, string sgl, string cdo)
         {
             try
             {
-                var imagem = _TesteOpticoRepository.ArquivoOptico(sgl, cdo, new string[] { ".jpg", ".png", ".jfif", ".bmp" });
+                var imagem = _TesteOpticoRepository.ArquivoOptico(uf ,sgl, cdo, new string[] { ".jpg", ".png", ".jfif", ".bmp" });
                 ViewData["imagemOptica"] = true;
                
                 return Json(new
@@ -524,11 +524,11 @@ namespace ControleGestaoFtth.Controllers
             }
         }
         [HttpGet]
-        public IActionResult FileResultDwg(string sgl, string cdo)
+        public IActionResult FileResultDwg(string uf, string sgl, string cdo)
         {
             try
             {
-                var dwg = _TesteOpticoRepository.ArquivoOptico(sgl, cdo, new string[] { ".dwg" });
+                var dwg = _TesteOpticoRepository.ArquivoOptico(uf, sgl, cdo, new string[] { ".dwg" });
 
                 if (dwg[0].Length > 0) 
                 {
@@ -546,12 +546,12 @@ namespace ControleGestaoFtth.Controllers
 
         }
         [HttpGet]
-        public IActionResult ImgOptico(string sgl, string cdo)
+        public IActionResult ImgOptico(string uf, string sgl, string cdo)
         {
 
             try
             {
-                var imagem = _TesteOpticoRepository.ArquivoOptico(sgl, cdo, new string[] { ".jpg", ".png", ".jfif", ".bmp" });
+                var imagem = _TesteOpticoRepository.ArquivoOptico(uf, sgl, cdo, new string[] { ".jpg", ".png", ".jfif", ".bmp" });
 
                 return PartialView(imagem);
             }
@@ -564,11 +564,11 @@ namespace ControleGestaoFtth.Controllers
 
         }
         [HttpGet]
-        public IActionResult DwgOptico(string sgl, string cdo)
+        public IActionResult DwgOptico(string uf, string sgl, string cdo)
         {
             try
             {
-                var dwg = _TesteOpticoRepository.ArquivoOptico(sgl, cdo, new string[] { ".dwg" });
+                var dwg = _TesteOpticoRepository.ArquivoOptico(uf, sgl, cdo, new string[] { ".dwg" });
 
                 _conversionViewModel.InputFilePath = dwg[0];
 
@@ -598,41 +598,6 @@ namespace ControleGestaoFtth.Controllers
             }
 
         }
-        /*[HttpPost]
-        public IActionResult Inserir(TesteOptico TesteOptico)
-        {
-          
-            try
-            {
-                ViewData["selectViabilidade"] = _TesteOpticoRepository.Netwins();
-                ViewData["selectConstrutora"] = _TesteOpticoRepository.Construtoras();
-                ViewData["selectEstacao"] = _TesteOpticoRepository.Estacoes();
-                ViewData["selectObras"] = _TesteOpticoRepository.TipoObras();
-                ViewData["selectEstadoCampo"] = _TesteOpticoRepository.EstadoCampos();
-
-                if (ModelState.IsValid)
-                {
-                    if (_TesteOpticoRepository.UniqueCdo().Any(p => p.CDO.Equals(TesteOptico.CDO.ToUpper())))
-                    {
-                        TempData["Falha"] = $"CDO {TesteOptico.CDO} já existe.";
-
-                        return View(TesteOptico);
-                    }
-                    else
-                    {
-                        _TesteOpticoRepository.Cadastrar(TesteOptico);
-                        TempData["Sucesso"] = "Inserido com sucesso.";
-                        return RedirectToAction("Inserir");
-                    }
-                }
-                return View(TesteOptico);
-            }
-            catch (Exception error)
-            {
-                TempData["Falha"] = $"Erro ao inserir - {error.Message}.";
-                return View(TesteOptico);
-            }
-        }*/
         [HttpPost]
         public IActionResult Editar(TesteOptico TesteOptico)
         {

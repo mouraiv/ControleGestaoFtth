@@ -18,7 +18,7 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<EstadoCampo> EstadoCampos();
         Enderecostotais Enderecototais(string cdo, string municipio, string uf);
         Materiais Materiais(string cdo, string municipio, string uf);
-        List<string> ArquivoOptico(string sgl, string cdo, string[] extensoes);
+        List<string> ArquivoOptico(string uf, string sgl, string cdo, string[] extensoes);
         string GetArquivo(string caminho);
         IEnumerable<Regioe> Regiao();
         IEnumerable<Estado> Estado();

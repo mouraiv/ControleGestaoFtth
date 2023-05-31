@@ -18,5 +18,6 @@ namespace ControleGestaoFtth.Repository.Interface
         IEnumerable<Estado> Estado(string regiao);
         IEnumerable<Estacoe> Estacoes(string estado);
         IEnumerable<TesteOptico> TesteOptico(string estacao);
+        int LastId();
     }
 }

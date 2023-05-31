@@ -251,5 +251,9 @@ namespace ControleGestaoFtth.Repository
                 .Where(p => p.TesteOpticoId == testeOpticoId)
                 .ToList();
         }
+        public int LastId()
+        {
+            return _context.Analises.Max(c => c.Id);
+        }
     }
 }

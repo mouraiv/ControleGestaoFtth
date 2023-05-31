@@ -14,6 +14,24 @@
             </a>
         </div>
         <div class="modal-body">
+            <div>
+                <!-- Alert para tratamento de exceções -->
+                @if (TempData["Sucesso"] != null)
+                {
+                    <div id="alertForm" class="alert alert-success" role="alert">
+                        <button type="button" class="close-alert text-success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <a>@TempData["Sucesso"]</a>
+                    </div>
+                }
+                @if (TempData["Falha"] != null)
+                {
+                    <div id="alertForm" class="alert alert-danger" role="alert">
+                        <button type="button" class="close-alert text-danger" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <a>@TempData["Falha"]</a>
+                    </div>
+                }
+                <!-- End  Alert-->
+            </div>
             <div id="displayDetalheFtth">
                 <!-- Condição Nula do Modal -->
                 @if (Model != null)
@@ -126,6 +144,22 @@
     </div>
 </div>
 <!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+            <!--Conteudo Display-->
+            <div class="d-flex justify-content-center">
+                <div class="spinner-border text-secondary m-5" role="status">
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+            <!-- End -->
+        </div>
+    </div>
+</div>
+<!-- End Modal -->
+<!-- Modal -->
 <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="basicModal" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -170,7 +204,8 @@
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW DETAHLE
         function AnaliseDetalhe() {
             //VARIAVEL GLOBAL
-            var sgl = "@Model?.TesteOptico.Estacao.Sigla";
+            var uf = "@Model?.TesteOptico?.Estacao.Estado.Uf";
+            var sgl = "@Model?.TesteOptico?.Estacao.Sigla";
             var cdo = "@Model?.TesteOptico.CDO";
             var testeOpticoId = "@Model?.TesteOpticoId";
 
@@ -191,7 +226,7 @@
                 }, 100 * i);
             }
 
-            $.get('@Url.Action("FileResultImg", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo,
+            $.get('@Url.Action("FileResultImg", "TesteOptico")?uf=' + uf + '&sgl=' + sgl + '&cdo=' + cdo,
                 {}, function (data) {
                     if (data.imagemOptica != true) {
                         $("#iconWidget").removeAttr("data-bs-target");
@@ -201,7 +236,7 @@
                     } else {
                         //CARREGAR IMAGEM NO MODAL
                         $('#iconWidget').on('click', function () {
-                            let dir = '@Url.Action("ImgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
+                            let dir = '@Url.Action("ImgOptico", "TesteOptico")?uf=' + uf + '&sgl=' + sgl + '&cdo=' + cdo;
 
                             $.get(dir,
                                 {}, function (resposta) {
@@ -214,7 +249,7 @@
                     return false;
                 });
 
-            $.get('@Url.Action("FileResultDwg", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo,
+            $.get('@Url.Action("FileResultDwg", "TesteOptico")?uf=' + uf + '&sgl=' + sgl + '&cdo=' + cdo,
                 {}, function (data) {
                     if (data.dwgToPdf != true) {
                         $("#iconDwg").removeAttr("data-bs-target");
@@ -231,7 +266,7 @@
                                 i++;
                             };
 
-                            let dirFile = '@Url.Action("DwgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
+                            let dirFile = '@Url.Action("DwgOptico", "TesteOptico")?uf=' + uf + '&sgl=' + sgl + '&cdo=' + cdo;
                             let dirFileMemory = '@Url.Action("DwgView", "TesteOptico")';
 
                             $.ajax({
@@ -295,7 +330,7 @@
                             mes = '0' + mes;
                         }
                         var ano = dataObj.getFullYear();
-                        var dataFormatada = dia + "/" + mes + "/" + ano;
+                        var dataFormatada = dia + "/" + mes + "/" + ano + " " + dataObj.getHours() + ":" + dataObj.getMinutes() + ":" + dataObj.getSeconds();
                         $("<td></td>").text(dataFormatada).addClass(style).appendTo(row);
 
                         //CONDIÇÃO STATUS 1 != 0 APROVADO OU REPROVADO
@@ -306,19 +341,19 @@
                         }
                         //ADICIONAR BUTTON ICON VISUALIZAR
                         var tdButtonViewer = $("<td></td>").addClass(style);
-                        var viewer = $("<i></i>").addClass("fa fa-list icon-tblAnalise");
+                        var viewer = $("<i></i>").addClass("fa fa-list icon-tblAnalise").attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal');
                         tdButtonViewer.append(viewer);
                         row.append(tdButtonViewer);
 
                         //ADICIONAR BUTTON ICON EDITAR
                         let tdButtonEditar = $("<td></td>").addClass(style);
-                        let editar = $("<i></i>").addClass("fa fa-pencil icon-tblAnalise");
+                        let editar = $("<i></i>").addClass("fa fa-pencil icon-tblAnalise").attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal');
                         tdButtonEditar.append(editar);
                         row.append(tdButtonEditar);
 
                         //ADICIONAR BUTTON ICON EXCLUIR
                         let tdButtonExcluir = $("<td></td>").addClass(style);
-                        let excluir = $("<i></i>").addClass("fa fa-trash icon-tblAnalise");
+                        let excluir = $("<i></i>").addClass("fa fa-trash icon-tblAnalise").attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal');
                         tdButtonExcluir.append(excluir);
                         row.append(tdButtonExcluir);
 
@@ -328,6 +363,35 @@
                     });
                     return false;
                 });
+
+            //AÇÃO BUTTON ICON EXCLUIR SHOW ME MODAL
+            $('#tblAnaliseTec').on('click', '.fa-trash', function () {
+                //CARREGAR DETAHLE VIEW E CHAMAR O COLLAPSE MODAL
+                $.get('../Confirmacao?id=' + @Model?.Id,
+                    {}, function (resposta) {
+                        //CARREGAR SPINNER LOADER
+                        spinnerFtth('#exampleModal modal-content');
+
+                        //CARREGAR PARTIAL VIEW
+                        $('#exampleModal .modal-content').html($(resposta).find('.modal-content').html());
+
+                        //EDITAR MODAL HEADER
+                        $('#exampleModal .modal-content .modal-header').html(`
+                                             <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden="true""></i>
+                                                <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
+                                                    -- ATENÇÃO --
+                                                </a>
+                                         `);
+
+                        //EDITAR MODAL FOOTER
+                        $('#exampleModal .modal-content .modal-footer').html(`
+                                            <button onclick="location.href='@Url.Action("Apagar", "Analise", new {id = Model?.Id})'" class="btn btn-primary mt-2">Confirmar</button>
+                                            <button type="button" data-bs-dismiss="modal" class= "btn btn-secondary mt-2">Cancelar</button>
+                                        `);
+
+                        return false;
+                    });
+            });
 
         } (AnaliseDetalhe())
     </script>

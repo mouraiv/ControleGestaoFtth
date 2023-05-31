@@ -3,8 +3,11 @@
 <div id="formInsert" class="d-flex flex-row justify-content-center">
     <div style="width:600px;">
        <!-- Formulário para edição -->
-        <form asp-controller="Analise" asp-action="Inserir" method="post" class="needs-validation" novalidate>
-            <input type="hidden" name="TesteOpticoId" value="@Model.TesteOpticoId">
+        <form asp-controller="Analise" asp-action="Inserir" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            <input type="hidden" asp-for="TesteOpticoId">
+            <input type="hidden" name="Uf" value="@Model.TesteOptico.Estacao.Estado.Uf">
+            <input type="hidden" name="Slg" value="@Model.TesteOptico.Estacao.Sigla">
+            <input type="hidden" name="Cdo" value="@Model.TesteOptico.CDO">
             <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- INSERIR ANALISE --</a></div>
                 <div id="formEditar" name="analiseInsert" class="row">
                 <!-- Table info -->
@@ -30,14 +33,17 @@
                 <div class="w-100"></div>
                 <div class="form-group col">
                     <label>Data da Analise:</label>
-                    <input type="text" value="@DateTime.Now" name="DataAnalise" class="form-control" maxlength="50" disabled required>
+                    <input type="text" value="@DateTime.Now.ToString("d")" name="DataAnalise" class="form-control" maxlength="50" disabled required>
                     <div class="invalid-feedback">Campo Obrigatório.</div>
                 </div>
                  <div class="form-group col">
                       <label>Carregar Arquivos:</label>
                      <div id="prtImgCdoia">
                          <div id="ptrIconUpload">
+                             <label for="files">
                             <i id="imgCdoia" style="cursor:pointer; font-size:0.9rem;" class="fa fa-upload" aria-hidden="true"></i>
+                            </label>
+                            <input type="file" class="d-none" id="files" name="files" accept=".jpg, .jpeg, .png, .gif, .bmp, .dib, .jfif, .tiff, .tif, .dwg" multiple />
                          </div>
                          <div id="ptrTxtUpload">
                             <a>0 Arquivos</a>
@@ -52,7 +58,7 @@
                 </div>
                 <div class="form-group col">
                     <label>Status:</label>
-                    @Html.DropDownList("statusList", new SelectList(ViewBag.selectStatusFilter,"Value", "Text"), "--Selecionar--",new { @id="dropStatusAnalise", @class="custom-select", required = ""})
+                    @Html.DropDownListFor(model => model.Status, new SelectList(ViewBag.selectStatusFilter,"Value", "Text"), "--Selecionar--",new { @id="dropStatusAnalise", @class="custom-select", required = ""})
                     <div class="invalid-feedback">Campo Obrigatório.</div>
                 </div>
                 <div class="w-100"></div>
@@ -139,6 +145,18 @@
                           </div>
                          `)
             }
+
+            //BOTÃO ADICIONAR IMAGEM CDO PRINCIPAL
+            $('#formEditar').on('change', '#files', function () {
+                //GET INPUT FILE
+                var files = $(this)[0].files;
+                for (var i = 1; i < files.length + 1; i++) {
+                    console.log(i);
+                    //MOSTRAR QUANTIDADE DE ARQUIVOS ADICIONADOS
+                    $("#ptrTxtUpload a").text(i + " Arquivos");
+                }
+                
+            });
 
             //BOTÃO ADICIONAR CDOIA
             $('#formEditar').on('click','#addCdoia', function () {

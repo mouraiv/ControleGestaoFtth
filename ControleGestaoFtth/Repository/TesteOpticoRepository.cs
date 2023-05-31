@@ -269,9 +269,9 @@ namespace ControleGestaoFtth.Repository
                 .ToList();
         }
 
-        public List<string> ArquivoOptico(string sgl, string cdo, string[] extensoes)
+        public List<string> ArquivoOptico(string uf, string sgl, string cdo, string[] extensoes)
         {
-            string pasta = "Upload\\TesteOptico\\Anexos\\"+sgl+"\\TESTE_OPTICO\\"+cdo+"\\";
+            string pasta = "Upload\\TesteOptico\\Anexos\\"+uf+"\\"+sgl+"\\TESTE_OPTICO\\"+cdo+"\\";
 
             var arquivo = Directory.GetFiles(pasta, "*", SearchOption.AllDirectories)
                          .Where(file => extensoes.Contains(Path.GetExtension(file)))

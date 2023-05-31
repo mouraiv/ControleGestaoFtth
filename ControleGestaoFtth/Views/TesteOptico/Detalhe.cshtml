@@ -147,6 +147,7 @@
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW DETAHLE
         function TesteOpticoDetalhe() {
             //VARIAVEL GLOBAL
+            var uf = "@Model?.Estacao?.Estado.Uf";
             var sgl = "@Model?.Estacao?.Sigla";
             var cdo = "@Model?.CDO";
 
@@ -156,7 +157,7 @@
                 }, 100 * i);
             }
 
-            $.get('@Url.Action("FileResultImg", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo,
+            $.get('@Url.Action("FileResultImg", "TesteOptico")?uf='+ uf +'&sgl=' + sgl + '&cdo=' + cdo,
                 {}, function (data) {
                     if (data.imagemOptica != true) {
                         $("#iconWidget").removeAttr("data-bs-target");
@@ -166,7 +167,7 @@
                     }else{
                         //CARREGAR IMAGEM NO MODAL
                         $('#iconWidget').on('click', function () {
-                            let dir = '@Url.Action("ImgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
+                            let dir = '@Url.Action("ImgOptico", "TesteOptico")?uf=' + uf + '&sgl=' + sgl + '&cdo=' + cdo;
 
                             $.get(dir,
                                 {}, function (resposta) {
@@ -179,7 +180,7 @@
                     return false;
             });
 
-            $.get('@Url.Action("FileResultDwg", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo,
+            $.get('@Url.Action("FileResultDwg", "TesteOptico")?uf=' + uf + '&sgl=' + sgl + '&cdo=' + cdo,
                 {}, function (data) {
                     if (data.dwgToPdf != true) {
                         $("#iconDwg").removeAttr("data-bs-target");
@@ -196,7 +197,7 @@
                                 i++;
                             };
 
-                            let dirFile = '@Url.Action("DwgOptico", "TesteOptico")?sgl=' + sgl + '&cdo=' + cdo;
+                            let dirFile = '@Url.Action("DwgOptico", "TesteOptico")?uf=' + uf + '&sgl=' + sgl + '&cdo=' + cdo;
                             let dirFileMemory = '@Url.Action("DwgView", "TesteOptico")';
 
                             $.ajax({

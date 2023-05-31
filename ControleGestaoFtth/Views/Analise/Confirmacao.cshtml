@@ -1,4 +1,21 @@
-﻿
-@*
-    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model Analise
+@{
+    ViewData["Title"] = "Confirmação";
+}
+<div class="d-flex flex-row justify-content-center">
+    <div class="modal-content">
+        <div class="modal-header bg-primary p-2 position-relative">
+            <i style="font-size:1.5rem;" class="fa fa-exclamation-circle position-absolute start-0 ms-2 text-white aria-hidden=" true""></i>
+            <a style="font-size:0.9rem; font-weight: 600;" class="text-white text-decoration-none">
+                -- ATENÇÃO --
+            </a>
+        </div>
+        <div class="modal-body">
+            <a id="AvisoConfirmacao">A analise referente a Id @Model.Id será excluído. <br /><br /> Deseja realmente excluir?   </a>
+            <div class="modal-footer mt-4">
+                <button onclick="location.href='@Url.Action("Apagar", "Analise", new {id = Model.Id})'" class="btn btn-primary mt-2">Confirmar</button>
+                <button onclick="location.href='@Url.Action("Detalhe", "Analise", new {id = Model.Id})'" class="btn btn-secondary mt-2 cancelar">Cancelar</button>
+            </div>
+        </div>
+    </div>
+</div>

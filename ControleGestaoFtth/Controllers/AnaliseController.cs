@@ -1,4 +1,5 @@
-﻿using ControleGestaoFtth.Models;
+﻿using Aspose.Pdf.Operators;
+using ControleGestaoFtth.Models;
 using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -56,39 +57,67 @@ namespace ControleGestaoFtth.Controllers
             return PartialView(analise);
         }
         [HttpPost]
-        public IActionResult Inserir(Analise analise)
+        public IActionResult Inserir(Analise analise, List<IFormFile> files)
         {
             try
             {
                 var statusList = new[]
-                     {
+                    {
                             new SelectListItem { Value = "1", Text = "APROVADO" },
                             new SelectListItem { Value = "0", Text = "REPROVADO" }
                         };
 
                 ViewData["selectStatusFilter"] = statusList;
 
-                analise.TesteOpticoId = int.Parse(Request.Form["TesteOpticoId"]);
-                analise.Status = int.Parse(Request.Form["Status"]);
+                //RECUPERA ESTADO UF E SIGLA ESTAÇÃO DO FORMULÁRIO
+                var uf = Request.Form["Uf"];
+                var slg = Request.Form["Slg"];
+                var cdo = Request.Form["Cdo"];
+
+                //CAMINHO PARA UPLOADS DE ARQUIVOS
+                string pasta = "Upload\\TesteOptico\\Anexos\\" + uf + "\\" + slg + "\\TESTE_OPTICO\\";
+
+                analise.Id = _analiseRepository.LastId() + 1;
                 analise.TecnicoId = int.Parse(Request.Form["TecnicoId"]);
-                analise.DataAnalise = DateTime.Parse(Request.Form["DataAnalise"]);
+                analise.DataAnalise = DateTime.Now;
                 analise.Observacao = Request.Form["Observacao"];
-                analise.CDOIA = Request.Form["CDOIA"];
-                analise.CDOIAStatus = Request.Form["CDOIAStatus"];
-                analise.CDOIA_Obs = Request.Form["CDOIA_Obs"];
+                analise.CDOIA = "";
+                analise.CDOIAStatus = "";
+                analise.CDOIA_Obs = "";
 
                 _analiseRepository.Cadastrar(analise);
 
+                foreach (var file in files)
+                {
+                    if (file != null && file.Length > 0)
+                    {
+                        // Obtém o nome do arquivo
+                        var fileName = Path.GetFileName(file.FileName);
+
+                        // Cria a pasta com o nome do arquivo
+                        var folderPath = Path.Combine(pasta, cdo);
+                        Directory.CreateDirectory(folderPath);
+
+                        // Salva o arquivo no diretório criado
+                        var filePath = Path.Combine(folderPath, fileName);
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            file.CopyTo(stream);
+                        }
+                    }
+                }
+
                 TempData["Sucesso"] = "Inserido com sucesso.";
-                return View();
+                return RedirectToAction("Detalhe", new { id = analise.TesteOpticoId });
 
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao inserir - {error}.";
-                return View();
+                TempData["Falha"] = $"Erro ao inserir - {error.Message}.";
+                return RedirectToAction("Detalhe", new { id = analise.TesteOpticoId });
             }
         }
+       
         [HttpPost]
         public IActionResult Editar(Analise analise)
         {
@@ -111,14 +140,16 @@ namespace ControleGestaoFtth.Controllers
         {
             try
             {
+                var testeOpticoId = _analiseRepository.CarregarId(id).TesteOpticoId;
                 _analiseRepository.Deletar(id);
                 TempData["Sucesso"] = $"Analise Técnica excluída com sucesso.";
-                return RedirectToAction("Index");
+                return RedirectToAction("Detalhe", new { id = testeOpticoId });
             }
             catch (Exception error)
             {
+                var testeOpticoId = _analiseRepository.CarregarId(id).TesteOpticoId;
                 TempData["Falha"] = $"Erro ao excluir - {error.Message}.";
-                return RedirectToAction("Index");
+                return RedirectToAction("Detalhe", new { id = testeOpticoId });
             }
         }
         [HttpGet]
