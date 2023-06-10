@@ -1,10 +1,11 @@
-﻿@model Analise
+﻿@using ControleGestaoFtth.Models.ViewModel;
+@model AnaliseView;
 
 <div id="formInsert" class="d-flex flex-row justify-content-center">
     <div style="width:600px;">
        <!-- Formulário para edição -->
         <form asp-controller="Analise" asp-action="Inserir" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
-            <input type="hidden" asp-for="TesteOpticoId">
+            <input type="hidden" name="TesteOpticoId" value="@Model.TesteOptico.Id">
             <input type="hidden" name="Uf" value="@Model.TesteOptico.Estacao.Estado.Uf">
             <input type="hidden" name="Slg" value="@Model.TesteOptico.Estacao.Sigla">
             <input type="hidden" name="Cdo" value="@Model.TesteOptico.CDO">
@@ -58,7 +59,7 @@
                 </div>
                 <div class="form-group col">
                     <label>Status:</label>
-                    @Html.DropDownListFor(model => model.Status, new SelectList(ViewBag.selectStatusFilter,"Value", "Text"), "--Selecionar--",new { @id="dropStatusAnalise", @class="custom-select", required = ""})
+                    @Html.DropDownListFor(model => model.Analise.Status, new SelectList(ViewBag.selectStatusFilter,"Value", "Text"), "--Selecionar--",new { @id="dropStatusAnalise", @class="custom-select", required = ""})
                     <div class="invalid-feedback">Campo Obrigatório.</div>
                 </div>
                 <div class="w-100"></div>
@@ -112,7 +113,7 @@
                 <!-- END CDOIA -->
 
                 <div class="modal-footer p-0 m-0 mt-4">
-                     <a role="button" asp-action="Detalhe" asp-controller="Analise" asp-route-id="@Model.TesteOpticoId" id="btnRoles" class="btn btn-secondary mt-4 ms-2">Voltar</a>
+                     <a role="button" asp-action="Detalhe" asp-controller="Analise" asp-route-id="@Model.TesteOptico.Id" id="btnRoles" class="btn btn-secondary mt-4 ms-2">Voltar</a>
                      <button type="submit" class="btn btn-primary mt-4 me-2">Inserir</button>
                 </div>
             </div>
@@ -129,7 +130,11 @@
             //VARIAVEL GLOBAL
             var sgl = "@Model?.TesteOptico.Estacao.Sigla";
             var cdo = "@Model?.TesteOptico.CDO";
-            var testeOpticoId = "@Model?.TesteOpticoId";
+            var testeOpticoId = "@Model?.TesteOptico.Id";
+            //PEGAR ID VALOR NA ROW TABLE CDOPIA
+            var getIdButtonTable = function reply_click(clicked_id) {
+                return clicked_id;
+            }
             //INDEX ARRAY CDOIA
             var cdoiaIndex = [];
             //RESETAR ALERT TABLE CDOIA
@@ -197,7 +202,7 @@
                               <a>Obs:</a><input id="obsCdoia'+cdoiaNumber+'" type="text" class="form-control">\
                             </td>\
                             <td>\
-                               <i id="excluirCdoia'+ cdoiaNumber + '" style="cursor:pointer; font-size:0.8rem;" class="fa fa-trash" aria-hidden="true"></i>\
+                              <i id="excluirCdoia'+ cdoiaNumber + '" onClick="reply_click(this.id)" style="cursor:pointer; font-size:0.8rem;" class="fa fa-trash" aria-hidden="true"></i>\
                             </td>\
                           </tr>');
                 //ADICIONAR A LINHA A TABELA CDOIA

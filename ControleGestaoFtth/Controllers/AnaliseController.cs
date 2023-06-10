@@ -1,5 +1,6 @@
 ﻿using Aspose.Pdf.Operators;
 using ControleGestaoFtth.Models;
+using ControleGestaoFtth.Models.ViewModel;
 using ControleGestaoFtth.Repository;
 using ControleGestaoFtth.Repository.Interface;
 using Microsoft.AspNetCore.Mvc;
@@ -11,10 +12,12 @@ namespace ControleGestaoFtth.Controllers
     public class AnaliseController : Controller
     {
         private readonly IAnaliseRepository _analiseRepository;
+        private readonly ITesteOpticoRepository _testeOpticoRepository;
 
-        public AnaliseController(IAnaliseRepository analiseRepository)
+        public AnaliseController(IAnaliseRepository analiseRepository, ITesteOpticoRepository testeOpticoRepository)
         {
             _analiseRepository = analiseRepository;
+            _testeOpticoRepository = testeOpticoRepository;
         }
 
         public IActionResult Index()
@@ -27,14 +30,19 @@ namespace ControleGestaoFtth.Controllers
         }
         public IActionResult Inserir(int id)
         {
-            Analise analise = _analiseRepository.CarregarIdTesteOptico(id);
+            TesteOptico testeOptico = _testeOpticoRepository.CarregarId(id);
+            Analise analise = new();
+
+            var analiseView = new AnaliseView { TesteOptico = testeOptico, Analise = analise };
+
             var statusList = new[]
                       {
                             new SelectListItem { Value = "1", Text = "APROVADO" },
                             new SelectListItem { Value = "0", Text = "REPROVADO" }
                         };
             ViewData["selectStatusFilter"] = statusList;
-            return View(analise);
+
+            return View(analiseView);
         }
         public IActionResult Editar(int id)
         {
@@ -57,7 +65,7 @@ namespace ControleGestaoFtth.Controllers
             return PartialView(analise);
         }
         [HttpPost]
-        public IActionResult Inserir(Analise analise, List<IFormFile> files)
+        public IActionResult Inserir(AnaliseView analiseView, List<IFormFile> files)
         {
             try
             {
@@ -77,15 +85,16 @@ namespace ControleGestaoFtth.Controllers
                 //CAMINHO PARA UPLOADS DE ARQUIVOS
                 string pasta = "Upload\\TesteOptico\\Anexos\\" + uf + "\\" + slg + "\\TESTE_OPTICO\\";
 
-                analise.Id = _analiseRepository.LastId() + 1;
-                analise.TecnicoId = int.Parse(Request.Form["TecnicoId"]);
-                analise.DataAnalise = DateTime.Now;
-                analise.Observacao = Request.Form["Observacao"];
-                analise.CDOIA = "";
-                analise.CDOIAStatus = "";
-                analise.CDOIA_Obs = "";
+                //analiseView.Analise.Id = _analiseRepository.LastId() + 1;
+                analiseView.Analise.TesteOpticoId = int.Parse(Request.Form["TesteOpticoId"]);
+                analiseView.Analise.TecnicoId = int.Parse(Request.Form["TecnicoId"]);
+                analiseView.Analise.DataAnalise = DateTime.Now;
+                analiseView.Analise.Observacao = Request.Form["Observacao"];
+                analiseView.Analise.CDOIA = "";
+                analiseView.Analise.CDOIAStatus = "";
+                analiseView.Analise.CDOIA_Obs = "";
 
-                _analiseRepository.Cadastrar(analise);
+                _analiseRepository.Cadastrar(analiseView.Analise);
 
                 foreach (var file in files)
                 {
@@ -107,14 +116,29 @@ namespace ControleGestaoFtth.Controllers
                     }
                 }
 
-                TempData["Sucesso"] = "Inserido com sucesso.";
-                return RedirectToAction("Detalhe", new { id = analise.TesteOpticoId });
+                if (analiseView.Analise.Id > 0) {
+                    TempData["Sucesso"] = "Inserido com sucesso.";
+                    return RedirectToAction("Detalhe", new { id = analiseView.Analise.TesteOpticoId });
+                }
+                else
+                {
+                    TempData["Sucesso"] = "Inserido com sucesso.";
+                    return View("Index");
+                }
 
             }
             catch (Exception error)
             {
-                TempData["Falha"] = $"Erro ao inserir - {error.Message}.";
-                return RedirectToAction("Detalhe", new { id = analise.TesteOpticoId });
+                if (analiseView.Analise.Id > 0)
+                {
+                    TempData["Falha"] = $"Erro ao inserir - {error.Message}.";
+                    return RedirectToAction("Detalhe", new { id = analiseView.Analise.TesteOpticoId });
+                }
+                else
+                {
+                    TempData["Falha"] = $"Erro ao inserir - {error.Message}.";
+                    return View("Index");
+                }
             }
         }
        

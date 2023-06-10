@@ -201,6 +201,8 @@
 @section Scripts
     {
     <script>
+        //VARIAVEL GLOBAL SCOPO
+        var getIdButtonTable;
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW DETAHLE
         function AnaliseDetalhe() {
             //VARIAVEL GLOBAL
@@ -208,7 +210,7 @@
             var sgl = "@Model?.TesteOptico?.Estacao.Sigla";
             var cdo = "@Model?.TesteOptico.CDO";
             var testeOpticoId = "@Model?.TesteOpticoId";
-
+            
             //SPINNER LOADER
             function spinnerFtth(display) {
                 $(display).html(`
@@ -341,19 +343,19 @@
                         }
                         //ADICIONAR BUTTON ICON VISUALIZAR
                         var tdButtonViewer = $("<td></td>").addClass(style);
-                        var viewer = $("<i></i>").addClass("fa fa-list icon-tblAnalise").attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal');
+                        var viewer = $("<i></i>").addClass("fa fa-list icon-tblAnalise").attr('id', item.id).attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal').attr("onclick", "reply_click(this.id)");
                         tdButtonViewer.append(viewer);
                         row.append(tdButtonViewer);
 
                         //ADICIONAR BUTTON ICON EDITAR
                         let tdButtonEditar = $("<td></td>").addClass(style);
-                        let editar = $("<i></i>").addClass("fa fa-pencil icon-tblAnalise").attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal');
+                        let editar = $("<i></i>").addClass("fa fa-pencil icon-tblAnalise").attr('id', item.id).attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal').attr("onclick", "reply_click(this.id)");
                         tdButtonEditar.append(editar);
                         row.append(tdButtonEditar);
 
                         //ADICIONAR BUTTON ICON EXCLUIR
                         let tdButtonExcluir = $("<td></td>").addClass(style);
-                        let excluir = $("<i></i>").addClass("fa fa-trash icon-tblAnalise").attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal');
+                        let excluir = $("<i></i>").addClass("fa fa-trash icon-tblAnalise").attr('id', item.id).attr('data-bs-toggle', 'modal').attr('data-bs-target', '#exampleModal').attr("onclick", "reply_click(this.id)");
                         tdButtonExcluir.append(excluir);
                         row.append(tdButtonExcluir);
 
@@ -367,7 +369,8 @@
             //AÇÃO BUTTON ICON EXCLUIR SHOW ME MODAL
             $('#tblAnaliseTec').on('click', '.fa-trash', function () {
                 //CARREGAR DETAHLE VIEW E CHAMAR O COLLAPSE MODAL
-                $.get('../Confirmacao?id=' + @Model?.Id,
+                var url = '@Url.Action("Apagar", "Analise")/' + getIdButtonTable;
+                $.get('../Confirmacao?id=' + getIdButtonTable,
                     {}, function (resposta) {
                         //CARREGAR SPINNER LOADER
                         spinnerFtth('#exampleModal modal-content');
@@ -385,7 +388,7 @@
 
                         //EDITAR MODAL FOOTER
                         $('#exampleModal .modal-content .modal-footer').html(`
-                                            <button onclick="location.href='@Url.Action("Apagar", "Analise", new {id = Model?.Id})'" class="btn btn-primary mt-2">Confirmar</button>
+                                            <button onclick="location.href='@Url.Action("Apagar", "Analise")?id=' + getIdButtonTable;" class="btn btn-primary mt-2">Confirmar</button>
                                             <button type="button" data-bs-dismiss="modal" class= "btn btn-secondary mt-2">Cancelar</button>
                                         `);
 
@@ -394,6 +397,10 @@
             });
 
         } (AnaliseDetalhe())
+        //PEGAR ID VALOR NA ROW TABLE CDOPIA
+        function reply_click(clicked_id) {
+            getIdButtonTable = clicked_id;
+        }
     </script>
     }
 

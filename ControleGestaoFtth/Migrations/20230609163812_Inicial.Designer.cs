@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleGestaoFtth.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230413170002_Inicial")]
+    [Migration("20230609163812_Inicial")]
     partial class Inicial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,73 @@ namespace ControleGestaoFtth.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "6.0.11")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Analise", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("CDOIA")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CDOIAStatus")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CDOIA_Obs")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime>("DataAnalise")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Observacao")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TecnicoId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("TesteOpticoId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TecnicoId");
+
+                    b.HasIndex("TesteOpticoId");
+
+                    b.ToTable("Analises");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Cdoia", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int?>("AnaliseId")
+                        .IsRequired()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Observacao")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AnaliseId");
+
+                    b.ToTable("Cdoias");
+                });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.Construtora", b =>
                 {
@@ -87,7 +154,7 @@ namespace ControleGestaoFtth.Migrations
                     b.Property<string>("ID_CELULA")
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("ID_ENDERECO")
+                    b.Property<int>("ID_ENDERECO")
                         .HasColumnType("int");
 
                     b.Property<string>("LATITUDE")
@@ -165,6 +232,9 @@ namespace ControleGestaoFtth.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int?>("EstadosId")
+                        .HasColumnType("int");
+
                     b.Property<string>("NomeEstacao")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -175,7 +245,33 @@ namespace ControleGestaoFtth.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EstadosId");
+
                     b.ToTable("Estacoes");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Estado", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("RegiaoId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Uf")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RegiaoId");
+
+                    b.ToTable("Estados");
                 });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.EstadoCampo", b =>
@@ -191,6 +287,89 @@ namespace ControleGestaoFtth.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("EstadoCampos");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Materiais", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Codigo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("CodigoSAP")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DataEstadoControle")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("DataEstadoOperacional")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("ElementoRede")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Endereco")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("EstadoControle")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("EstadoOperacional")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Fabricante")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("GrupoOperacional")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Infraestrutura")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Latitude")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("LoginUsuario")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Longitude")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Modelo")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Municipio")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NomeEstAbastecedora")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NomeLocalidade")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("NomeUnidFederativa")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SiglaEstAbastecedora")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SiglaFederativa")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("SiglaLocalidade")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Tipo")
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Materiais");
                 });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.Netwin", b =>
@@ -212,6 +391,21 @@ namespace ControleGestaoFtth.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Netwins");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Regioe", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Regioes");
                 });
 
             modelBuilder.Entity("ControleGestaoFtth.Models.State", b =>
@@ -240,27 +434,18 @@ namespace ControleGestaoFtth.Migrations
             modelBuilder.Entity("ControleGestaoFtth.Models.Tecnico", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Funcao")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Tecnicos");
                 });
@@ -299,6 +484,12 @@ namespace ControleGestaoFtth.Migrations
                     b.Property<int?>("ConstrutorasId")
                         .HasColumnType("int");
 
+                    b.Property<DateTime?>("DataEstadoControle")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("DataEstadoOperacional")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<DateTime?>("DatadeConstrucao")
                         .HasColumnType("datetime(6)");
 
@@ -320,10 +511,22 @@ namespace ControleGestaoFtth.Migrations
                     b.Property<int?>("EstadoCamposId")
                         .HasColumnType("int");
 
+                    b.Property<string>("EstadoControle")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("EstadoOperacional")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Fabricante")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("FibraDGO")
                         .HasColumnType("longtext");
 
                     b.Property<string>("Meta")
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Modelo")
                         .HasColumnType("longtext");
 
                     b.Property<int?>("NetwinId")
@@ -394,19 +597,15 @@ namespace ControleGestaoFtth.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("Externo")
-                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<string>("Login")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Senha")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<string>("Tipo")
-                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
@@ -414,11 +613,63 @@ namespace ControleGestaoFtth.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("ControleGestaoFtth.Models.Analise", b =>
+                {
+                    b.HasOne("ControleGestaoFtth.Models.Tecnico", "Tecnico")
+                        .WithMany()
+                        .HasForeignKey("TecnicoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ControleGestaoFtth.Models.TesteOptico", "TesteOptico")
+                        .WithMany("Analise")
+                        .HasForeignKey("TesteOpticoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Tecnico");
+
+                    b.Navigation("TesteOptico");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Cdoia", b =>
+                {
+                    b.HasOne("ControleGestaoFtth.Models.Analise", "Analise")
+                        .WithMany("Cdoias")
+                        .HasForeignKey("AnaliseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Analise");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Estacoe", b =>
+                {
+                    b.HasOne("ControleGestaoFtth.Models.Estado", "Estado")
+                        .WithMany("Estacao")
+                        .HasForeignKey("EstadosId");
+
+                    b.Navigation("Estado");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Estado", b =>
+                {
+                    b.HasOne("ControleGestaoFtth.Models.Regioe", "Regiao")
+                        .WithMany("Estados")
+                        .HasForeignKey("RegiaoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Regiao");
+                });
+
             modelBuilder.Entity("ControleGestaoFtth.Models.Tecnico", b =>
                 {
                     b.HasOne("ControleGestaoFtth.Models.Usuario", "usuario")
-                        .WithMany()
-                        .HasForeignKey("UsuarioId");
+                        .WithOne("Tecnico")
+                        .HasForeignKey("ControleGestaoFtth.Models.Tecnico", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("usuario");
                 });
@@ -430,7 +681,7 @@ namespace ControleGestaoFtth.Migrations
                         .HasForeignKey("ConstrutorasId");
 
                     b.HasOne("ControleGestaoFtth.Models.Estacoe", "Estacao")
-                        .WithMany()
+                        .WithMany("TesteOptico")
                         .HasForeignKey("EstacoesId");
 
                     b.HasOne("ControleGestaoFtth.Models.EstadoCampo", "EstadoCampo")
@@ -464,6 +715,37 @@ namespace ControleGestaoFtth.Migrations
                     b.Navigation("State");
 
                     b.Navigation("TipoObra");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Analise", b =>
+                {
+                    b.Navigation("Cdoias");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Estacoe", b =>
+                {
+                    b.Navigation("TesteOptico");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Estado", b =>
+                {
+                    b.Navigation("Estacao");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Regioe", b =>
+                {
+                    b.Navigation("Estados");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.TesteOptico", b =>
+                {
+                    b.Navigation("Analise");
+                });
+
+            modelBuilder.Entity("ControleGestaoFtth.Models.Usuario", b =>
+                {
+                    b.Navigation("Tecnico")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
