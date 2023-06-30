@@ -100,7 +100,6 @@
                                     <i id="addCdoia" class="fa fa-plus-circle" aria-hidden="true"></i>
                                 </a>
                                 <a id="alertTblCdoia"></a>
-                                <button type="button" id="aplicarCdoia">APLICAR</button>
                             </td>
                         </tr>
                         </thead>
@@ -125,18 +124,25 @@
 @section Scripts
     {
     <script>
+        //VARIAVEL GLOBAL SCOPO
+        var indexRowId = 0;
+        var statusCdoia = "OK";
+        var cdoiaText = "";
+        var cdoiaNumber = "";
+        //OBJETO ARRAY CDOIA
+        var objetoArraycdoia = {  
+            CDOIA : [],
+            CDOIAStatus : [],
+            CDOIA_Obs : [],
+        };
+
         //FUNÇÃO REPONSÁVEL PELAS ACÕES JS/JQUERY DA VIEW DETAHLE
         function AnaliseInserir() {
             //VARIAVEL GLOBAL
             var sgl = "@Model?.TesteOptico.Estacao.Sigla";
             var cdo = "@Model?.TesteOptico.CDO";
             var testeOpticoId = "@Model?.TesteOptico.Id";
-            //PEGAR ID VALOR NA ROW TABLE CDOPIA
-            var getIdButtonTable = function reply_click(clicked_id) {
-                return clicked_id;
-            }
-            //INDEX ARRAY CDOIA
-            var cdoiaIndex = [];
+          
             //RESETAR ALERT TABLE CDOIA
             $('#alertTblCdoia').empty();
 
@@ -156,7 +162,6 @@
                 //GET INPUT FILE
                 var files = $(this)[0].files;
                 for (var i = 1; i < files.length + 1; i++) {
-                    console.log(i);
                     //MOSTRAR QUANTIDADE DE ARQUIVOS ADICIONADOS
                     $("#ptrTxtUpload a").text(i + " Arquivos");
                 }
@@ -166,53 +171,143 @@
             //BOTÃO ADICIONAR CDOIA
             $('#formEditar').on('click','#addCdoia', function () {
                 //VARIAVEL PEGAR VALOR DO INPUT CDOIA
-                var cdoiaNumber = $('#inputCdoia').val();
+                cdoiaNumber = $('#inputCdoia').val();
                 //TEXT LABEL CDOIA
-                var cdoiaText =  cdo + '.' + cdoiaNumber;
+                cdoiaText =  cdo;
+
+                //VARIAVEL DE TESTE CASO O VALOR EXISTA
+                var valorExiste = true;
+
+                //VERIFICAR SE O VALOR JÁ EXISTE NO ARRAY
+                $.each(objetoArraycdoia.CDOIA, function (index, elemento) {
+                    //CASO O VALOR EXISTE
+                    if (elemento === cdoiaNumber) {
+                        valorExiste = false;
+                        return false; 
+                    }
+                });
+
                 //VERIFICAR SE O INPUT CDOIA JÁ EXISTE NA TABELA
-                if(cdoiaIndex.indexOf(cdoiaNumber) == -1){
-                //INSERIR INDEX
-                cdoiaIndex.push(cdoiaNumber);
-                //RESETAR ALERT TABLE CDOIA
+                if(valorExiste){
+                //INSERIR DADOS ARRAY
+                objetoArraycdoia.CDOIA.push(cdoiaNumber);
+                objetoArraycdoia.CDOIAStatus.push("OK");
+                objetoArraycdoia.CDOIA_Obs.push("");
+
+                 //RESETAR ALERT TABLE CDOIA
                 $('#alertTblCdoia').empty();
-                //CRIAR ROW DE ACORDO COM O INPUT LABEL
-                var newRow = $('<tr>\
-                            <td id="txtCdoiaText" width="24%">\
-                              <div><a>' + cdoiaText + '</a></div>\
-                            </td>\
-                            <td width="15%">\
-                              <a>OK</a>\
-                              <label class="switch">\
-                                <input id="statusCdoia'+ cdoiaNumber + '" type="checkbox">\
-                                <span class="slider round"></span>\
-                              </label>\
-                              <a>NOK</a>\
-                            </td>\
-                            <td width="19%">\
-                              <div id="DisplayUploadTblAnalise">\
-                                <div style="background-color:#b9b9b9; border: 1px solid #b9b9b9;">\
-                                 <i id="imgCdoia'+ cdoiaNumber + '" style="cursor:pointer; font-size:0.8rem;" class="fa fa-upload" aria-hidden="true"></i>\
-                                </div>\
-                                <div>\
-                                  <a>0 Arquivos</a>\
-                                </div>\
-                              </div>\
-                            </td>\
-                            <td id="tdCdoiaObs">\
-                              <a>Obs:</a><input id="obsCdoia'+cdoiaNumber+'" type="text" class="form-control">\
-                            </td>\
-                            <td>\
-                              <i id="excluirCdoia'+ cdoiaNumber + '" onClick="reply_click(this.id)" style="cursor:pointer; font-size:0.8rem;" class="fa fa-trash" aria-hidden="true"></i>\
-                            </td>\
-                          </tr>');
-                //ADICIONAR A LINHA A TABELA CDOIA
-                $('#tblCdoiaContent').append(newRow);
+
+                //EXIBIR TABELA CDOIA
+                tableCdoia();
+               
                 }else{
                    //RESETAR ALERT TABLE CDOIA
-                   $('#alertTblCdoia').text(`A ${cdoiaText} JÁ FOI ADICIONADA!`);
+                    $('#alertTblCdoia').text(`A ${cdoiaText}.${cdoiaNumber} JÁ FOI ADICIONADA!`);
                 }
             });
 
-         }(AnaliseInserir());
+        }(AnaliseInserir());
+
+        function tableCdoia() {
+            //LIMPAR TABELA CDOIA
+            $('#tblCdoiaContent').empty();
+            //PERCORRER ARRAY É PREENCHER TABLE CDOIA
+            $.each(objetoArraycdoia.CDOIA, function (chave, valor) {
+                // Obter os valores correspondentes das outras propriedades
+                var valorStatus = objetoArraycdoia.CDOIAStatus[chave];
+                var valorObs = objetoArraycdoia.CDOIA_Obs[chave];
+
+                //CRIAR ROW DE ACORDO COM O INPUT LABEL
+                var newRow = $('<tr>\
+                                      <td id="txtCdoiaText" width="24%">\
+                                                      <div><a>' + cdoiaText + '.' + valor + '</a></div>\
+                                                    </td>\
+                                                    <td width="15%">\
+                                                      <a>OK</a>\
+                                                      <label class="switch">\
+                                                          <input id="statusCdoia'+ valor + '" type="checkbox" onClick="reply_click(' + valor + ')">\
+                                                        <span class="slider round"></span>\
+                                                      </label>\
+                                                      <a>NOK</a>\
+                                                    </td>\
+                                                    <td width="19%">\
+                                                      <div id="DisplayUploadTblAnalise">\
+                                                        <div style="background-color:#b9b9b9; border: 1px solid #b9b9b9;">\
+                                                         <i id="imgCdoia'+ valor + '" style="cursor:pointer; font-size:0.8rem;" class="fa fa-upload" aria-hidden="true"></i>\
+                                                        </div>\
+                                                        <div>\
+                                                          <a>0 Arquivos</a>\
+                                                        </div>\
+                                                      </div>\
+                                                    </td>\
+                                                    <td id="tdCdoiaObs">\
+                                                       <a>Obs:</a><input id="obsCdoia'+ valor + '" value="'+ valorObs +'" type="text" onchange="reply_click(' + valor + ')" class="form-control">\
+                                                    </td>\
+                                                    <td>\
+                                                       <i id="excluirCdoia'+ valor + '" onClick="removeCdoia(' + valor + ')" style="cursor:pointer; font-size:0.8rem;" class="fa fa-trash" aria-hidden="true"></i>\
+                                                    </td>\
+                                                  </tr>');
+
+                // Definir o estado do checkbox com base no valorStatus
+                if (valorStatus === 'OK') {
+                    newRow.find(`#statusCdoia${valor}`).prop('checked', false);
+                } else {
+                    newRow.find(`#statusCdoia${valor}`).prop('checked', true);
+                }
+                //ADICIONAR A LINHA A TABELA CDOIA
+                $('#tblCdoiaContent').append(newRow);
+            });
+        }
+
+        //PEGAR ID VALOR NA ROW TABLE CDOPIA
+        function reply_click(clicked_id) {
+            //PEGAR VALORES CAMPO TABELA CDOIA
+            indexRowId = clicked_id;
+            var obsCdoia = $(`#obsCdoia${indexRowId}`).val();
+
+            // Selecionar o checkbox (marca como "on")
+            if ($(`#statusCdoia${indexRowId}`).is(':checked')) {
+                statusCdoia = "NOK";
+            }else{
+                statusCdoia = "OK";
+            };
+
+            // Busca pelo índice
+            var indexId = $.inArray(indexRowId.toString(), objetoArraycdoia.CDOIA);
+
+            // Verifica se o valor foi encontrado
+            if (indexId !== -1) {
+                objetoArraycdoia.CDOIA[indexId] = indexRowId.toString();
+                objetoArraycdoia.CDOIAStatus[indexId] = statusCdoia;
+                objetoArraycdoia.CDOIA_Obs[indexId] = obsCdoia;
+
+            }
+
+            //DEMOSTRAÇÃO SAIDA PARA INSERÇÃO
+            console.log(objetoArraycdoia.CDOIA.join("|"));
+            console.log(objetoArraycdoia.CDOIAStatus.join("|"));
+            console.log(objetoArraycdoia.CDOIA_Obs.join("|"));
+            
+        }
+
+        function removeCdoia(clicked_id) {
+            //PEGAR VALORES CAMPO TABELA CDOIA
+            indexRowId = clicked_id;
+
+            // Encontrar o índice do valor a ser removido em todas as propriedades
+            var index = objetoArraycdoia.CDOIA.indexOf(indexRowId);
+
+            if (index !== -1) {
+                // Remover o valor em cada propriedade
+                objetoArraycdoia.CDOIA.splice(index, 1);
+                objetoArraycdoia.CDOIAStatus.splice(index, 1);
+                objetoArraycdoia.CDOIA_Obs.splice(index, 1);
+            }
+
+            console.log(objetoArraycdoia);
+
+            //ATUALIZAR TABELA CDOIA
+            tableCdoia();
+        }
        </script>
      }
