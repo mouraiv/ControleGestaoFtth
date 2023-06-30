@@ -295,7 +295,9 @@
             indexRowId = clicked_id;
 
             // Encontrar o índice do valor a ser removido em todas as propriedades
-            var index = objetoArraycdoia.CDOIA.indexOf(indexRowId);
+            var index = $.inArray(indexRowId.toString(), objetoArraycdoia.CDOIA);
+
+            console.log(index);
 
             if (index !== -1) {
                 // Remover o valor em cada propriedade
