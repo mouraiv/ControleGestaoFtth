@@ -65,38 +65,20 @@ namespace ControleGestaoFtth.Controllers
             return PartialView(analise);
         }
         [HttpPost]
-        public IActionResult Inserir(AnaliseView analiseView, List<IFormFile> files)
+        public IActionResult InserirImagem(List<IFormFile> filesData)
         {
             try
             {
-                var statusList = new[]
-                    {
-                            new SelectListItem { Value = "1", Text = "APROVADO" },
-                            new SelectListItem { Value = "0", Text = "REPROVADO" }
-                        };
-
-                ViewData["selectStatusFilter"] = statusList;
-
                 //RECUPERA ESTADO UF E SIGLA ESTAÇÃO DO FORMULÁRIO
                 var uf = Request.Form["Uf"];
                 var slg = Request.Form["Slg"];
                 var cdo = Request.Form["Cdo"];
 
+
                 //CAMINHO PARA UPLOADS DE ARQUIVOS
                 string pasta = "Upload\\TesteOptico\\Anexos\\" + uf + "\\" + slg + "\\TESTE_OPTICO\\";
 
-                //analiseView.Analise.Id = _analiseRepository.LastId() + 1;
-                analiseView.Analise.TesteOpticoId = int.Parse(Request.Form["TesteOpticoId"]);
-                analiseView.Analise.TecnicoId = int.Parse(Request.Form["TecnicoId"]);
-                analiseView.Analise.DataAnalise = DateTime.Now;
-                analiseView.Analise.Observacao = Request.Form["Observacao"];
-                analiseView.Analise.CDOIA = "";
-                analiseView.Analise.CDOIAStatus = "";
-                analiseView.Analise.CDOIA_Obs = "";
-
-                _analiseRepository.Cadastrar(analiseView.Analise);
-
-                foreach (var file in files)
+                foreach (var file in filesData)
                 {
                     if (file != null && file.Length > 0)
                     {
@@ -115,6 +97,36 @@ namespace ControleGestaoFtth.Controllers
                         }
                     }
                 }
+                return Json(new { resposta = "SUCESSO" });
+            }catch(Exception error)
+            {
+                TempData["Falha"] = $"Erro ao inserir a imagem - {error.Message}.";
+                return Json(new { resposta = "FALHA" });
+            }
+        }
+       [HttpPost]
+        public IActionResult Inserir(AnaliseView analiseView)
+        {
+            try
+            {
+                var statusList = new[]
+                    {
+                            new SelectListItem { Value = "1", Text = "APROVADO" },
+                            new SelectListItem { Value = "0", Text = "REPROVADO" }
+                        };
+
+                ViewData["selectStatusFilter"] = statusList;
+
+                //analiseView.Analise.Id = _analiseRepository.LastId() + 1;
+                analiseView.Analise.TesteOpticoId = int.Parse(Request.Form["TesteOpticoId"]);
+                analiseView.Analise.TecnicoId = int.Parse(Request.Form["TecnicoId"]);
+                analiseView.Analise.DataAnalise = DateTime.Now;
+                analiseView.Analise.Observacao = Request.Form["Observacao"];
+                analiseView.Analise.CDOIA = Request.Form["Cdoia"];
+                analiseView.Analise.CDOIAStatus = Request.Form["CdoiaStatus"];
+                analiseView.Analise.CDOIA_Obs = Request.Form["CdoiaObs"];
+
+                _analiseRepository.Cadastrar(analiseView.Analise);
 
                 if (analiseView.Analise.Id > 0) {
                     TempData["Sucesso"] = "Inserido com sucesso.";

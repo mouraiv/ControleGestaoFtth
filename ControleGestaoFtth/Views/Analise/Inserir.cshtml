@@ -9,6 +9,10 @@
             <input type="hidden" name="Uf" value="@Model.TesteOptico.Estacao.Estado.Uf">
             <input type="hidden" name="Slg" value="@Model.TesteOptico.Estacao.Sigla">
             <input type="hidden" name="Cdo" value="@Model.TesteOptico.CDO">
+            <input type="hidden" name="Cdoia" id="Cdoia">
+            <input type="hidden" name="CdoiaStatus" id="CdoiaStatus">
+            <input type="hidden" name="CdoiaObs" id="CdoiaObs">
+
             <div class="bg-primary text-center text-white p-1" style="font-size:0.8rem; font-weight:600;"><a>-- INSERIR ANALISE --</a></div>
                 <div id="formEditar" name="analiseInsert" class="row">
                 <!-- Table info -->
@@ -84,36 +88,36 @@
                 </div>
                 <!-- End Table -->
 
-                <!-- INSERÇÃO DE CDOIA -->
-                <div id="cdoiArea">
-                    <!-- CONTEUDO -->
-                    <table id="tblCdoia">
-                        <thead>
-                        <tr>
-                            <td id="tliCdoia" align="center"><a>SELECIONAR CDOIA - @Model.TesteOptico.CDO</a></td>
-                        </tr>
-                            <tr id="txtCdoiaNunber">
-                            <td>
-                                <a>
-                                    @Model.TesteOptico.CDO.
-                                    <input id="inputCdoia" type="number" min="1" value="1" />
-                                    <i id="addCdoia" class="fa fa-plus-circle" aria-hidden="true"></i>
-                                </a>
-                                <a id="alertTblCdoia"></a>
-                            </td>
-                        </tr>
-                        </thead>
-                        <tbody id="tblCdoiaContent">
-                            <!-- CONTEUDO TBL CDOIA -->
-                        </tbody>
-                    </table>
-
-                </div>
-                <!-- END CDOIA -->
+                <!-- table insert cdoia -->
+                @if(@Model.TesteOptico.CDO.StartsWith("CDOI"))
+                {
+                    <div id="cdoiArea">
+                        <table id="tblCdoia">
+                            <thead>
+                            <tr>
+                                <td id="tliCdoia" align="center"><a>SELECIONAR CDOIA - @Model.TesteOptico.CDO</a></td>
+                            </tr>
+                                <tr id="txtCdoiaNunber">
+                                <td>
+                                    <a>
+                                        @Model.TesteOptico.CDO.
+                                        <input id="inputCdoia" type="number" min="1" value="1" />
+                                        <i id="addCdoia" class="fa fa-plus-circle" aria-hidden="true"></i>
+                                    </a>
+                                    <a id="alertTblCdoia"></a>
+                                </td>
+                            </tr>
+                            </thead>
+                            <tbody id="tblCdoiaContent">
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                <!-- End Table Cdoia -->
 
                 <div class="modal-footer p-0 m-0 mt-4">
                      <a role="button" asp-action="Detalhe" asp-controller="Analise" asp-route-id="@Model.TesteOptico.Id" id="btnRoles" class="btn btn-secondary mt-4 ms-2">Voltar</a>
-                     <button type="submit" class="btn btn-primary mt-4 me-2">Inserir</button>
+                     <button type="submit" id="postJson" class="btn btn-primary mt-4 me-2">Inserir</button>
                 </div>
             </div>
         </form>
@@ -158,14 +162,64 @@
             }
 
             //BOTÃO ADICIONAR IMAGEM CDO PRINCIPAL
+            $('#formEditar').on('click', '#postJson', function () {
+                //DESCONTRUIR ORBJETO E ARMAZENAR NA VARIAVBEL
+                var CDOIA = objetoArraycdoia.CDOIA.join("|") + "|";
+                var CDOIAStatus = objetoArraycdoia.CDOIAStatus.join("|") + "|";
+                var CDOIA_Obs = objetoArraycdoia.CDOIA_Obs.join("|") + "|";
+                //INSERIR VARIAVEL NOS INPUTS HIDDEN
+                $('#Cdoia').val(CDOIA);
+                $('#CdoiaStatus').val(CDOIAStatus);
+                $('#CdoiaObs').val(CDOIA_Obs);
+                
+            });
+
+            //BOTÃO ADICIONAR IMAGEM CDO PRINCIPAL
             $('#formEditar').on('change', '#files', function () {
                 //GET INPUT FILE
-                var files = $(this)[0].files;
+                var arquivos = $(this)[0].files;
                 for (var i = 1; i < files.length + 1; i++) {
                     //MOSTRAR QUANTIDADE DE ARQUIVOS ADICIONADOS
                     $("#ptrTxtUpload a").text(i + " Arquivos");
                 }
-                
+
+                if (arquivos.length > 0) {
+                    console.log(arquivos.length);
+                    var filesData = new FormData();
+
+                    for (var i = 0; i < arquivos.length; i++) {
+                        filesData.append('imagens', arquivos[i]);
+                        console.log(arquivos[i]);
+                    }
+
+                    $.ajax({
+                        url: '/Analise/InserirImagem',
+                        type: 'POST',
+                        data: filesData,
+                        processData: false,
+                        contentType: false,
+                        success: function(response) {
+                            // Ação após salvar a imagem
+                            if (response.success) {
+                                var imagens = response.imagePaths;
+                                //var container = $('#imagemContainer');
+
+                                //container.empty();
+
+                                for (var j = 0; j < imagens.length; j++) {
+                                    //var img = $('<img>').attr('src', imagens[j]);
+                                    //container.append(img);
+                                }
+                                //$('#imagemContainer').html(img);
+                                console.log("SUCESSO");
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            // Tratar erro, se necessário
+                            console.log(error)
+                        }
+                    });
+                }                
             });
 
             //BOTÃO ADICIONAR CDOIA
@@ -233,9 +287,12 @@
                                                     <td width="19%">\
                                                       <div id="DisplayUploadTblAnalise">\
                                                         <div style="background-color:#b9b9b9; border: 1px solid #b9b9b9;">\
-                                                         <i id="imgCdoia'+ valor + '" style="cursor:pointer; font-size:0.8rem;" class="fa fa-upload" aria-hidden="true"></i>\
+                                                          <label for="files">\
+                                                           <i id="imgCdoia'+ valor + '" style="cursor:pointer; font-size:0.8rem;" class="fa fa-upload" aria-hidden="true"></i>\
+                                                            </label>\
+                                                           <input type="file" class="d-none" id="files" name="files" accept=".jpg, .jpeg, .png, .gif, .bmp, .dib, .jfif, .tiff, .tif, .dwg" multiple />\
                                                         </div>\
-                                                        <div>\
+                                                        <div id="ptrTxtUpload">\
                                                           <a>0 Arquivos</a>\
                                                         </div>\
                                                       </div>\
@@ -281,13 +338,7 @@
                 objetoArraycdoia.CDOIAStatus[indexId] = statusCdoia;
                 objetoArraycdoia.CDOIA_Obs[indexId] = obsCdoia;
 
-            }
-
-            //DEMOSTRAÇÃO SAIDA PARA INSERÇÃO
-            console.log(objetoArraycdoia.CDOIA.join("|"));
-            console.log(objetoArraycdoia.CDOIAStatus.join("|"));
-            console.log(objetoArraycdoia.CDOIA_Obs.join("|"));
-            
+            }            
         }
 
         function removeCdoia(clicked_id) {
@@ -305,8 +356,6 @@
                 objetoArraycdoia.CDOIAStatus.splice(index, 1);
                 objetoArraycdoia.CDOIA_Obs.splice(index, 1);
             }
-
-            console.log(objetoArraycdoia);
 
             //ATUALIZAR TABELA CDOIA
             tableCdoia();
